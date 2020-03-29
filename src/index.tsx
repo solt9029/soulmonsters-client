@@ -5,10 +5,10 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store, { history } from './store';
 import { ConnectedRouter } from 'connected-react-router';
-import firebase from 'firebase';
+import { initializeApp } from 'firebase';
 import { firebaseConfig } from './config';
 
-firebase.initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 ReactDOM.render(
   <Provider store={store}>
