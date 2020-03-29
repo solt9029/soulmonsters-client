@@ -3,8 +3,10 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
+import * as reducers from './reducers';
 
 export interface AppState {
+  user: any;
   router: any;
 }
 
@@ -16,6 +18,7 @@ const middlewares = [sagaMiddleware, routerMiddleware(history)];
 
 // reducers
 const combinedReducers = combineReducers<AppState>({
+  ...reducers,
   router: connectRouter(history),
 });
 

@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import store, { history } from './store';
 import { ConnectedRouter } from 'connected-react-router';
 import { initializeApp } from 'firebase';
-import { firebaseConfig } from './config';
+import firebaseConfig from './config/firebase';
 
 initializeApp(firebaseConfig);
 

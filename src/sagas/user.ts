@@ -3,10 +3,10 @@ import { put, call } from 'redux-saga/effects';
 import * as api from '../api/user';
 
 export function* login() {
-  const { user, error } = yield call(api.login);
-  if (error) {
-    yield put(actions.login.failed(error));
-    return;
+  try {
+    const { user } = yield call(api.login);
+    yield put(actions.login.done({ result: user }));
+  } catch (error) {
+    yield put(actions.login.failed({ error }));
   }
-  yield put(actions.login.done(user));
 }
