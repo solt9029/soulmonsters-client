@@ -88,6 +88,7 @@
     "typescript": "~3.7.2",
     "typescript-fsa": "^3.0.0",
     "typescript-fsa-reducers": "^1.2.1",
+    "typescript-fsa-redux-saga": "^2.0.0",
     "url-loader": "2.3.0",
     "webpack": "4.42.0",
     "webpack-dev-server": "3.10.3",
