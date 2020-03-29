@@ -13,8 +13,8 @@ export default function User(props: Props) {
   if (props.user.error !== null) {
     return <div>error is not null</div>;
   }
-  if (props.user.uid !== null) {
-    return <div>uid is not null</div>;
+  if (props.user.data !== null) {
+    return <div>data is not null</div>;
   }
   return <button onClick={props.startLogin}>login</button>;
 }

@@ -2,18 +2,14 @@ import { Record } from 'immutable';
 import firebase from 'firebase';
 
 export interface UserInterface {
-  photoURL: string | null;
-  displayName: string | null;
-  uid: string | null;
+  data: firebase.User | null;
   error: Error | null;
   isLoading: boolean;
 }
 
 export default class User extends Record<UserInterface>(
   {
-    photoURL: null,
-    displayName: null,
-    uid: null,
+    data: null,
     error: null,
     isLoading: false,
   },
@@ -24,12 +20,8 @@ export default class User extends Record<UserInterface>(
       isLoading: true,
     });
   }
-  doneLogin(firebaseUser: firebase.User): User {
-    return new User({
-      photoURL: firebaseUser.photoURL,
-      displayName: firebaseUser.displayName,
-      uid: firebaseUser.uid,
-    });
+  doneLogin(data: firebase.User): User {
+    return new User({ data });
   }
   doneLogout(): User {
     return new User();
