@@ -7,14 +7,18 @@ import store, { history } from './store';
 import { ConnectedRouter } from 'connected-react-router';
 import { initializeApp } from 'firebase';
 import firebaseConfig from './config/firebase';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
 
 initializeApp(firebaseConfig);
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App />
-    </ConnectedRouter>
+    <PersistGate persistor={persistStore(store)}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );
