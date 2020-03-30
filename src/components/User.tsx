@@ -4,9 +4,11 @@ import { UserInterface } from '../models/User';
 interface Props {
   startLogin: () => void;
   user: UserInterface;
+  connectWebsocket: () => void;
 }
 
 export default function User(props: Props) {
+  props.connectWebsocket();
   if (props.user.isLoading) {
     return <div>is loading</div>;
   }

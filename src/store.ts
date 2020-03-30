@@ -8,6 +8,7 @@ import storage from 'redux-persist/lib/storage';
 import immutableTransform from 'redux-persist-transform-immutable';
 import * as reducers from './reducers';
 import User from './models/User';
+import reduxWebsocket from '@giantmachines/redux-websocket';
 
 export interface AppState {
   user: any;
@@ -18,7 +19,11 @@ export const history = createBrowserHistory();
 
 // middlewares
 const sagaMiddleware = createSagaMiddleware();
-const middlewares = [sagaMiddleware, routerMiddleware(history)];
+const middlewares = [
+  sagaMiddleware,
+  reduxWebsocket(),
+  routerMiddleware(history),
+];
 
 // reducers
 const persistConfig = {
