@@ -9,12 +9,12 @@ const GET_CARDS = gql`
   query {
     cards {
       id
+      name
     }
   }
 `;
 
-export function App(props: any) {
-  console.log(props);
+export default function App(props: any) {
   return (
     <div className="App">
       <User />
@@ -23,7 +23,7 @@ export function App(props: any) {
         <Route exact path="/hello" component={() => <div>hello</div>} />
         <Route component={() => <div>notfound</div>} />
       </Switch>
-      <Query query={GET_CARDS}>
+      <Query query={GET_CARDS} pollInterval={1000}>
         {(data: any) => {
           if (data.error) {
             return <div>error</div>;
@@ -39,7 +39,3 @@ export function App(props: any) {
     </div>
   );
 }
-
-export default graphql(GET_CARDS, {
-  options: { pollInterval: 1000 },
-})(App);
