@@ -11,6 +11,7 @@ import Lockr from 'lockr';
 import * as actions from './actions/user';
 import { ID_TOKEN } from './constants/local-storage';
 import { apolloClient } from './apollo-client';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const {
   REACT_APP_FIREBASE_API_KEY,

@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import User from './containers/User';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import Navbar from './containers/Navbar';
 
 const GET_CARDS = gql`
   query {
@@ -16,6 +17,7 @@ const GET_CARDS = gql`
 export default function App(props: any) {
   return (
     <div className="App">
+      <Navbar />
       <User />
       <Switch>
         <Route exact path="/" component={() => <div>index</div>} />
