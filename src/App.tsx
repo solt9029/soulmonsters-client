@@ -4,7 +4,6 @@ import User from './containers/User';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Navbar from './containers/Navbar';
-import { graphql } from 'react-apollo';
 
 const GET_CARDS = gql`
   query {
