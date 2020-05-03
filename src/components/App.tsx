@@ -6,6 +6,7 @@ import Navbar from '../containers/Navbar';
 import Help from '../pages/Help';
 import Rule from '../pages/Rule';
 import NotFound from '../pages/NotFound';
+import Index from '../pages/Index';
 
 const GET_CARDS = gql`
   query {
@@ -30,7 +31,7 @@ export default function App(props: Props) {
     <div className="App">
       <Navbar />
       <Switch>
-        <Route exact path="/" component={() => <div>index</div>} />
+        <Route exact path="/" component={Index} />
         <Route exact path="/help" component={Help} />
         <Route exact path="/rule" component={Rule} />
         <Route component={NotFound} />
