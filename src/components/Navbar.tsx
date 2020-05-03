@@ -12,6 +12,7 @@ import {
   Nav,
   NavLink as RNavLink,
 } from 'reactstrap';
+import { UserInterface } from '../models/User';
 
 const Logo = styled(NavbarBrand)`
   background: url('/images/icon.png') no-repeat left center;
@@ -28,7 +29,9 @@ const StyledNavLink = styled(RNavLink)`
   font-size: 1em;
 `;
 
-interface Props extends RouteComponentProps {}
+interface Props extends RouteComponentProps {
+  user?: UserInterface;
+}
 
 interface State {
   isOpen: boolean;
@@ -58,9 +61,17 @@ export default class Navbar extends Component<Props, State> {
         <NavbarToggler onClick={this.toggle} className="my-2" />
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            <StyledNavLink tag={RRDNavLink} exact to="/deck">
-              デッキ構築
-            </StyledNavLink>
+            {this.props.user?.data !== null && (
+              <React.Fragment>
+                <StyledNavLink tag={RRDNavLink} exact to="/deck">
+                  デッキ構築
+                </StyledNavLink>
+                <StyledNavLink tag={RRDNavLink} exact to="/game">
+                  ソウルバトル
+                </StyledNavLink>
+              </React.Fragment>
+            )}
+
             <StyledNavLink tag={RRDNavLink} exact to="/rule">
               ルール
             </StyledNavLink>
@@ -68,6 +79,14 @@ export default class Navbar extends Component<Props, State> {
               ヘルプ
             </StyledNavLink>
           </Nav>
+
+          {this.props.location.pathname === '/deck' && (
+            <Fragment>
+              <Button color="info" className="my-2 mr-2">
+                ソウルバトル開始！
+              </Button>
+            </Fragment>
+          )}
         </Collapse>
       </RNavbar>
     );

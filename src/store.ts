@@ -4,9 +4,10 @@ import { createBrowserHistory } from 'history';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 import * as reducers from './reducers';
+import User from './models/User';
 
 export interface AppState {
-  user: any;
+  user: User;
   router: any;
 }
 
