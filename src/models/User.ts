@@ -26,8 +26,12 @@ export default class User extends Record<UserInterface>(
   doneLogout(): User {
     return new User();
   }
-  failed(error: Error): User {
+  failedLogin(error: Error): User {
     return new User({ error });
+  }
+  failedLogout(error: Error): User {
+    const data = this.data;
+    return new User({ error, data });
   }
   initialize(): User {
     if (this.isLoading || this.error !== null) {

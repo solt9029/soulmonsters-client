@@ -10,3 +10,12 @@ export function* login() {
     yield put(actions.login.failed({ error }));
   }
 }
+
+export function* logout() {
+  try {
+    yield call(api.logout);
+    yield put(actions.logout.done({}));
+  } catch (error) {
+    yield put(actions.logout.failed({ error }));
+  }
+}

@@ -33,7 +33,7 @@ export default function App(props: Props) {
         <Route exact path="/hello" component={() => <div>hello</div>} />
         <Route component={() => <div>notfound</div>} />
       </Switch>
-      <Query query={GET_CARDS} pollInterval={1000}>
+      <Query query={GET_CARDS} pollInterval={10000}>
         {(data: any) => {
           if (data.error) {
             return <div>error</div>;

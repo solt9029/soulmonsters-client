@@ -1,7 +1,9 @@
 import { auth } from 'firebase';
 
-export const login = () => {
-  return auth()
-    .signInWithPopup(new auth.TwitterAuthProvider())
-    .then((result) => result);
+export const login = async () => {
+  return await auth().signInWithPopup(new auth.TwitterAuthProvider());
+};
+
+export const logout = async () => {
+  return await auth().signOut();
 };

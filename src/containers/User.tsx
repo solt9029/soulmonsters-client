@@ -13,5 +13,8 @@ export default connect(
     startLogin: () => {
       dispatch(actions.login.started());
     },
+    startLogout: () => {
+      dispatch(actions.logout.started());
+    },
   })
 )(User);

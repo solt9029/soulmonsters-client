@@ -1,7 +1,8 @@
 import { takeEvery } from 'redux-saga/effects';
-import { login as loginAction } from '../actions/user';
-import { login } from './user';
+import * as userActions from '../actions/user';
+import { login, logout } from './user';
 
 export default function* rootSaga() {
-  yield takeEvery(loginAction.started.type, login);
+  yield takeEvery(userActions.login.started.type, login);
+  yield takeEvery(userActions.logout.started.type, logout);
 }
