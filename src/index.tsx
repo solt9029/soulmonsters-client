@@ -6,14 +6,19 @@ import { Provider } from 'react-redux';
 import store, { history } from './store';
 import { ConnectedRouter } from 'connected-react-router';
 import firebase, { initializeApp } from 'firebase';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
 import { ApolloProvider } from 'react-apollo';
+import { ApolloClient } from 'apollo-client';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { setContext } from 'apollo-link-context';
 import Lockr from 'lockr';
 import * as actions from './actions/user';
-import { ID_TOKEN } from './constants/local-storage';
-import { apolloClient } from './apollo-client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const {
+  REACT_APP_HTTP_LINK_URI,
   REACT_APP_FIREBASE_API_KEY,
   REACT_APP_FIREBASE_AUTH_DOMAIN,
   REACT_APP_FIREBASE_DATABASE_URL,
@@ -23,6 +28,8 @@ const {
   REACT_APP_FIREBASE_APP_ID,
   REACT_APP_FIREBASE_MEASUREMENT_ID,
 } = process.env;
+
+export const ID_TOKEN = 'idtoken'; // local storage key name
 
 initializeApp({
   apiKey: REACT_APP_FIREBASE_API_KEY,
@@ -37,20 +44,45 @@ initializeApp({
 
 firebase.auth().onAuthStateChanged(async (user) => {
   if (user) {
-    store.dispatch(actions.login.done({ result: user }));
     const idToken = await user.getIdToken(true);
     Lockr.set(ID_TOKEN, idToken);
-    return;
   }
-  Lockr.rm(ID_TOKEN);
+});
+
+const httpLink = new HttpLink({
+  uri: REACT_APP_HTTP_LINK_URI,
+});
+
+const authLink = setContext(async (_, { headers }) => {
+  const idToken = Lockr.get(ID_TOKEN);
+
+  // update id token every time
+  const newIdToken = await firebase.auth().currentUser?.getIdToken(true);
+  if (newIdToken) {
+    Lockr.set(ID_TOKEN, newIdToken);
+  }
+
+  return {
+    headers: {
+      ...headers,
+      authorization: idToken,
+    },
+  };
+});
+
+const apolloClient = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
 });
 
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <App />
-      </ConnectedRouter>
+      <PersistGate persistor={persistStore(store)}>
+        <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
+      </PersistGate>
     </Provider>
   </ApolloProvider>,
   document.getElementById('root')
