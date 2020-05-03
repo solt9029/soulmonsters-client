@@ -88,8 +88,12 @@ export default function Navbar(props: Props) {
   return (
     <RNavbar className="py-0" color="light" light expand="md">
       <Container>
-        <ServiceLogo tag={Link} to="/" imageUrl="/images/icon.png" />
-        <NavbarBrand tag={Link} to="/">
+        <ServiceLogo
+          tag={Link}
+          to={props.user?.data === null ? '/' : '/deck'}
+          imageUrl="/images/icon.png"
+        />
+        <NavbarBrand tag={Link} to={props.user?.data === null ? '/' : '/deck'}>
           <Brand>ソウルモンスターズ</Brand>
         </NavbarBrand>
         <NavbarToggler onClick={toggleCollapse} className="my-2" />

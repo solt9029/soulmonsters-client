@@ -8,6 +8,8 @@ import Rule from '../pages/Rule';
 import NotFound from '../pages/NotFound';
 import Index from '../pages/Index';
 import Deck from '../pages/Deck';
+import PrivateRoute from './PrivateRoute';
+import { UserInterface } from '../models/User';
 
 const GET_CARDS = gql`
   query {
@@ -20,6 +22,7 @@ const GET_CARDS = gql`
 
 interface Props {
   initializeUser: Function;
+  user: UserInterface;
 }
 
 export default function App(props: Props) {
@@ -33,7 +36,7 @@ export default function App(props: Props) {
       <Navbar />
       <Switch>
         <Route exact path="/" component={Index} />
-        <Route exact path="/deck" component={Deck} />
+        <PrivateRoute exact path="/deck" user={props.user} component={Deck} />
         <Route exact path="/help" component={Help} />
         <Route exact path="/rule" component={Rule} />
         <Route component={NotFound} />

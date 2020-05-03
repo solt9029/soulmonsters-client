@@ -1,9 +1,14 @@
 import { connect } from 'react-redux';
 import App from '../components/App';
 import { initialize as initializeUser } from '../actions/user';
+import { AppState } from '../store';
+
+const mapStateToProps = (state: AppState) => ({
+  user: state.user,
+});
 
 const mapDispatchToProps = {
   initializeUser,
 };
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
