@@ -10,6 +10,10 @@ import {
   Nav,
   Container,
   NavLink as RNavLink,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from 'reactstrap';
 import { UserInterface } from '../models/User';
 import { Link } from 'react-router-dom';
@@ -22,10 +26,17 @@ const ServiceLogo = styled(NavbarBrand)`
   width: 45px;
 `;
 
-const UserLogo = styled(NavbarBrand)`
+const UserLogo = styled(DropdownToggle)`
   ${(props) => `background: url('${props.imageUrl}') no-repeat left center;`}
   background-size: contain;
   border-radius: 50%;
+  border: none;
+  &:focus {
+    box-shadow: none;
+  }
+  &:hover {
+    border-color: #eee;
+  }
   height: 45px;
   width: 45px;
 `;
@@ -38,19 +49,29 @@ const StyledNavLink = styled(RNavLink)`
   font-size: 1em;
 `;
 
+const StyledCollapse = styled(Collapse)`
+  margin-top: 5px;
+  margin-bottom: 5px;
+`;
+
 interface Props extends RouteComponentProps {
   user?: UserInterface;
 }
 
 interface State {
   isCollapseOpen: boolean;
+  isDropdownOpen: boolean;
 }
 
 export default class Navbar extends Component<Props, State> {
-  state = { isCollapseOpen: false };
+  state = { isCollapseOpen: false, isDropdownOpen: false };
 
   toggleCollapse = () => {
     this.setState((state) => ({ isCollapseOpen: !state.isCollapseOpen }));
+  };
+
+  toggleDropdown = () => {
+    this.setState((state) => ({ isDropdownOpen: !state.isDropdownOpen }));
   };
 
   componentWillReceiveProps(nextProps: Props) {
@@ -69,7 +90,7 @@ export default class Navbar extends Component<Props, State> {
             <Brand>ソウルモンスターズ</Brand>
           </NavbarBrand>
           <NavbarToggler onClick={this.toggleCollapse} className="my-2" />
-          <Collapse isOpen={this.state.isCollapseOpen} navbar>
+          <StyledCollapse isOpen={this.state.isCollapseOpen} navbar>
             <Nav className="mr-auto" navbar>
               {this.props.user?.data !== null && (
                 <React.Fragment>
@@ -91,11 +112,17 @@ export default class Navbar extends Component<Props, State> {
             </Nav>
 
             {this.props.user?.data !== null && (
-              <Fragment>
+              <Dropdown
+                isOpen={this.state.isDropdownOpen}
+                toggle={this.toggleDropdown}
+              >
                 <UserLogo imageUrl={this.props.user?.data?.photoURL} />
-              </Fragment>
+                <DropdownMenu>
+                  <DropdownItem>ログアウト</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             )}
-          </Collapse>
+          </StyledCollapse>
         </Container>
       </RNavbar>
     );
