@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import User from '../containers/User';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Navbar from '../containers/Navbar';
+import Help from '../pages/Help';
+import Rule from '../pages/Rule';
+import NotFound from '../pages/NotFound';
 
 const GET_CARDS = gql`
   query {
@@ -27,11 +29,11 @@ export default function App(props: Props) {
   return (
     <div className="App">
       <Navbar />
-      <User />
       <Switch>
         <Route exact path="/" component={() => <div>index</div>} />
-        <Route exact path="/hello" component={() => <div>hello</div>} />
-        <Route component={() => <div>notfound</div>} />
+        <Route exact path="/help" component={Help} />
+        <Route exact path="/rule" component={Rule} />
+        <Route component={NotFound} />
       </Switch>
       <Query query={GET_CARDS} pollInterval={10000}>
         {(data: any) => {
