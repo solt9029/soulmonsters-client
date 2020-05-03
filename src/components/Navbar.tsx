@@ -8,13 +8,15 @@ import {
   Button,
   NavbarBrand,
   Nav,
+  Container,
   NavLink as RNavLink,
 } from 'reactstrap';
 import { UserInterface } from '../models/User';
 
 const Logo = styled(NavbarBrand)`
-  background: url('/images/icon.png') no-repeat left center;
+  ${(props) => `background: url('${props.imageUrl}') no-repeat left center;`}
   background-size: contain;
+  border-radius: 50%;
   height: 45px;
   width: 45px;
 `;
@@ -52,40 +54,43 @@ export default class Navbar extends Component<Props, State> {
   render() {
     return (
       <RNavbar className="py-0" color="light" light expand="md">
-        <Logo />
-        <NavbarBrand>
-          <Brand>ソウルモンスターズ</Brand>
-        </NavbarBrand>
-        <NavbarToggler onClick={this.toggle} className="my-2" />
-        <Collapse isOpen={this.state.isOpen} navbar>
-          <Nav className="mr-auto" navbar>
-            {this.props.user?.data !== null && (
-              <React.Fragment>
-                <StyledNavLink tag={RRDNavLink} exact to="/deck">
-                  デッキ構築
-                </StyledNavLink>
-                <StyledNavLink tag={RRDNavLink} exact to="/game">
-                  ソウルバトル
-                </StyledNavLink>
-              </React.Fragment>
+        <Container>
+          <Logo imageUrl="/images/icon.png" />
+          <NavbarBrand>
+            <Brand>ソウルモンスターズ</Brand>
+          </NavbarBrand>
+          <NavbarToggler onClick={this.toggle} className="my-2" />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="mr-auto" navbar>
+              {this.props.user?.data !== null && (
+                <React.Fragment>
+                  <StyledNavLink tag={RRDNavLink} exact to="/deck">
+                    デッキ構築
+                  </StyledNavLink>
+                  <StyledNavLink tag={RRDNavLink} exact to="/game">
+                    ソウルバトル
+                  </StyledNavLink>
+                </React.Fragment>
+              )}
+
+              <StyledNavLink tag={RRDNavLink} exact to="/rule">
+                ルール
+              </StyledNavLink>
+              <StyledNavLink tag={RRDNavLink} exact to="/help">
+                ヘルプ
+              </StyledNavLink>
+            </Nav>
+
+            {this.props.location.pathname === '/deck' && (
+              <Fragment>
+                <Button color="info" className="my-2 mr-2">
+                  ソウルバトル開始！
+                </Button>
+                <Logo imageUrl={this.props.user?.data?.photoURL} />
+              </Fragment>
             )}
-
-            <StyledNavLink tag={RRDNavLink} exact to="/rule">
-              ルール
-            </StyledNavLink>
-            <StyledNavLink tag={RRDNavLink} exact to="/help">
-              ヘルプ
-            </StyledNavLink>
-          </Nav>
-
-          {this.props.location.pathname === '/deck' && (
-            <Fragment>
-              <Button color="info" className="my-2 mr-2">
-                ソウルバトル開始！
-              </Button>
-            </Fragment>
-          )}
-        </Collapse>
+          </Collapse>
+        </Container>
       </RNavbar>
     );
   }
