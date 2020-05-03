@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { NavLink as RRDNavLink, RouteComponentProps } from 'react-router-dom';
 import {
@@ -60,101 +60,82 @@ interface Props extends RouteComponentProps {
   startLogout?: () => void;
 }
 
-interface State {
-  isCollapseOpen: boolean;
-  isDropdownOpen: boolean;
-}
+export default function Navbar(props: Props) {
+  const [isCollapseOpen, setIsCollapseOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-export default class Navbar extends Component<Props, State> {
-  state = { isCollapseOpen: false, isDropdownOpen: false };
-
-  toggleCollapse = () => {
-    this.setState((state) => ({ isCollapseOpen: !state.isCollapseOpen }));
+  const toggleCollapse = () => {
+    setIsCollapseOpen(!isCollapseOpen);
   };
 
-  toggleDropdown = () => {
-    this.setState((state) => ({ isDropdownOpen: !state.isDropdownOpen }));
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (this.props.location.pathname === nextProps.location.pathname) {
-      return;
-    }
-    this.setState({ isCollapseOpen: false });
-  }
+  useEffect(() => {
+    setIsCollapseOpen(false);
+    setIsDropdownOpen(false);
+  }, [props.location.pathname]);
 
-  startLogout = () => {
-    if (this.props.startLogout !== undefined) {
-      this.props.startLogout();
-    }
+  const startLogout = () => {
+    props.startLogout !== undefined && props.startLogout();
   };
 
-  startLogin = () => {
-    if (this.props.startLogin !== undefined) {
-      this.props.startLogin();
-    }
+  const startLogin = () => {
+    props.startLogin !== undefined && props.startLogin();
   };
 
-  render() {
-    return (
-      <RNavbar className="py-0" color="light" light expand="md">
-        <Container>
-          <ServiceLogo tag={Link} to="/" imageUrl="/images/icon.png" />
-          <NavbarBrand>
-            <Brand>ソウルモンスターズ</Brand>
-          </NavbarBrand>
-          <NavbarToggler onClick={this.toggleCollapse} className="my-2" />
-          <StyledCollapse isOpen={this.state.isCollapseOpen} navbar>
-            <Nav className="mr-auto" navbar>
-              {this.props.user?.data !== null && (
-                <React.Fragment>
-                  <StyledNavLink tag={RRDNavLink} exact to="/deck">
-                    デッキ構築
-                  </StyledNavLink>
-                  <StyledNavLink tag={RRDNavLink} exact to="/game">
-                    ソウルバトル
-                  </StyledNavLink>
-                </React.Fragment>
-              )}
+  return (
+    <RNavbar className="py-0" color="light" light expand="md">
+      <Container>
+        <ServiceLogo tag={Link} to="/" imageUrl="/images/icon.png" />
+        <NavbarBrand>
+          <Brand>ソウルモンスターズ</Brand>
+        </NavbarBrand>
+        <NavbarToggler onClick={toggleCollapse} className="my-2" />
+        <StyledCollapse isOpen={isCollapseOpen} navbar>
+          <Nav className="mr-auto" navbar>
+            {props.user?.data !== null && (
+              <React.Fragment>
+                <StyledNavLink tag={RRDNavLink} exact to="/deck">
+                  デッキ構築
+                </StyledNavLink>
+                <StyledNavLink tag={RRDNavLink} exact to="/game">
+                  ソウルバトル
+                </StyledNavLink>
+              </React.Fragment>
+            )}
 
-              <StyledNavLink tag={RRDNavLink} exact to="/rule">
-                ルール
-              </StyledNavLink>
-              <StyledNavLink tag={RRDNavLink} exact to="/help">
-                ヘルプ
-              </StyledNavLink>
-            </Nav>
-            <Nav>
-              {(() => {
-                if (this.props.user?.data === null) {
-                  return (
-                    <Button
-                      color="info"
-                      className="my-2 mr-2"
-                      onClick={this.startLogin}
-                    >
-                      ログイン
-                    </Button>
-                  );
-                }
+            <StyledNavLink tag={RRDNavLink} exact to="/rule">
+              ルール
+            </StyledNavLink>
+            <StyledNavLink tag={RRDNavLink} exact to="/help">
+              ヘルプ
+            </StyledNavLink>
+          </Nav>
+          <Nav>
+            {(() => {
+              if (props.user?.data === null) {
                 return (
-                  <Dropdown
-                    isOpen={this.state.isDropdownOpen}
-                    toggle={this.toggleDropdown}
-                  >
-                    <UserLogo imageUrl={this.props.user?.data?.photoURL} />
-                    <DropdownMenu>
-                      <DropdownItem onClick={this.startLogout}>
-                        ログアウト
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
+                  <Button color="info" onClick={startLogin}>
+                    ログイン
+                  </Button>
                 );
-              })()}
-            </Nav>
-          </StyledCollapse>
-        </Container>
-      </RNavbar>
-    );
-  }
+              }
+              return (
+                <Dropdown isOpen={isDropdownOpen} toggle={toggleDropdown}>
+                  <UserLogo imageUrl={props.user?.data?.photoURL} />
+                  <DropdownMenu>
+                    <DropdownItem onClick={startLogout}>
+                      ログアウト
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              );
+            })()}
+          </Nav>
+        </StyledCollapse>
+      </Container>
+    </RNavbar>
+  );
 }
