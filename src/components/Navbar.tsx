@@ -12,8 +12,17 @@ import {
   NavLink as RNavLink,
 } from 'reactstrap';
 import { UserInterface } from '../models/User';
+import { Link } from 'react-router-dom';
 
-const Logo = styled(NavbarBrand)`
+const ServiceLogo = styled(NavbarBrand)`
+  background: url('/images/icon.png') no-repeat left center;
+  background-size: contain;
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+`;
+
+const UserLogo = styled(NavbarBrand)`
   ${(props) => `background: url('${props.imageUrl}') no-repeat left center;`}
   background-size: contain;
   border-radius: 50%;
@@ -22,7 +31,7 @@ const Logo = styled(NavbarBrand)`
 `;
 
 const Brand = styled.span`
-  font-size: 1.2em;
+  font-size: 1em;
 `;
 
 const StyledNavLink = styled(RNavLink)`
@@ -34,33 +43,33 @@ interface Props extends RouteComponentProps {
 }
 
 interface State {
-  isOpen: boolean;
+  isCollapseOpen: boolean;
 }
 
 export default class Navbar extends Component<Props, State> {
-  state = { isOpen: false };
+  state = { isCollapseOpen: false };
 
-  toggle = () => {
-    this.setState((state) => ({ isOpen: !state.isOpen }));
+  toggleCollapse = () => {
+    this.setState((state) => ({ isCollapseOpen: !state.isCollapseOpen }));
   };
 
   componentWillReceiveProps(nextProps: Props) {
     if (this.props.location.pathname === nextProps.location.pathname) {
       return;
     }
-    this.setState({ isOpen: false });
+    this.setState({ isCollapseOpen: false });
   }
 
   render() {
     return (
       <RNavbar className="py-0" color="light" light expand="md">
         <Container>
-          <Logo imageUrl="/images/icon.png" />
+          <ServiceLogo tag={Link} to="/" imageUrl="/images/icon.png" />
           <NavbarBrand>
             <Brand>ソウルモンスターズ</Brand>
           </NavbarBrand>
-          <NavbarToggler onClick={this.toggle} className="my-2" />
-          <Collapse isOpen={this.state.isOpen} navbar>
+          <NavbarToggler onClick={this.toggleCollapse} className="my-2" />
+          <Collapse isOpen={this.state.isCollapseOpen} navbar>
             <Nav className="mr-auto" navbar>
               {this.props.user?.data !== null && (
                 <React.Fragment>
@@ -81,12 +90,9 @@ export default class Navbar extends Component<Props, State> {
               </StyledNavLink>
             </Nav>
 
-            {this.props.location.pathname === '/deck' && (
+            {this.props.user?.data !== null && (
               <Fragment>
-                <Button color="info" className="my-2 mr-2">
-                  ソウルバトル開始！
-                </Button>
-                <Logo imageUrl={this.props.user?.data?.photoURL} />
+                <UserLogo imageUrl={this.props.user?.data?.photoURL} />
               </Fragment>
             )}
           </Collapse>

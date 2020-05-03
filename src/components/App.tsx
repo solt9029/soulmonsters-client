@@ -4,6 +4,7 @@ import User from '../containers/User';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Navbar from '../containers/Navbar';
+import Example from './Example';
 
 const GET_CARDS = gql`
   query {
@@ -27,6 +28,7 @@ export default function App(props: Props) {
   return (
     <div className="App">
       <Navbar />
+      <Example />
       <User />
       <Switch>
         <Route exact path="/" component={() => <div>index</div>} />
