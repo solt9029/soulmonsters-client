@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import { NavLink as RRDNavLink, RouteComponentProps } from 'react-router-dom';
 import {
@@ -56,6 +56,8 @@ const StyledCollapse = styled(Collapse)`
 
 interface Props extends RouteComponentProps {
   user?: UserInterface;
+  startLogin?: () => void;
+  startLogout?: () => void;
 }
 
 interface State {
@@ -80,6 +82,18 @@ export default class Navbar extends Component<Props, State> {
     }
     this.setState({ isCollapseOpen: false });
   }
+
+  startLogout = () => {
+    if (this.props.startLogout !== undefined) {
+      this.props.startLogout();
+    }
+  };
+
+  startLogin = () => {
+    if (this.props.startLogin !== undefined) {
+      this.props.startLogin();
+    }
+  };
 
   render() {
     return (
@@ -110,18 +124,34 @@ export default class Navbar extends Component<Props, State> {
                 ヘルプ
               </StyledNavLink>
             </Nav>
-
-            {this.props.user?.data !== null && (
-              <Dropdown
-                isOpen={this.state.isDropdownOpen}
-                toggle={this.toggleDropdown}
-              >
-                <UserLogo imageUrl={this.props.user?.data?.photoURL} />
-                <DropdownMenu>
-                  <DropdownItem>ログアウト</DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            )}
+            <Nav>
+              {(() => {
+                if (this.props.user?.data === null) {
+                  return (
+                    <Button
+                      color="info"
+                      className="my-2 mr-2"
+                      onClick={this.startLogin}
+                    >
+                      ログイン
+                    </Button>
+                  );
+                }
+                return (
+                  <Dropdown
+                    isOpen={this.state.isDropdownOpen}
+                    toggle={this.toggleDropdown}
+                  >
+                    <UserLogo imageUrl={this.props.user?.data?.photoURL} />
+                    <DropdownMenu>
+                      <DropdownItem onClick={this.startLogout}>
+                        ログアウト
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                );
+              })()}
+            </Nav>
           </StyledCollapse>
         </Container>
       </RNavbar>
