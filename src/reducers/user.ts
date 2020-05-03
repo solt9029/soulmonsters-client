@@ -7,4 +7,5 @@ export default reducerWithInitialState(new User())
   .case(actions.login.done, (state: User, success) =>
     state.doneLogin(success.result)
   )
-  .case(actions.login.failed, (state, failure) => state.failed(failure.error));
+  .case(actions.login.failed, (state, failure) => state.failed(failure.error))
+  .case(actions.initialize, (state) => state.initialize());

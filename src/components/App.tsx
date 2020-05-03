@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import User from './containers/User';
+import User from '../containers/User';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import Navbar from './containers/Navbar';
+import Navbar from '../containers/Navbar';
 
 const GET_CARDS = gql`
   query {
@@ -14,7 +14,16 @@ const GET_CARDS = gql`
   }
 `;
 
-export default function App(props: any) {
+interface Props {
+  initializeUser: Function;
+}
+
+export default function App(props: Props) {
+  // componentDidMount
+  useEffect(() => {
+    props.initializeUser();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div className="App">
       <Navbar />

@@ -29,4 +29,10 @@ export default class User extends Record<UserInterface>(
   failed(error: Error): User {
     return new User({ error });
   }
+  initialize(): User {
+    if (this.isLoading || this.error !== null) {
+      return new User();
+    }
+    return this;
+  }
 }

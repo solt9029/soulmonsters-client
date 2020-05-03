@@ -1,12 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { Location } from 'history';
 import { NavLink as RRDNavLink, RouteComponentProps } from 'react-router-dom';
 import {
   Collapse,
   Navbar as RNavbar,
   NavbarToggler,
-  Container,
   Button,
   NavbarBrand,
   Nav,
