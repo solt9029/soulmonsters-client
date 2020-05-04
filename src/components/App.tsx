@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import Navbar from '../containers/Navbar';
 import Help from '../pages/Help';
 import Rule from '../pages/Rule';
@@ -10,15 +8,7 @@ import Index from '../pages/Index';
 import Deck from '../pages/Deck';
 import PrivateRoute from './PrivateRoute';
 import { UserInterface } from '../models/User';
-
-const GET_CARDS = gql`
-  query {
-    cards {
-      id
-      name
-    }
-  }
-`;
+import { useDecksQuery } from '../graphql/generated/graphql-client';
 
 interface Props {
   initializeUser: Function;
@@ -31,6 +21,9 @@ export default function App(props: Props) {
     props.initializeUser();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const { data } = useDecksQuery({ pollInterval: 10000 });
+  console.log(data);
+
   return (
     <div className="App">
       <Navbar />
@@ -41,19 +34,6 @@ export default function App(props: Props) {
         <Route exact path="/rule" component={Rule} />
         <Route component={NotFound} />
       </Switch>
-      <Query query={GET_CARDS} pollInterval={10000}>
-        {(data: any) => {
-          if (data.error) {
-            return <div>error</div>;
-          }
-
-          if (data.loading) {
-            return <div>loading</div>;
-          }
-
-          return <div>data fetched!</div>;
-        }}
-      </Query>
     </div>
   );
 }

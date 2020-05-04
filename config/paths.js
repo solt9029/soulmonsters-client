@@ -63,6 +63,7 @@ module.exports = {
   proxySetup: resolveApp('src/setupProxy.js'),
   appNodeModules: resolveApp('node_modules'),
   publicUrlOrPath,
+  graphqlGeneratedPath: resolveApp('src/graphql/generated'),
 };
 
 module.exports.moduleFileExtensions = moduleFileExtensions;

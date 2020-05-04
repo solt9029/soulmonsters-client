@@ -1,0 +1,14 @@
+query cards {
+  cards {
+    id
+    name 
+    kind 
+    attribute 
+    type 
+    attack 
+    defence 
+    cost 
+    detail 
+    picture
+  }
+}

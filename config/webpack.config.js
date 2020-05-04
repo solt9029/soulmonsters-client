@@ -340,6 +340,7 @@ module.exports = function (webpackEnv) {
             },
           ],
           include: paths.appSrc,
+          exclude: paths.graphqlGeneratedPath,
         },
         {
           // "oneOf" will traverse all following loaders until one will
