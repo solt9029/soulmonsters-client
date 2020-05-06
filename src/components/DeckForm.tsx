@@ -11,8 +11,14 @@ const StyledButton = styled(Button)`
   width: 100%;
 `;
 
-export default function DeckForm() {
+interface Props {
+  setSelectedDeckId: (selectedDeckId: string) => void;
+  selectedDeckId: string | null;
+}
+
+export default function DeckForm({ selectedDeckId, setSelectedDeckId }: Props) {
   const decksQueryResult = useDecksQuery();
+
   const [createDeck, createDeckResult] = useCreateDeckMutation({
     refetchQueries: [{ query: DecksDocument }],
     onError: () => {},
@@ -20,13 +26,14 @@ export default function DeckForm() {
 
   const [deckNameInput, setDeckNameInput] = useState('');
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
+  const handleDeckNameInputChange = (event: ChangeEvent<HTMLInputElement>) =>
     setDeckNameInput(event.target.value);
 
+  const handleDeckSelectChange = (event: ChangeEvent<HTMLInputElement>) =>
+    setSelectedDeckId(event.target.value);
+
   const handleClick = () => {
-    try {
-      createDeck({ variables: { name: deckNameInput } });
-    } catch (e) {}
+    createDeck({ variables: { name: deckNameInput } });
     setDeckNameInput('');
   };
 
@@ -49,7 +56,7 @@ export default function DeckForm() {
             id="deck"
             placeholder="デッキ名"
             value={deckNameInput}
-            onChange={handleChange}
+            onChange={handleDeckNameInputChange}
           />
         </Col>
         <Col sm={4}>
@@ -62,8 +69,8 @@ export default function DeckForm() {
         <Col sm={12}>
           <Input
             type="select"
-            // onChange={(e) => console.log(e.target.value)}
-            // value={'ck9v0bi5m0h6e0857oq5txbne'}
+            onChange={handleDeckSelectChange}
+            value={selectedDeckId || undefined}
           >
             {decksQueryResult.data?.decks?.map((deck) => (
               <option key={deck.id} value={deck.id}>

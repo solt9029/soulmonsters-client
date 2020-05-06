@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Container, Row, Col, UncontrolledAlert } from 'reactstrap';
 import Card from '../components/Card';
 import { useCardsQuery } from '../graphql/generated/graphql-client';
-import DeckForm from '../components/DeckForm';
+import DeckForm from '../containers/DeckForm';
 
 const Zone = styled.div<{ isLeft: boolean }>`
   height: 100vh;
