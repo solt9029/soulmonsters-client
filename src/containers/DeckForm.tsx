@@ -9,8 +9,8 @@ const mapStateToProps = (state: AppState) => ({
   selectedDeckId: state.selectedDeckId,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<string>>) => ({
-  setSelectedDeckId: (selectedDeckId: string) => {
+const mapDispatchToProps = (dispatch: Dispatch<Action<string | null>>) => ({
+  setSelectedDeckId: (selectedDeckId: string | null) => {
     dispatch(setSelectedDeckId(selectedDeckId));
   },
 });

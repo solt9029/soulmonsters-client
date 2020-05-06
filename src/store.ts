@@ -26,7 +26,7 @@ const persistConfig = {
   transforms: [immutableTransform({ records: [User] })],
   key: 'app',
   storage,
-  whitelist: ['user', 'selectedDeckId'],
+  whitelist: ['user'],
 };
 const combinedReducer = combineReducers<AppState>({
   ...reducers,

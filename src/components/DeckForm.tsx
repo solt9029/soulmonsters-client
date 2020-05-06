@@ -5,6 +5,7 @@ import {
   useDecksQuery,
   useCreateDeckMutation,
   DecksDocument,
+  useDeckCardsLazyQuery,
 } from '../graphql/generated/graphql-client';
 
 const StyledButton = styled(Button)`
@@ -12,12 +13,16 @@ const StyledButton = styled(Button)`
 `;
 
 interface Props {
-  setSelectedDeckId: (selectedDeckId: string) => void;
+  setSelectedDeckId: (selectedDeckId: string | null) => void;
   selectedDeckId: string | null;
 }
 
 export default function DeckForm({ selectedDeckId, setSelectedDeckId }: Props) {
-  const decksQueryResult = useDecksQuery();
+  const [fetchDeckCards, deckCardsQueryResult] = useDeckCardsLazyQuery();
+
+  const decksQueryResult = useDecksQuery({
+    onCompleted: (data) => {},
+  });
 
   const [createDeck, createDeckResult] = useCreateDeckMutation({
     refetchQueries: [{ query: DecksDocument }],
@@ -29,8 +34,13 @@ export default function DeckForm({ selectedDeckId, setSelectedDeckId }: Props) {
   const handleDeckNameInputChange = (event: ChangeEvent<HTMLInputElement>) =>
     setDeckNameInput(event.target.value);
 
-  const handleDeckSelectChange = (event: ChangeEvent<HTMLInputElement>) =>
-    setSelectedDeckId(event.target.value);
+  const handleDeckSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (typeof event.target.value === 'string') {
+      setSelectedDeckId(event.target.value);
+      return;
+    }
+    setSelectedDeckId(null);
+  };
 
   const handleClick = () => {
     createDeck({ variables: { name: deckNameInput } });
@@ -72,6 +82,7 @@ export default function DeckForm({ selectedDeckId, setSelectedDeckId }: Props) {
             onChange={handleDeckSelectChange}
             value={selectedDeckId || undefined}
           >
+            <option value={0}>編集するデッキを選択してください</option>
             {decksQueryResult.data?.decks?.map((deck) => (
               <option key={deck.id} value={deck.id}>
                 {deck.name}

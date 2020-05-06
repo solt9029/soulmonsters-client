@@ -1,0 +1,9 @@
+query deckCards($deckId: String!) {
+  deckCards(deckId: $deckId) {
+    id
+    count
+    card {
+      ...CardFragment
+    }
+  }
+}

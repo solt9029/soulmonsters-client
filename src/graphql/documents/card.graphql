@@ -1,14 +1,18 @@
 query cards {
   cards {
-    id
-    name 
-    kind 
-    attribute 
-    type 
-    attack 
-    defence 
-    cost 
-    detail 
-    picture
+    ...CardFragment
   }
+}
+
+fragment CardFragment on Card {
+  id
+  name 
+  kind 
+  attribute 
+  type 
+  attack 
+  defence 
+  cost 
+  detail 
+  picture
 }
