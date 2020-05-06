@@ -60,9 +60,15 @@ export default function DeckForm() {
       </FormGroup>
       <FormGroup row>
         <Col sm={12}>
-          <Input type="select">
+          <Input
+            type="select"
+            // onChange={(e) => console.log(e.target.value)}
+            // value={'ck9v0bi5m0h6e0857oq5txbne'}
+          >
             {decksQueryResult.data?.decks?.map((deck) => (
-              <option key={deck.id}>{deck.name}</option>
+              <option key={deck.id} value={deck.id}>
+                {deck.name}
+              </option>
             ))}
           </Input>
         </Col>

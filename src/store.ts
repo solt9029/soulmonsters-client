@@ -11,6 +11,7 @@ import User from './models/User';
 
 export interface AppState {
   user: User;
+  selectedDeckId: string | null;
   router: any;
 }
 
@@ -25,7 +26,7 @@ const persistConfig = {
   transforms: [immutableTransform({ records: [User] })],
   key: 'app',
   storage,
-  whitelist: ['user'],
+  whitelist: ['user', 'selectedDeckId'],
 };
 const combinedReducer = combineReducers<AppState>({
   ...reducers,
