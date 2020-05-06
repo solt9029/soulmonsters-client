@@ -1,25 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-import {
-  Container,
-  Row,
-  Col,
-  CardImg,
-  Dropdown,
-  DropdownItem,
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  FormGroup,
-  Label,
-  Input,
-  Form,
-  Button,
-} from 'reactstrap';
+import { Container, Row, Col, FormGroup, Input, Button } from 'reactstrap';
 import Card from '../components/Card';
-import { useCardsQuery } from '../graphql/generated/graphql-client';
+import {
+  useCardsQuery,
+  useDecksQuery,
+  useCreateDeckMutation,
+  DecksDocument,
+} from '../graphql/generated/graphql-client';
 
 const Zone = styled.div<{ isLeft: boolean }>`
   height: 100vh;
@@ -47,6 +35,12 @@ const StyledCol = styled(Col)`
 
 export default function Deck() {
   const { data, error, loading } = useCardsQuery();
+  const decksQuery = useDecksQuery();
+  const [createDeck] = useCreateDeckMutation({
+    refetchQueries: [{ query: DecksDocument }],
+  });
+
+  const [deckName, setDeckName] = useState('');
 
   return (
     <div style={{ display: 'flex', backgroundColor: '#222' }}>
@@ -54,10 +48,20 @@ export default function Deck() {
         <StyledContainer>
           <FormGroup row>
             <Col sm={10}>
-              <Input type="text" id="deck" placeholder="デッキ名" />
+              <Input
+                type="text"
+                id="deck"
+                placeholder="デッキ名"
+                value={deckName}
+                onChange={(event) => setDeckName(event.target.value)}
+              />
             </Col>
             <Col sm={2}>
-              <Button color="success" style={{ width: '100%' }}>
+              <Button
+                color="success"
+                style={{ width: '100%' }}
+                onClick={() => createDeck({ variables: { name: deckName } })}
+              >
                 作成
               </Button>
             </Col>
@@ -65,11 +69,9 @@ export default function Deck() {
           <FormGroup row>
             <Col sm={12}>
               <Input type="select">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+                {decksQuery.data?.decks?.map((deck) => (
+                  <option>{deck.name}</option>
+                ))}
               </Input>
             </Col>
           </FormGroup>
