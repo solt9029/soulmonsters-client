@@ -3,7 +3,7 @@ import { AppState } from '../store';
 import { Dispatch } from 'redux';
 import { Action } from 'typescript-fsa';
 import { setSelectedDeckId } from '../actions/selected-deck-id';
-import DeckForm from '../components/DeckForm';
+import DeckArea from '../components/DeckArea';
 
 const mapStateToProps = (state: AppState) => ({
   selectedDeckId: state.selectedDeckId,
@@ -15,4 +15,4 @@ const mapDispatchToProps = (dispatch: Dispatch<Action<string | null>>) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(DeckForm);
+export default connect(mapStateToProps, mapDispatchToProps)(DeckArea);

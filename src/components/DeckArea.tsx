@@ -29,7 +29,7 @@ interface Props {
   selectedDeckId: string | null;
 }
 
-export default function DeckForm({ selectedDeckId, setSelectedDeckId }: Props) {
+export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
   const [fetchDeckCards, deckCardsQueryResult] = useDeckCardsLazyQuery();
 
   const decksQueryResult = useDecksQuery({

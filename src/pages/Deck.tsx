@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { Container, Row, Col, UncontrolledAlert } from 'reactstrap';
 import Card from '../components/Card';
 import { useCardsQuery } from '../graphql/generated/graphql-client';
-import DeckForm from '../containers/DeckForm';
+import DeckArea from '../containers/DeckArea';
 
-const Zone = styled.div<{ isLeft: boolean }>`
+const Area = styled.div<{ isLeft: boolean }>`
   height: 100vh;
   width: 100%;
   background-size: cover;
@@ -28,13 +28,13 @@ export default function Deck() {
 
   return (
     <div style={{ display: 'flex', backgroundColor: '#222' }}>
-      <Zone isLeft={true}>
+      <Area isLeft={true}>
         <StyledContainer>
-          <DeckForm />
+          <DeckArea />
         </StyledContainer>
-      </Zone>
+      </Area>
 
-      <Zone isLeft={false}>
+      <Area isLeft={false}>
         <StyledContainer>
           <StyledRow>
             {loading && (
@@ -54,7 +54,7 @@ export default function Deck() {
             ))}
           </StyledRow>
         </StyledContainer>
-      </Zone>
+      </Area>
     </div>
   );
 }
