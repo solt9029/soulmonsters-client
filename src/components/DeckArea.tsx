@@ -16,6 +16,7 @@ import {
 } from '../graphql/generated/graphql-client';
 import Card from './Card';
 import Area from '../styled/Area';
+import { useDrop } from 'react-dnd';
 
 interface Props {
   setSelectedDeckId: (selectedDeckId: string | null) => void;
@@ -43,6 +44,15 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
 
   const [deckNameInput, setDeckNameInput] = useState('');
 
+  const [{ canDrop, isOver }, drop] = useDrop({
+    accept: 'card',
+    drop: () => ({ name: 'deck-area' }),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
+
   const handleDeckNameInputChange = (event: ChangeEvent<HTMLInputElement>) =>
     setDeckNameInput(event.target.value);
 
@@ -57,7 +67,7 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
   };
 
   return (
-    <Area>
+    <Area ref={drop} isActive={canDrop && isOver}>
       <Container style={{ marginTop: '12px' }}>
         {decksQueryResult.error !== undefined && (
           <UncontrolledAlert color="danger">
@@ -122,7 +132,7 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
             return (
               <Fragment>
                 {[...Array(deckCard.count)].map(() => (
-                  <Card key={index} imageUrl={deckCard.card.picture}></Card>
+                  <Card isInDeck picture={deckCard.card.picture}></Card>
                 ))}
               </Fragment>
             );

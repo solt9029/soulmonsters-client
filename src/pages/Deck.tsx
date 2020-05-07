@@ -2,12 +2,16 @@ import React from 'react';
 import DeckArea from '../containers/DeckArea';
 import CardArea from '../components/CardArea';
 import AreaWrapper from '../styled/AreaWrapper';
+import { DndProvider } from 'react-dnd';
+import Backend from 'react-dnd-html5-backend';
 
 export default function Deck() {
   return (
-    <AreaWrapper>
-      <DeckArea />
-      <CardArea />
-    </AreaWrapper>
+    <DndProvider backend={Backend}>
+      <AreaWrapper>
+        <DeckArea />
+        <CardArea />
+      </AreaWrapper>
+    </DndProvider>
   );
 }

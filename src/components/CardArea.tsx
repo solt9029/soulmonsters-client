@@ -8,7 +8,7 @@ export default function CardArea() {
   const { data, error, loading } = useCardsQuery();
 
   return (
-    <Area style={{ borderLeftWidth: '0px' }}>
+    <Area isRight>
       <Container style={{ marginTop: '12px' }}>
         <Row style={{ color: 'white' }}>
           {loading && (
@@ -24,7 +24,7 @@ export default function CardArea() {
             </Col>
           )}
           {data?.cards.map((card, index) => (
-            <Card key={index} imageUrl={card.picture}></Card>
+            <Card picture={card.picture}></Card>
           ))}
         </Row>
       </Container>

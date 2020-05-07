@@ -1,23 +1,38 @@
 import React from 'react';
 import { Col, Card as RCard, CardImg } from 'reactstrap';
-import styled from 'styled-components';
-
-const StyledCol = styled(Col)`
-  margin-bottom: 12px;
-  padding-right: 6px;
-  padding-left: 6px;
-`;
+import { useDrag, DragSourceMonitor } from 'react-dnd';
 
 interface Props {
-  imageUrl: string;
+  picture: string;
+  isInDeck?: boolean;
 }
 
-export default function Card({ imageUrl }: Props) {
+export default function Card({ picture, isInDeck }: Props) {
+  const type = isInDeck ? 'deck-card' : 'card';
+  const drag = useDrag({
+    item: { name: picture, type },
+    end: (item: { name: string } | undefined, monitor: DragSourceMonitor) => {
+      const dropResult = monitor.getDropResult();
+      if (item && dropResult) {
+        alert(`You dropped ${item.name} into ${dropResult.name}!`);
+      }
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
   return (
-    <StyledCol lg={3} md={4} sm={6} xs={6}>
-      <RCard>
-        <CardImg src={imageUrl} />
+    <Col
+      style={{ marginBottom: '12px', padding: '0px 6px' }}
+      lg={3}
+      md={4}
+      sm={6}
+      xs={6}
+    >
+      <RCard innerRef={drag[1]}>
+        <CardImg src={picture} />
       </RCard>
-    </StyledCol>
+    </Col>
   );
 }

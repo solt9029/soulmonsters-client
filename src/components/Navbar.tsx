@@ -27,7 +27,7 @@ const ServiceLogo = styled(NavbarBrand)`
 `;
 
 const UserLogo = styled(DropdownToggle)`
-  ${(props) => `background: url('${props.imageUrl}') no-repeat left center;`}
+  ${(props) => `background: url('${props.picture}') no-repeat left center;`}
   background-size: contain;
   border-radius: 50%;
   border: none;
@@ -91,7 +91,6 @@ export default function Navbar(props: Props) {
         <ServiceLogo
           tag={Link}
           to={props.user?.data === null ? '/' : '/deck'}
-          imageUrl="/images/icon.png"
         />
         <NavbarBrand tag={Link} to={props.user?.data === null ? '/' : '/deck'}>
           <Brand>ソウルモンスターズ</Brand>
@@ -128,7 +127,7 @@ export default function Navbar(props: Props) {
               }
               return (
                 <Dropdown isOpen={isDropdownOpen} toggle={toggleDropdown}>
-                  <UserLogo imageUrl={props.user?.data?.photoURL} />
+                  <UserLogo picture={props.user?.data?.photoURL} />
                   <DropdownMenu>
                     <DropdownItem onClick={startLogout}>
                       ログアウト
