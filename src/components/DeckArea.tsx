@@ -54,15 +54,8 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
     setDeckNameInput(event.target.value);
 
   const handleDeckSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (
-      event.target.value !== undefined &&
-      typeof event.target.value === 'string'
-    ) {
-      setSelectedDeckId(event.target.value);
-      fetchDeckCards({ variables: { deckId: event.target.value } });
-      return;
-    }
-    setSelectedDeckId(null);
+    fetchDeckCards({ variables: { deckId: event.target.value } });
+    setSelectedDeckId(event.target.value);
   };
 
   const handleClick = () => {
@@ -105,7 +98,7 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
             onChange={handleDeckSelectChange}
             value={selectedDeckId || undefined}
           >
-            <option value={0}>編集するデッキを選択してください</option>
+            <option value="default">編集するデッキを選択してください</option>
             {decksQueryResult.data?.decks?.map((deck) => (
               <option key={deck.id} value={deck.id}>
                 {deck.name}
