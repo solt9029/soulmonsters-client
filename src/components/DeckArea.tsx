@@ -1,5 +1,4 @@
 import React, { useState, ChangeEvent, Fragment } from 'react';
-import styled from 'styled-components';
 import {
   Col,
   FormGroup,
@@ -7,6 +6,7 @@ import {
   Button,
   UncontrolledAlert,
   Row,
+  Container,
 } from 'reactstrap';
 import {
   useDecksQuery,
@@ -15,14 +15,7 @@ import {
   useDeckCardsLazyQuery,
 } from '../graphql/generated/graphql-client';
 import Card from './Card';
-
-const StyledButton = styled(Button)`
-  width: 100%;
-`;
-
-const StyledRow = styled(Row)`
-  color: white;
-`;
+import Area from '../styled/Area';
 
 interface Props {
   setSelectedDeckId: (selectedDeckId: string | null) => void;
@@ -64,72 +57,78 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
   };
 
   return (
-    <div>
-      {decksQueryResult.error !== undefined && (
-        <UncontrolledAlert color="danger">
-          デッキ情報の取得中にエラーが発生しました
-        </UncontrolledAlert>
-      )}
-      {createDeckResult.error !== undefined && (
-        <UncontrolledAlert color="danger">
-          デッキ情報の作成中にエラーが発生しました
-        </UncontrolledAlert>
-      )}
-      <FormGroup row>
-        <Col sm={8}>
-          <Input
-            type="text"
-            id="deck"
-            placeholder="デッキ名"
-            value={deckNameInput}
-            onChange={handleDeckNameInputChange}
-          />
-        </Col>
-        <Col sm={4}>
-          <StyledButton color="success" onClick={handleClick}>
-            作成
-          </StyledButton>
-        </Col>
-      </FormGroup>
-      <FormGroup row>
-        <Col sm={12}>
-          <Input
-            type="select"
-            onChange={handleDeckSelectChange}
-            value={selectedDeckId || undefined}
-          >
-            <option value="default">編集するデッキを選択してください</option>
-            {decksQueryResult.data?.decks?.map((deck) => (
-              <option key={deck.id} value={deck.id}>
-                {deck.name}
-              </option>
-            ))}
-          </Input>
-        </Col>
-      </FormGroup>
-      <StyledRow>
-        {deckCardsQueryResult.loading && (
-          <Col style={{ marginBottom: '12px' }} lg={12}>
-            デッキのカード情報をロード中です
-          </Col>
+    <Area>
+      <Container style={{ marginTop: '12px' }}>
+        {decksQueryResult.error !== undefined && (
+          <UncontrolledAlert color="danger">
+            デッキ情報の取得中にエラーが発生しました
+          </UncontrolledAlert>
         )}
-        {deckCardsQueryResult.error !== undefined && (
-          <Col lg={12}>
-            <UncontrolledAlert color="danger">
-              デッキのカード情報の取得中にエラーが発生しました
-            </UncontrolledAlert>
-          </Col>
+        {createDeckResult.error !== undefined && (
+          <UncontrolledAlert color="danger">
+            デッキ情報の作成中にエラーが発生しました
+          </UncontrolledAlert>
         )}
-        {deckCardsQueryResult.data?.deckCards.map((deckCard, index) => {
-          return (
-            <Fragment>
-              {[...Array(deckCard.count)].map(() => (
-                <Card key={index} imageUrl={deckCard.card.picture}></Card>
+        <FormGroup row>
+          <Col sm={8}>
+            <Input
+              type="text"
+              id="deck"
+              placeholder="デッキ名"
+              value={deckNameInput}
+              onChange={handleDeckNameInputChange}
+            />
+          </Col>
+          <Col sm={4}>
+            <Button
+              style={{ width: '100%' }}
+              color="success"
+              onClick={handleClick}
+            >
+              作成
+            </Button>
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Col sm={12}>
+            <Input
+              type="select"
+              onChange={handleDeckSelectChange}
+              value={selectedDeckId || undefined}
+            >
+              <option value="default">編集するデッキを選択してください</option>
+              {decksQueryResult.data?.decks?.map((deck) => (
+                <option key={deck.id} value={deck.id}>
+                  {deck.name}
+                </option>
               ))}
-            </Fragment>
-          );
-        })}
-      </StyledRow>
-    </div>
+            </Input>
+          </Col>
+        </FormGroup>
+        <Row style={{ color: 'white' }}>
+          {deckCardsQueryResult.loading && (
+            <Col style={{ marginBottom: '12px' }} lg={12}>
+              デッキのカード情報をロード中です
+            </Col>
+          )}
+          {deckCardsQueryResult.error !== undefined && (
+            <Col lg={12}>
+              <UncontrolledAlert color="danger">
+                デッキのカード情報の取得中にエラーが発生しました
+              </UncontrolledAlert>
+            </Col>
+          )}
+          {deckCardsQueryResult.data?.deckCards.map((deckCard, index) => {
+            return (
+              <Fragment>
+                {[...Array(deckCard.count)].map(() => (
+                  <Card key={index} imageUrl={deckCard.card.picture}></Card>
+                ))}
+              </Fragment>
+            );
+          })}
+        </Row>
+      </Container>
+    </Area>
   );
 }
