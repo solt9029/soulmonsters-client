@@ -24,7 +24,7 @@ export default function CardArea() {
             </Col>
           )}
           {data?.cards.map((card, index) => (
-            <Card picture={card.picture}></Card>
+            <Card id={card.id} picture={card.picture}></Card>
           ))}
         </Row>
       </Container>

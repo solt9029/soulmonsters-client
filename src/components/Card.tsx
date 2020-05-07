@@ -1,20 +1,23 @@
 import React from 'react';
 import { Col, Card as RCard, CardImg } from 'reactstrap';
 import { useDrag, DragSourceMonitor } from 'react-dnd';
+import * as ItemTypes from '../constants/item-types';
 
 interface Props {
+  id: string;
   picture: string;
   isInDeck?: boolean;
 }
 
-export default function Card({ picture, isInDeck }: Props) {
-  const type = isInDeck ? 'deck-card' : 'card';
+export default function Card({ id, picture, isInDeck }: Props) {
+  const type = isInDeck ? ItemTypes.DECK_CARD : ItemTypes.CARD;
+
   const drag = useDrag({
-    item: { name: picture, type },
-    end: (item: { name: string } | undefined, monitor: DragSourceMonitor) => {
+    item: { id, type },
+    end: (item: { id: string } | undefined, monitor: DragSourceMonitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
-        alert(`You dropped ${item.name} into ${dropResult.name}!`);
+        alert(`You dropped ${item.id} into ${dropResult.type}!`);
       }
     },
     collect: (monitor) => ({

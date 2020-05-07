@@ -17,6 +17,8 @@ import {
 import Card from './Card';
 import Area from '../styled/Area';
 import { useDrop } from 'react-dnd';
+import * as ItemTypes from '../constants/item-types';
+import * as AreaTypes from '../constants/area-types';
 
 interface Props {
   setSelectedDeckId: (selectedDeckId: string | null) => void;
@@ -45,8 +47,8 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
   const [deckNameInput, setDeckNameInput] = useState('');
 
   const [{ canDrop, isOver }, drop] = useDrop({
-    accept: 'card',
-    drop: () => ({ name: 'deck-area' }),
+    accept: ItemTypes.CARD,
+    drop: () => ({ type: AreaTypes.DECK }),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
@@ -132,7 +134,11 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
             return (
               <Fragment>
                 {[...Array(deckCard.count)].map(() => (
-                  <Card isInDeck picture={deckCard.card.picture}></Card>
+                  <Card
+                    id={deckCard.card.id}
+                    isInDeck
+                    picture={deckCard.card.picture}
+                  ></Card>
                 ))}
               </Fragment>
             );
