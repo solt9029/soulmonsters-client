@@ -6,6 +6,9 @@ const actionCreator = actionCreatorFactory('DECK_ERROR');
 export const setCreateDeckError = actionCreator<ApolloError | null>(
   'SET_CREATE_DECK_ERROR'
 );
+export const setFetchDecksError = actionCreator<ApolloError | null>(
+  'SET_FETCH_DECKS_ERROR'
+);
 export const setFetchDeckCardsError = actionCreator<ApolloError | null>(
   'SET_FETCH_DECK_CARDS_ERROR'
 );

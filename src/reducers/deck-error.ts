@@ -6,6 +6,9 @@ export default reducerWithInitialState<DeckError>(new DeckError())
   .case(actions.setCreateDeckError, (state, payload) =>
     state.setCreateDeckError(payload)
   )
+  .case(actions.setFetchDecksError, (state, payload) =>
+    state.setFetchDecksError(payload)
+  )
   .case(actions.setFetchDeckCardsError, (state, payload) =>
     state.setFetchDeckCardsError(payload)
   )

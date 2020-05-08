@@ -9,21 +9,34 @@ import { AppState } from '../store';
 import { Dispatch } from 'redux';
 import { Action } from 'typescript-fsa';
 import { setSelectedDeckId } from '../actions/selected-deck-id';
+import { ApolloError } from 'apollo-client';
+import * as deckErrorActions from '../actions/deck-error';
+import { DeckErrorInterface } from '../models/DeckError';
 
 interface Props {
   setSelectedDeckId: (selectedDeckId: string | null) => void;
+  setCreateDeckError: (error: ApolloError | null) => void;
+  setFetchDecksError: (error: ApolloError | null) => void;
+  setFetchDeckCardsError: (error: ApolloError | null) => void;
+  setPlusDeckCardError: (error: ApolloError | null) => void;
+  setMinusDeckCardError: (error: ApolloError | null) => void;
   selectedDeckId: string | null;
+  deckError: DeckErrorInterface;
 }
 
-const Deck = ({ selectedDeckId, setSelectedDeckId }: Props) => {
+const Deck = (props: Props) => {
   return (
     <DndProvider backend={Backend}>
       <AreaWrapper>
         <DeckArea
-          selectedDeckId={selectedDeckId}
-          setSelectedDeckId={setSelectedDeckId}
+          selectedDeckId={props.selectedDeckId}
+          setSelectedDeckId={props.setSelectedDeckId}
+          setCreateDeckError={props.setCreateDeckError}
+          setFetchDecksError={props.setFetchDecksError}
+          setFetchDeckCardsError={props.setFetchDeckCardsError}
+          deckError={props.deckError}
         />
-        <CardArea selectedDeckId={selectedDeckId} />
+        <CardArea selectedDeckId={props.selectedDeckId} />
       </AreaWrapper>
     </DndProvider>
   );
@@ -31,11 +44,29 @@ const Deck = ({ selectedDeckId, setSelectedDeckId }: Props) => {
 
 const mapStateToProps = (state: AppState) => ({
   selectedDeckId: state.selectedDeckId,
+  deckError: state.deckError,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<Action<string | null>>) => ({
+const mapDispatchToProps = (
+  dispatch: Dispatch<Action<ApolloError | string | null>>
+) => ({
   setSelectedDeckId: (selectedDeckId: string | null) => {
     dispatch(setSelectedDeckId(selectedDeckId));
+  },
+  setCreateDeckError: (error: ApolloError | null) => {
+    dispatch(deckErrorActions.setCreateDeckError(error));
+  },
+  setFetchDecksError: (error: ApolloError | null) => {
+    dispatch(deckErrorActions.setFetchDecksError(error));
+  },
+  setFetchDeckCardsError: (error: ApolloError | null) => {
+    dispatch(deckErrorActions.setFetchDeckCardsError(error));
+  },
+  setPlusDeckCardError: (error: ApolloError | null) => {
+    dispatch(deckErrorActions.setPlusDeckCardError(error));
+  },
+  setMinusDeckCardError: (error: ApolloError | null) => {
+    dispatch(deckErrorActions.setMinusDeckCardError(error));
   },
 });
 

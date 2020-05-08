@@ -19,29 +19,51 @@ import Area from '../styled/Area';
 import { useDrop } from 'react-dnd';
 import * as ItemTypes from '../constants/item-types';
 import * as AreaTypes from '../constants/area-types';
+import { ApolloError } from 'apollo-client';
+import { DeckErrorInterface } from '../models/DeckError';
 
 interface Props {
   setSelectedDeckId: (selectedDeckId: string | null) => void;
+  setCreateDeckError: (error: ApolloError | null) => void;
+  setFetchDeckCardsError: (error: ApolloError | null) => void;
+  setFetchDecksError: (error: ApolloError | null) => void;
   selectedDeckId: string | null;
+  deckError: DeckErrorInterface;
 }
 
-export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
-  const [fetchDeckCards, deckCardsQueryResult] = useDeckCardsLazyQuery();
-
-  const decksQueryResult = useDecksQuery({
-    onCompleted: (data) => {
-      if (
-        selectedDeckId !== null &&
-        data.decks.findIndex((deck) => deck.id === selectedDeckId) >= 0
-      ) {
-        fetchDeckCards({ variables: { deckId: selectedDeckId } });
-      }
+export default function DeckArea(props: Props) {
+  const [fetchDeckCards, deckCardsQueryResult] = useDeckCardsLazyQuery({
+    onCompleted: () => {
+      props.setFetchDeckCardsError(null);
+    },
+    onError: (error) => {
+      props.setFetchDeckCardsError(error);
     },
   });
 
-  const [createDeck, createDeckResult] = useCreateDeckMutation({
+  const decksQueryResult = useDecksQuery({
+    onCompleted: (data) => {
+      props.setFetchDecksError(null);
+      if (
+        props.selectedDeckId !== null &&
+        data.decks.findIndex((deck) => deck.id === props.selectedDeckId) >= 0
+      ) {
+        fetchDeckCards({ variables: { deckId: props.selectedDeckId } });
+      }
+    },
+    onError: (error) => {
+      props.setFetchDecksError(error);
+    },
+  });
+
+  const [createDeck] = useCreateDeckMutation({
     refetchQueries: [{ query: DecksDocument }],
-    onError: () => {},
+    onCompleted: () => {
+      props.setCreateDeckError(null);
+    },
+    onError: (error) => {
+      props.setCreateDeckError(error);
+    },
   });
 
   const [deckNameInput, setDeckNameInput] = useState('');
@@ -60,7 +82,7 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
 
   const handleDeckSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
     fetchDeckCards({ variables: { deckId: event.target.value } });
-    setSelectedDeckId(event.target.value);
+    props.setSelectedDeckId(event.target.value);
   };
 
   const handleClick = () => {
@@ -71,12 +93,12 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
   return (
     <Area ref={drop} isActive={canDrop && isOver}>
       <Container style={{ marginTop: '12px' }}>
-        {decksQueryResult.error !== undefined && (
+        {props.deckError.fetchDecksError !== null && (
           <UncontrolledAlert color="danger">
             デッキ情報の取得中にエラーが発生しました
           </UncontrolledAlert>
         )}
-        {createDeckResult.error !== undefined && (
+        {props.deckError.createDeckError !== null && (
           <UncontrolledAlert color="danger">
             デッキ情報の作成中にエラーが発生しました
           </UncontrolledAlert>
@@ -106,7 +128,7 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
             <Input
               type="select"
               onChange={handleDeckSelectChange}
-              value={selectedDeckId || undefined}
+              value={props.selectedDeckId || undefined}
             >
               <option value="default">編集するデッキを選択してください</option>
               {decksQueryResult.data?.decks?.map((deck) => (
@@ -135,7 +157,7 @@ export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
               <Fragment>
                 {[...Array(deckCard.count)].map(() => (
                   <Card
-                    selectedDeckId={selectedDeckId}
+                    selectedDeckId={props.selectedDeckId}
                     id={deckCard.card.id}
                     isInDeck
                     picture={deckCard.card.picture}
