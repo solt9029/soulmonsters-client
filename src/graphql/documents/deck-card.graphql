@@ -7,3 +7,17 @@ query deckCards($deckId: String!) {
     }
   }
 }
+
+mutation plusDeckCard($deckId: String!, $cardId: String!) {
+  plusDeckCard(data: { deckId: $deckId, cardId: $cardId }) {
+    id
+    count
+  }
+}
+
+mutation minusDeckCard($deckId: String!, $cardId: String!) {
+  minusDeckCard(data: { deckId: $deckId, cardId: $cardId }) {
+    id
+    count
+  }
+}

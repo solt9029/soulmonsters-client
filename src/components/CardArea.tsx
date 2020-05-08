@@ -7,7 +7,11 @@ import * as AreaTypes from '../constants/area-types';
 import * as ItemTypes from '../constants/item-types';
 import { useDrop } from 'react-dnd';
 
-export default function CardArea() {
+interface Props {
+  selectedDeckId: string | null;
+}
+
+export default function CardArea({ selectedDeckId }: Props) {
   const { data, error, loading } = useCardsQuery();
 
   const [{ canDrop, isOver }, drop] = useDrop({
@@ -36,7 +40,11 @@ export default function CardArea() {
             </Col>
           )}
           {data?.cards.map((card, index) => (
-            <Card id={card.id} picture={card.picture}></Card>
+            <Card
+              selectedDeckId={selectedDeckId}
+              id={card.id}
+              picture={card.picture}
+            ></Card>
           ))}
         </Row>
       </Container>
