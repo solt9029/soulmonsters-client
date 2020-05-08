@@ -1,4 +1,5 @@
 import { Record } from 'immutable';
+import firebase from 'firebase';
 import { ApolloError } from 'apollo-client';
 
 export interface DeckErrorInterface {
