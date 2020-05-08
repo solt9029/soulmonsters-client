@@ -22,14 +22,14 @@ export default function Card({ id, picture, isInDeck, selectedDeckId }: Props) {
     query: DeckCardsDocument,
     variables: { deckId: selectedDeckId },
   };
-  const [plusDeckCard, plusDeckCardResult] = usePlusDeckCardMutation({
+  const [plusDeckCard] = usePlusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
     onError: (error) => {
       if (error.message === ErrorMessages.MAX_COUNT) {
       }
     },
   });
-  const [minusDeckCard, minusDeckCardResult] = useMinusDeckCardMutation({
+  const [minusDeckCard] = useMinusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
     onError: () => {},
   });
