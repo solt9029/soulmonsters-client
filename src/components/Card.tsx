@@ -58,9 +58,9 @@ export default function Card({ id, picture, isInDeck, selectedDeckId }: Props) {
   return (
     <Col
       style={{ marginBottom: '12px', padding: '0px 6px' }}
-      lg={3}
-      md={4}
-      sm={6}
+      lg={2}
+      md={3}
+      sm={4}
       xs={6}
     >
       <RCard innerRef={drag[1]}>
