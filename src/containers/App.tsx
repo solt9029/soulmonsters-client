@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import App from '../components/App';
-import { initialize as initializeUser } from '../actions/user';
+import { initializeUser } from '../actions/user';
 import { AppState } from '../store';
 
 const mapStateToProps = (state: AppState) => ({

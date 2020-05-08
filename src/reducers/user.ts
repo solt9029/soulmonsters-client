@@ -15,4 +15,4 @@ export default reducerWithInitialState(new User())
   .case(actions.logout.failed, (state, failure) =>
     state.failedLogout(failure.error)
   )
-  .case(actions.initialize, (state) => state.initialize());
+  .case(actions.initializeUser, (state) => state.initialize());
