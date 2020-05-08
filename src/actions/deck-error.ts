@@ -12,6 +12,3 @@ export const setFetchDeckCardsError = actionCreator<ApolloError | null>(
 export const setPlusDeckCardError = actionCreator<ApolloError | null>(
   'SET_PLUS_DECK_CARD_ERROR'
 );
-export const setMinusDeckCardError = actionCreator<ApolloError | null>(
-  'SET_MINUS_DECK_CARD_ERROR'
-);

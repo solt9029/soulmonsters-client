@@ -8,11 +8,9 @@ import storage from 'redux-persist/lib/storage';
 import immutableTransform from 'redux-persist-transform-immutable';
 import * as reducers from './reducers';
 import User from './models/User';
-import DeckError from './models/DeckError';
 
 export interface AppState {
   user: User;
-  deckError: DeckError;
   selectedDeckId: string | null;
   router: any;
 }
