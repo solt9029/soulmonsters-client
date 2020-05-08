@@ -19,51 +19,29 @@ import Area from '../styled/Area';
 import { useDrop } from 'react-dnd';
 import * as ItemTypes from '../constants/item-types';
 import * as AreaTypes from '../constants/area-types';
-import { ApolloError } from 'apollo-client';
-import { DeckErrorInterface } from '../models/DeckError';
 
 interface Props {
   setSelectedDeckId: (selectedDeckId: string | null) => void;
-  setCreateDeckError: (error: ApolloError | null) => void;
-  setFetchDeckCardsError: (error: ApolloError | null) => void;
-  setFetchDecksError: (error: ApolloError | null) => void;
   selectedDeckId: string | null;
-  deckError: DeckErrorInterface;
 }
 
-export default function DeckArea(props: Props) {
-  const [fetchDeckCards, deckCardsQueryResult] = useDeckCardsLazyQuery({
-    onCompleted: () => {
-      props.setFetchDeckCardsError(null);
-    },
-    onError: (error) => {
-      props.setFetchDeckCardsError(error);
-    },
-  });
+export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
+  const [fetchDeckCards, deckCardsQueryResult] = useDeckCardsLazyQuery();
 
   const decksQueryResult = useDecksQuery({
     onCompleted: (data) => {
-      props.setFetchDecksError(null);
       if (
-        props.selectedDeckId !== null &&
-        data.decks.findIndex((deck) => deck.id === props.selectedDeckId) >= 0
+        selectedDeckId !== null &&
+        data.decks.findIndex((deck) => deck.id === selectedDeckId) >= 0
       ) {
-        fetchDeckCards({ variables: { deckId: props.selectedDeckId } });
+        fetchDeckCards({ variables: { deckId: selectedDeckId } });
       }
-    },
-    onError: (error) => {
-      props.setFetchDecksError(error);
     },
   });
 
-  const [createDeck] = useCreateDeckMutation({
+  const [createDeck, createDeckResult] = useCreateDeckMutation({
     refetchQueries: [{ query: DecksDocument }],
-    onCompleted: () => {
-      props.setCreateDeckError(null);
-    },
-    onError: (error) => {
-      props.setCreateDeckError(error);
-    },
+    onError: () => {},
   });
 
   const [deckNameInput, setDeckNameInput] = useState('');
@@ -82,7 +60,7 @@ export default function DeckArea(props: Props) {
 
   const handleDeckSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
     fetchDeckCards({ variables: { deckId: event.target.value } });
-    props.setSelectedDeckId(event.target.value);
+    setSelectedDeckId(event.target.value);
   };
 
   const handleClick = () => {
@@ -93,12 +71,12 @@ export default function DeckArea(props: Props) {
   return (
     <Area ref={drop} isActive={canDrop && isOver}>
       <Container style={{ marginTop: '12px' }}>
-        {props.deckError.fetchDecksError !== null && (
+        {decksQueryResult.error !== undefined && (
           <UncontrolledAlert color="danger">
             デッキ情報の取得中にエラーが発生しました
           </UncontrolledAlert>
         )}
-        {props.deckError.createDeckError !== null && (
+        {createDeckResult.error !== undefined && (
           <UncontrolledAlert color="danger">
             デッキ情報の作成中にエラーが発生しました
           </UncontrolledAlert>
@@ -128,7 +106,7 @@ export default function DeckArea(props: Props) {
             <Input
               type="select"
               onChange={handleDeckSelectChange}
-              value={props.selectedDeckId || undefined}
+              value={selectedDeckId || undefined}
             >
               <option value="default">編集するデッキを選択してください</option>
               {decksQueryResult.data?.decks?.map((deck) => (
@@ -157,7 +135,7 @@ export default function DeckArea(props: Props) {
               <Fragment>
                 {[...Array(deckCard.count)].map(() => (
                   <Card
-                    selectedDeckId={props.selectedDeckId}
+                    selectedDeckId={selectedDeckId}
                     id={deckCard.card.id}
                     isInDeck
                     picture={deckCard.card.picture}
