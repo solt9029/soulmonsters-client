@@ -13,4 +13,5 @@ export default styled.div<Props>`
   border: solid 5px #ccc;
   ${(props) => (!props.isRight ? 'border-right-width : 0px;' : '')}
   border-collapse: collapse;
+  overflow: auto;
 `;
