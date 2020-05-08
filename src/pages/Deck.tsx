@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../store';
 import { Dispatch } from 'redux';
 import { Action } from 'typescript-fsa';
-import { setSelectedDeckId } from '../actions/selected-deck-id';
+import { set as setSelectedDeckId } from '../actions/selected-deck-id';
 
 interface Props {
   setSelectedDeckId: (selectedDeckId: string | null) => void;
