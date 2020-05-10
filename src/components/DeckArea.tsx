@@ -1,17 +1,7 @@
-import React, { useState, ChangeEvent, Fragment, useContext } from 'react';
-import {
-  Col,
-  FormGroup,
-  Input,
-  Button,
-  Row,
-  Container,
-  Alert,
-} from 'reactstrap';
+import React, { ChangeEvent, Fragment, useContext } from 'react';
+import { Col, FormGroup, Input, Row, Container, Alert } from 'reactstrap';
 import {
   useDecksQuery,
-  useCreateDeckMutation,
-  DecksDocument,
   useDeckCardsLazyQuery,
 } from '../graphql/generated/graphql-client';
 import Card from './Card';
@@ -21,6 +11,7 @@ import * as ItemTypes from '../constants/item-types';
 import * as AreaTypes from '../constants/area-types';
 import { AppContext } from './App';
 import * as ErrorMessages from '../constants/error-messages';
+import CreateDeckInput from './CreateDeckInput';
 
 export default function DeckArea() {
   const {
@@ -28,6 +19,7 @@ export default function DeckArea() {
     setSelectedDeckId,
     plusDeckCardError,
     minusDeckCardError,
+    createDeckError,
   } = useContext(AppContext);
 
   const [fetchDeckCards, deckCardsQueryResult] = useDeckCardsLazyQuery();
@@ -43,13 +35,6 @@ export default function DeckArea() {
     },
   });
 
-  const [createDeck, createDeckResult] = useCreateDeckMutation({
-    refetchQueries: [{ query: DecksDocument }],
-    onError: () => {},
-  });
-
-  const [deckNameInput, setDeckNameInput] = useState('');
-
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: ItemTypes.CARD,
     drop: () => ({ type: AreaTypes.DECK }),
@@ -59,17 +44,9 @@ export default function DeckArea() {
     }),
   });
 
-  const handleDeckNameInputChange = (event: ChangeEvent<HTMLInputElement>) =>
-    setDeckNameInput(event.target.value);
-
   const handleDeckSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
     fetchDeckCards({ variables: { deckId: event.target.value } });
     setSelectedDeckId(event.target.value);
-  };
-
-  const handleClick = () => {
-    createDeck({ variables: { name: deckNameInput } });
-    setDeckNameInput('');
   };
 
   return (
@@ -78,29 +55,10 @@ export default function DeckArea() {
         {decksQueryResult.error !== undefined && (
           <Alert color="danger">デッキ情報の取得中にエラーが発生しました</Alert>
         )}
-        {createDeckResult.error !== undefined && (
+        {createDeckError !== null && (
           <Alert color="danger">デッキ情報の作成中にエラーが発生しました</Alert>
         )}
-        <FormGroup row>
-          <Col sm={8}>
-            <Input
-              type="text"
-              id="deck"
-              placeholder="デッキ名"
-              value={deckNameInput}
-              onChange={handleDeckNameInputChange}
-            />
-          </Col>
-          <Col sm={4}>
-            <Button
-              style={{ width: '100%' }}
-              color="success"
-              onClick={handleClick}
-            >
-              作成
-            </Button>
-          </Col>
-        </FormGroup>
+        <CreateDeckInput />
         <FormGroup row>
           <Col sm={12}>
             <Input

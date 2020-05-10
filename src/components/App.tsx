@@ -25,6 +25,9 @@ export interface AppContextInterface {
 
   minusDeckCardError: ApolloError | null;
   setMinusDeckCardError: (value: ApolloError | null) => void;
+
+  createDeckError: ApolloError | null;
+  setCreateDeckError: (value: ApolloError | null) => void;
 }
 
 export const AppContext = createContext<AppContextInterface>({
@@ -39,6 +42,8 @@ export const AppContext = createContext<AppContextInterface>({
 
   minusDeckCardError: null,
   setMinusDeckCardError: () => {},
+  createDeckError: null,
+  setCreateDeckError: () => {},
 });
 
 export default function App() {
@@ -52,6 +57,9 @@ export default function App() {
     minusDeckCardError,
     setMinusDeckCardError,
   ] = useState<ApolloError | null>(null);
+  const [createDeckError, setCreateDeckError] = useState<ApolloError | null>(
+    null
+  );
 
   // componentDidMount
   useEffect(() => {
@@ -77,6 +85,8 @@ export default function App() {
         setPlusDeckCardError,
         minusDeckCardError,
         setMinusDeckCardError,
+        createDeckError,
+        setCreateDeckError,
       }}
     >
       <Navbar />
