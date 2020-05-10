@@ -133,7 +133,6 @@ export default function DeckArea() {
               <Fragment>
                 {[...Array(deckCard.count)].map(() => (
                   <Card
-                    selectedDeckId={selectedDeckId}
                     id={deckCard.card.id}
                     isInDeck
                     picture={deckCard.card.picture}

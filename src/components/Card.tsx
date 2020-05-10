@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Col, Card as RCard, CardImg } from 'reactstrap';
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 import * as ItemTypes from '../constants/item-types';
@@ -9,19 +9,22 @@ import {
 } from '../graphql/generated/graphql-client';
 import * as AreaTypes from '../constants/area-types';
 import * as ErrorMessages from '../constants/error-messages';
+import { AppContext } from './App';
 
 interface Props {
   id: string;
   picture: string;
   isInDeck?: boolean;
-  selectedDeckId?: string | null;
 }
 
-export default function Card({ id, picture, isInDeck, selectedDeckId }: Props) {
+export default function Card({ id, picture, isInDeck }: Props) {
+  const { selectedDeckId } = useContext(AppContext);
+
   const refetchDeckCardsQuery = {
     query: DeckCardsDocument,
     variables: { deckId: selectedDeckId },
   };
+
   const [plusDeckCard] = usePlusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
     onError: (error) => {
@@ -29,6 +32,7 @@ export default function Card({ id, picture, isInDeck, selectedDeckId }: Props) {
       }
     },
   });
+
   const [minusDeckCard] = useMinusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
     onError: () => {},
