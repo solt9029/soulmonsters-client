@@ -9,7 +9,7 @@ import Deck from '../pages/Deck';
 import PrivateRoute from './PrivateRoute';
 import User from '../models/User';
 import { auth } from 'firebase';
-import { ID_TOKEN } from '../constants/local-storage';
+import { ID_TOKEN } from '../constants/local-storage-keys';
 import Lockr from 'lockr';
 
 export interface AppContextInterface {

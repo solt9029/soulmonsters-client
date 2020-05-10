@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, RouteProps, Redirect } from 'react-router-dom';
-import { ID_TOKEN } from '../constants/local-storage';
+import { ID_TOKEN } from '../constants/local-storage-keys';
 import Lockr from 'lockr';
 
 export default function PrivateRoute(props: RouteProps) {

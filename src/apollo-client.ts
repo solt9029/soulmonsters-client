@@ -1,4 +1,4 @@
-import { ID_TOKEN } from './constants/local-storage';
+import { ID_TOKEN } from './constants/local-storage-keys';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
