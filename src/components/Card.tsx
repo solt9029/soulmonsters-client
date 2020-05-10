@@ -21,6 +21,7 @@ export default function Card({ id, picture, isInDeck }: Props) {
     selectedDeckId,
     setPlusDeckCardError,
     setMinusDeckCardError,
+    setDeckModal,
   } = useContext(AppContext);
 
   const refetchDeckCardsQuery = {
@@ -47,6 +48,10 @@ export default function Card({ id, picture, isInDeck }: Props) {
       setMinusDeckCardError(error);
     },
   });
+
+  const handleClick = () => {
+    setDeckModal({ isInDeck: isInDeck === true, picture, cardId: id });
+  };
 
   const type = isInDeck ? ItemTypes.DECK_CARD : ItemTypes.CARD;
 
@@ -77,7 +82,7 @@ export default function Card({ id, picture, isInDeck }: Props) {
       sm={4}
       xs={6}
     >
-      <RCard innerRef={drag[1]}>
+      <RCard onClick={handleClick} innerRef={drag[1]}>
         <CardImg src={picture} />
       </RCard>
     </Col>

@@ -13,6 +13,12 @@ import { ID_TOKEN } from '../constants/local-storage-keys';
 import Lockr from 'lockr';
 import { ApolloError } from 'apollo-client';
 
+export interface DeckModal {
+  isInDeck: boolean;
+  picture: string;
+  cardId: string;
+}
+
 export interface AppContextInterface {
   selectedDeckId: string | null;
   setSelectedDeckId: (value: string | null) => void;
@@ -28,6 +34,9 @@ export interface AppContextInterface {
 
   createDeckError: ApolloError | null;
   setCreateDeckError: (value: ApolloError | null) => void;
+
+  deckModal: DeckModal | null;
+  setDeckModal: (value: DeckModal | null) => void;
 }
 
 export const AppContext = createContext<AppContextInterface>({
@@ -42,8 +51,12 @@ export const AppContext = createContext<AppContextInterface>({
 
   minusDeckCardError: null,
   setMinusDeckCardError: () => {},
+
   createDeckError: null,
   setCreateDeckError: () => {},
+
+  deckModal: null,
+  setDeckModal: () => {},
 });
 
 export default function App() {
@@ -60,6 +73,7 @@ export default function App() {
   const [createDeckError, setCreateDeckError] = useState<ApolloError | null>(
     null
   );
+  const [deckModal, setDeckModal] = useState<DeckModal | null>(null);
 
   // componentDidMount
   useEffect(() => {
@@ -87,6 +101,8 @@ export default function App() {
         setMinusDeckCardError,
         createDeckError,
         setCreateDeckError,
+        deckModal,
+        setDeckModal,
       }}
     >
       <Navbar />

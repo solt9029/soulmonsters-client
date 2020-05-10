@@ -4,14 +4,18 @@ import CardArea from '../components/CardArea';
 import AreaWrapper from '../styled/AreaWrapper';
 import { DndProvider } from 'react-dnd';
 import Backend from 'react-dnd-html5-backend';
+import DeckModal from '../components/DeckModal';
 
 export default function Deck() {
   return (
-    <DndProvider backend={Backend}>
-      <AreaWrapper>
-        <DeckArea />
-        <CardArea />
-      </AreaWrapper>
-    </DndProvider>
+    <>
+      <DndProvider backend={Backend}>
+        <AreaWrapper>
+          <DeckArea />
+          <CardArea />
+        </AreaWrapper>
+      </DndProvider>
+      <DeckModal />
+    </>
   );
 }
