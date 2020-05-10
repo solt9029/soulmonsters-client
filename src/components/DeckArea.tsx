@@ -23,9 +23,12 @@ import { AppContext } from './App';
 import * as ErrorMessages from '../constants/error-messages';
 
 export default function DeckArea() {
-  const { selectedDeckId, setSelectedDeckId, plusDeckCardError } = useContext(
-    AppContext
-  );
+  const {
+    selectedDeckId,
+    setSelectedDeckId,
+    plusDeckCardError,
+    minusDeckCardError,
+  } = useContext(AppContext);
 
   const [fetchDeckCards, deckCardsQueryResult] = useDeckCardsLazyQuery();
 
@@ -136,10 +139,18 @@ export default function DeckArea() {
             plusDeckCardError.message !== ErrorMessages.MAX_COUNT && (
               <Col lg={12}>
                 <Alert color="danger">
-                  デッキへのカードの追加中にエラーが発生しました
+                  デッキへカードを追加する途中にエラーが発生しました
                 </Alert>
               </Col>
             )}
+
+          {minusDeckCardError !== null && (
+            <Col lg={12}>
+              <Alert color="danger">
+                デッキからカードを抜く途中にエラーが発生しました
+              </Alert>
+            </Col>
+          )}
 
           {deckCardsQueryResult.loading && (
             <Col style={{ marginBottom: '12px' }} lg={12}>

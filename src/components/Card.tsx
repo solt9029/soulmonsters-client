@@ -17,7 +17,11 @@ interface Props {
 }
 
 export default function Card({ id, picture, isInDeck }: Props) {
-  const { selectedDeckId, setPlusDeckCardError } = useContext(AppContext);
+  const {
+    selectedDeckId,
+    setPlusDeckCardError,
+    setMinusDeckCardError,
+  } = useContext(AppContext);
 
   const refetchDeckCardsQuery = {
     query: DeckCardsDocument,
@@ -36,7 +40,12 @@ export default function Card({ id, picture, isInDeck }: Props) {
 
   const [minusDeckCard] = useMinusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
-    onError: () => {},
+    onCompleted: () => {
+      setMinusDeckCardError(null);
+    },
+    onError: (error) => {
+      setMinusDeckCardError(error);
+    },
   });
 
   const type = isInDeck ? ItemTypes.DECK_CARD : ItemTypes.CARD;

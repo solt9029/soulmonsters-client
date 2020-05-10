@@ -22,15 +22,23 @@ export interface AppContextInterface {
 
   plusDeckCardError: ApolloError | null;
   setPlusDeckCardError: (value: ApolloError | null) => void;
+
+  minusDeckCardError: ApolloError | null;
+  setMinusDeckCardError: (value: ApolloError | null) => void;
 }
 
 export const AppContext = createContext<AppContextInterface>({
   selectedDeckId: null,
   setSelectedDeckId: () => {},
+
   user: new User(),
   setUser: () => {},
+
   plusDeckCardError: null,
   setPlusDeckCardError: () => {},
+
+  minusDeckCardError: null,
+  setMinusDeckCardError: () => {},
 });
 
 export default function App() {
@@ -39,6 +47,10 @@ export default function App() {
   const [
     plusDeckCardError,
     setPlusDeckCardError,
+  ] = useState<ApolloError | null>(null);
+  const [
+    minusDeckCardError,
+    setMinusDeckCardError,
   ] = useState<ApolloError | null>(null);
 
   // componentDidMount
@@ -63,6 +75,8 @@ export default function App() {
         setSelectedDeckId,
         plusDeckCardError,
         setPlusDeckCardError,
+        minusDeckCardError,
+        setMinusDeckCardError,
       }}
     >
       <Navbar />
