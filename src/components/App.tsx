@@ -11,12 +11,17 @@ import User from '../models/User';
 import { auth } from 'firebase';
 import { ID_TOKEN } from '../constants/local-storage-keys';
 import Lockr from 'lockr';
+import { ApolloError } from 'apollo-client';
 
 export interface AppContextInterface {
   selectedDeckId: string | null;
   setSelectedDeckId: (value: string | null) => void;
+
   user: User;
   setUser: (value: User) => void;
+
+  plusDeckCardError: ApolloError | null;
+  setPlusDeckCardError: (value: ApolloError | null) => void;
 }
 
 export const AppContext = createContext<AppContextInterface>({
@@ -24,11 +29,17 @@ export const AppContext = createContext<AppContextInterface>({
   setSelectedDeckId: () => {},
   user: new User(),
   setUser: () => {},
+  plusDeckCardError: null,
+  setPlusDeckCardError: () => {},
 });
 
 export default function App() {
   const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null);
   const [user, setUser] = useState<User>(new User());
+  const [
+    plusDeckCardError,
+    setPlusDeckCardError,
+  ] = useState<ApolloError | null>(null);
 
   // componentDidMount
   useEffect(() => {
@@ -45,7 +56,14 @@ export default function App() {
 
   return (
     <AppContext.Provider
-      value={{ user, setUser, selectedDeckId, setSelectedDeckId }}
+      value={{
+        user,
+        setUser,
+        selectedDeckId,
+        setSelectedDeckId,
+        plusDeckCardError,
+        setPlusDeckCardError,
+      }}
     >
       <Navbar />
       <Switch>

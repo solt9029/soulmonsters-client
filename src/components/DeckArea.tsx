@@ -4,9 +4,9 @@ import {
   FormGroup,
   Input,
   Button,
-  UncontrolledAlert,
   Row,
   Container,
+  Alert,
 } from 'reactstrap';
 import {
   useDecksQuery,
@@ -20,9 +20,12 @@ import { useDrop } from 'react-dnd';
 import * as ItemTypes from '../constants/item-types';
 import * as AreaTypes from '../constants/area-types';
 import { AppContext } from './App';
+import * as ErrorMessages from '../constants/error-messages';
 
 export default function DeckArea() {
-  const { selectedDeckId, setSelectedDeckId } = useContext(AppContext);
+  const { selectedDeckId, setSelectedDeckId, plusDeckCardError } = useContext(
+    AppContext
+  );
 
   const [fetchDeckCards, deckCardsQueryResult] = useDeckCardsLazyQuery();
 
@@ -70,14 +73,10 @@ export default function DeckArea() {
     <Area ref={drop} isActive={canDrop && isOver}>
       <Container style={{ marginTop: '12px' }}>
         {decksQueryResult.error !== undefined && (
-          <UncontrolledAlert color="danger">
-            デッキ情報の取得中にエラーが発生しました
-          </UncontrolledAlert>
+          <Alert color="danger">デッキ情報の取得中にエラーが発生しました</Alert>
         )}
         {createDeckResult.error !== undefined && (
-          <UncontrolledAlert color="danger">
-            デッキ情報の作成中にエラーが発生しました
-          </UncontrolledAlert>
+          <Alert color="danger">デッキ情報の作成中にエラーが発生しました</Alert>
         )}
         <FormGroup row>
           <Col sm={8}>
@@ -116,18 +115,38 @@ export default function DeckArea() {
           </Col>
         </FormGroup>
         <Row style={{ color: 'white' }}>
+          {deckCardsQueryResult.error !== undefined && (
+            <Col lg={12}>
+              <Alert color="danger">
+                デッキのカード情報の取得中にエラーが発生しました
+              </Alert>
+            </Col>
+          )}
+
+          {plusDeckCardError !== null &&
+            plusDeckCardError.message === ErrorMessages.MAX_COUNT && (
+              <Col lg={12}>
+                <Alert color="danger">
+                  同名カードはデッキに3枚までしか入れることができません
+                </Alert>
+              </Col>
+            )}
+
+          {plusDeckCardError !== null &&
+            plusDeckCardError.message !== ErrorMessages.MAX_COUNT && (
+              <Col lg={12}>
+                <Alert color="danger">
+                  デッキへのカードの追加中にエラーが発生しました
+                </Alert>
+              </Col>
+            )}
+
           {deckCardsQueryResult.loading && (
             <Col style={{ marginBottom: '12px' }} lg={12}>
               デッキのカード情報をロード中です
             </Col>
           )}
-          {deckCardsQueryResult.error !== undefined && (
-            <Col lg={12}>
-              <UncontrolledAlert color="danger">
-                デッキのカード情報の取得中にエラーが発生しました
-              </UncontrolledAlert>
-            </Col>
-          )}
+
           {deckCardsQueryResult.data?.deckCards.map((deckCard, index) => {
             return (
               <Fragment>

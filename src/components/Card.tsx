@@ -8,7 +8,6 @@ import {
   DeckCardsDocument,
 } from '../graphql/generated/graphql-client';
 import * as AreaTypes from '../constants/area-types';
-import * as ErrorMessages from '../constants/error-messages';
 import { AppContext } from './App';
 
 interface Props {
@@ -18,7 +17,7 @@ interface Props {
 }
 
 export default function Card({ id, picture, isInDeck }: Props) {
-  const { selectedDeckId } = useContext(AppContext);
+  const { selectedDeckId, setPlusDeckCardError } = useContext(AppContext);
 
   const refetchDeckCardsQuery = {
     query: DeckCardsDocument,
@@ -27,9 +26,11 @@ export default function Card({ id, picture, isInDeck }: Props) {
 
   const [plusDeckCard] = usePlusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
+    onCompleted: () => {
+      setPlusDeckCardError(null);
+    },
     onError: (error) => {
-      if (error.message === ErrorMessages.MAX_COUNT) {
-      }
+      setPlusDeckCardError(error);
     },
   });
 

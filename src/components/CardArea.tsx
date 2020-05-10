@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, UncontrolledAlert, Container } from 'reactstrap';
+import { Row, Col, Container, Alert } from 'reactstrap';
 import Card from '../components/Card';
 import { useCardsQuery } from '../graphql/generated/graphql-client';
 import Area from '../styled/Area';
@@ -30,9 +30,9 @@ export default function CardArea() {
           )}
           {error !== undefined && (
             <Col lg={12}>
-              <UncontrolledAlert color="danger">
+              <Alert color="danger">
                 カード情報の取得中にエラーが発生しました
-              </UncontrolledAlert>
+              </Alert>
             </Col>
           )}
           {data?.cards.map((card, index) => (
