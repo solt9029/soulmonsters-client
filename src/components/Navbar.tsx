@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { NavLink as RRDNavLink, RouteComponentProps } from 'react-router-dom';
+import { NavLink as RRDNavLink, useLocation } from 'react-router-dom';
 import {
   Collapse,
   Navbar as RNavbar,
@@ -15,8 +15,9 @@ import {
   DropdownMenu,
   DropdownItem,
 } from 'reactstrap';
-import { UserInterface } from '../models/User';
 import { Link } from 'react-router-dom';
+import { AppContext } from './App';
+import { auth } from 'firebase';
 
 const ServiceLogo = styled(NavbarBrand)`
   background: url('/images/icon.png') no-repeat left center;
@@ -54,13 +55,9 @@ const StyledCollapse = styled(Collapse)`
   margin-bottom: 5px;
 `;
 
-interface Props extends RouteComponentProps {
-  user?: UserInterface;
-  startLogin?: () => void;
-  startLogout?: () => void;
-}
-
-export default function Navbar(props: Props) {
+export default function Navbar() {
+  const location = useLocation();
+  const { user, setUser } = useContext(AppContext);
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -75,30 +72,42 @@ export default function Navbar(props: Props) {
   useEffect(() => {
     setIsCollapseOpen(false);
     setIsDropdownOpen(false);
-  }, [props.location.pathname]);
+  }, [location.pathname]);
 
-  const startLogout = () => {
-    props.startLogout !== undefined && props.startLogout();
+  const logout = async () => {
+    setUser(user.startLoading());
+    try {
+      await auth().signOut();
+      setUser(user.doneLogout());
+    } catch (error) {
+      setUser(user.failedLogout(error));
+    }
   };
 
-  const startLogin = () => {
-    props.startLogin !== undefined && props.startLogin();
+  const login = async () => {
+    setUser(user.startLoading());
+    try {
+      const data = await auth().signInWithPopup(new auth.TwitterAuthProvider());
+      if (data.user === null) {
+        throw new Error();
+      }
+      setUser(user.doneLogin(data.user));
+    } catch (error) {
+      setUser(user.failedLogin(error));
+    }
   };
 
   return (
     <RNavbar className="py-0" color="light" light expand="md">
       <Container>
-        <ServiceLogo
-          tag={Link}
-          to={props.user?.data === null ? '/' : '/deck'}
-        />
-        <NavbarBrand tag={Link} to={props.user?.data === null ? '/' : '/deck'}>
+        <ServiceLogo tag={Link} to={user?.data === null ? '/' : '/deck'} />
+        <NavbarBrand tag={Link} to={user?.data === null ? '/' : '/deck'}>
           <Brand>ソウルモンスターズ</Brand>
         </NavbarBrand>
         <NavbarToggler onClick={toggleCollapse} className="my-2" />
         <StyledCollapse isOpen={isCollapseOpen} navbar>
           <Nav className="mr-auto" navbar>
-            {props.user?.data !== null && (
+            {user?.data !== null && (
               <React.Fragment>
                 <StyledNavLink tag={RRDNavLink} exact to="/deck">
                   デッキ構築
@@ -118,20 +127,18 @@ export default function Navbar(props: Props) {
           </Nav>
           <Nav>
             {(() => {
-              if (props.user?.data === null) {
+              if (user?.data === null) {
                 return (
-                  <Button color="info" onClick={startLogin}>
+                  <Button color="info" onClick={login}>
                     ログイン
                   </Button>
                 );
               }
               return (
                 <Dropdown isOpen={isDropdownOpen} toggle={toggleDropdown}>
-                  <UserLogo picture={props.user?.data?.photoURL} />
+                  <UserLogo picture={user?.data?.photoURL} />
                   <DropdownMenu>
-                    <DropdownItem onClick={startLogout}>
-                      ログアウト
-                    </DropdownItem>
+                    <DropdownItem onClick={logout}>ログアウト</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               );

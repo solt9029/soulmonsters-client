@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Row, Col, UncontrolledAlert, Container } from 'reactstrap';
 import Card from '../components/Card';
 import { useCardsQuery } from '../graphql/generated/graphql-client';
@@ -6,12 +6,11 @@ import Area from '../styled/Area';
 import * as AreaTypes from '../constants/area-types';
 import * as ItemTypes from '../constants/item-types';
 import { useDrop } from 'react-dnd';
+import { AppContext } from './App';
 
-interface Props {
-  selectedDeckId: string | null;
-}
+export default function CardArea() {
+  const { selectedDeckId } = useContext(AppContext);
 
-export default function CardArea({ selectedDeckId }: Props) {
   const { data, error, loading } = useCardsQuery();
 
   const [{ canDrop, isOver }, drop] = useDrop({

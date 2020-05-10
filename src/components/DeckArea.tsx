@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, Fragment } from 'react';
+import React, { useState, ChangeEvent, Fragment, useContext } from 'react';
 import {
   Col,
   FormGroup,
@@ -19,13 +19,11 @@ import Area from '../styled/Area';
 import { useDrop } from 'react-dnd';
 import * as ItemTypes from '../constants/item-types';
 import * as AreaTypes from '../constants/area-types';
+import { AppContext } from './App';
 
-interface Props {
-  setSelectedDeckId: (selectedDeckId: string | null) => void;
-  selectedDeckId: string | null;
-}
+export default function DeckArea() {
+  const { selectedDeckId, setSelectedDeckId } = useContext(AppContext);
 
-export default function DeckArea({ selectedDeckId, setSelectedDeckId }: Props) {
   const [fetchDeckCards, deckCardsQueryResult] = useDeckCardsLazyQuery();
 
   const decksQueryResult = useDecksQuery({

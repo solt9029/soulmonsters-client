@@ -1,18 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './containers/App';
+import App from './components/App';
 import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux';
-import store, { history } from './store';
-import { ConnectedRouter } from 'connected-react-router';
-import firebase, { initializeApp } from 'firebase';
-import { persistStore } from 'redux-persist';
-import { PersistGate } from 'redux-persist/integration/react';
+import { initializeApp } from 'firebase';
 import { ApolloProvider } from 'react-apollo';
-import Lockr from 'lockr';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import apolloClient from './apollo-client';
-import { ID_TOKEN } from './constants/local-storage';
+import { BrowserRouter } from 'react-router-dom';
 
 const {
   REACT_APP_FIREBASE_API_KEY,
@@ -36,24 +30,11 @@ initializeApp({
   measurementId: REACT_APP_FIREBASE_MEASUREMENT_ID,
 });
 
-firebase.auth().onAuthStateChanged(async (user) => {
-  if (user) {
-    const idToken = await user.getIdToken(true);
-    Lockr.set(ID_TOKEN, idToken);
-    return;
-  }
-  Lockr.rm(ID_TOKEN);
-});
-
 ReactDOM.render(
   <ApolloProvider client={apolloClient}>
-    <Provider store={store}>
-      <PersistGate persistor={persistStore(store)}>
-        <ConnectedRouter history={history}>
-          <App />
-        </ConnectedRouter>
-      </PersistGate>
-    </Provider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </ApolloProvider>,
   document.getElementById('root')
 );

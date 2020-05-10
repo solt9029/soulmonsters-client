@@ -1,13 +1,10 @@
 import React from 'react';
 import { Route, RouteProps, Redirect } from 'react-router-dom';
-import { UserInterface } from '../models/User';
+import { ID_TOKEN } from '../constants/local-storage';
+import Lockr from 'lockr';
 
-interface Props extends RouteProps {
-  user: UserInterface;
-}
-
-export default function PrivateRoute({ user, ...props }: Props) {
-  if (user.data === null) {
+export default function PrivateRoute(props: RouteProps) {
+  if (Lockr.get(ID_TOKEN) === undefined) {
     return <Route {...props} component={() => <Redirect to="/" />} />;
   }
   return <Route {...props} />;
