@@ -45,8 +45,9 @@ export default function DeckArea() {
   });
 
   const handleDeckSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
-    fetchDeckCards({ variables: { deckId: event.target.value } });
-    setSelectedDeckId(event.target.value);
+    const deckId = parseInt(event.target.value);
+    fetchDeckCards({ variables: { deckId } });
+    setSelectedDeckId(deckId);
   };
 
   return (

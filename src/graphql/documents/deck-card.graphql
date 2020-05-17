@@ -1,4 +1,4 @@
-query deckCards($deckId: String!) {
+query deckCards($deckId: Int!) {
   deckCards(deckId: $deckId) {
     id
     count
@@ -8,14 +8,14 @@ query deckCards($deckId: String!) {
   }
 }
 
-mutation plusDeckCard($deckId: String!, $cardId: String!) {
+mutation plusDeckCard($deckId: Int!, $cardId: Int!) {
   plusDeckCard(data: { deckId: $deckId, cardId: $cardId }) {
     id
     count
   }
 }
 
-mutation minusDeckCard($deckId: String!, $cardId: String!) {
+mutation minusDeckCard($deckId: Int!, $cardId: Int!) {
   minusDeckCard(data: { deckId: $deckId, cardId: $cardId }) {
     id
     count

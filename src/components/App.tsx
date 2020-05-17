@@ -16,12 +16,12 @@ import { ApolloError } from 'apollo-client';
 export interface DeckModal {
   isInDeck: boolean;
   picture: string;
-  cardId: string;
+  cardId: number;
 }
 
 export interface AppContextInterface {
-  selectedDeckId: string | null;
-  setSelectedDeckId: (value: string | null) => void;
+  selectedDeckId: number | null;
+  setSelectedDeckId: (value: number | null) => void;
 
   user: User;
   setUser: (value: User) => void;
@@ -60,7 +60,7 @@ export const AppContext = createContext<AppContextInterface>({
 });
 
 export default function App() {
-  const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null);
+  const [selectedDeckId, setSelectedDeckId] = useState<number | null>(null);
   const [user, setUser] = useState<User>(new User());
   const [
     plusDeckCardError,

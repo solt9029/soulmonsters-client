@@ -11,7 +11,7 @@ import * as AreaTypes from '../constants/area-types';
 import { AppContext } from './App';
 
 interface Props {
-  id: string;
+  id: number;
   picture: string;
   isInDeck?: boolean;
 }
