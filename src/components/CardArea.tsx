@@ -20,6 +20,10 @@ const StyledCol = styled(Col)`
   margin-bottom: 12px;
 `;
 
+const StyledCardCol = styled(StyledCol)`
+  padding: 0px 6px;
+`;
+
 export default function CardArea() {
   const { data, error, loading } = useCardsQuery();
 
@@ -45,7 +49,9 @@ export default function CardArea() {
             </Col>
           )}
           {data?.cards.map((card, index) => (
-            <Card id={card.id} picture={card.picture}></Card>
+            <StyledCardCol lg={2} md={3} sm={4} xs={6}>
+              <Card id={card.id} picture={card.picture}></Card>
+            </StyledCardCol>
           ))}
         </StyledRow>
       </StyledContainer>

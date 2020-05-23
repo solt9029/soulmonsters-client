@@ -81,10 +81,8 @@ export default function Card({ id, picture, isInDeck }: Props) {
   });
 
   return (
-    <StyledCol lg={2} md={3} sm={4} xs={6}>
-      <RCard onClick={handleClick} innerRef={drag[1]}>
-        <CardImg src={picture} />
-      </RCard>
-    </StyledCol>
+    <RCard onClick={handleClick} innerRef={drag[1]}>
+      <CardImg src={picture} />
+    </RCard>
   );
 }
