@@ -5,6 +5,11 @@ import {
   DecksDocument,
 } from '../graphql/generated/graphql-client';
 import { AppContext } from './App';
+import styled from 'styled-components';
+
+const StyledButton = styled(Button)`
+  width: 100%;
+`;
 
 export default function CreateDeckInput() {
   const { setCreateDeckError } = useContext(AppContext);
@@ -41,9 +46,13 @@ export default function CreateDeckInput() {
         />
       </Col>
       <Col sm={4}>
-        <Button style={{ width: '100%' }} color="success" onClick={handleClick}>
+        <StyledButton
+          style={{ width: '100%' }}
+          color="success"
+          onClick={handleClick}
+        >
           作成
-        </Button>
+        </StyledButton>
       </Col>
     </FormGroup>
   );

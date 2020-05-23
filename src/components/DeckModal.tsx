@@ -6,6 +6,11 @@ import {
   usePlusDeckCardMutation,
   useMinusDeckCardMutation,
 } from '../graphql/generated/graphql-client';
+import styled from 'styled-components';
+
+const Img = styled.img`
+  width: 100%;
+`;
 
 export default function DeckModal() {
   const {
@@ -63,7 +68,7 @@ export default function DeckModal() {
     <Modal isOpen={deckModal !== null} toggle={closeModal}>
       <ModalHeader toggle={closeModal}>カード詳細情報</ModalHeader>
       <ModalBody>
-        <img alt="modal" width="100%" src={deckModal?.picture} />
+        <Img alt="modal" width="100%" src={deckModal?.picture} />
       </ModalBody>
       <ModalFooter>
         {deckModal?.isInDeck ? (

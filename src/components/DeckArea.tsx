@@ -12,6 +12,19 @@ import * as AreaTypes from '../constants/area-types';
 import { AppContext } from './App';
 import * as ErrorMessages from '../constants/error-messages';
 import CreateDeckInput from './CreateDeckInput';
+import styled from 'styled-components';
+
+const StyledContainer = styled(Container)`
+  margin-top: 12px;
+`;
+
+const StyledCol = styled(Col)`
+  margin-bottom: 12px;
+`;
+
+const StyledRow = styled(Row)`
+  color: white;
+`;
 
 export default function DeckArea() {
   const {
@@ -52,7 +65,7 @@ export default function DeckArea() {
 
   return (
     <Area ref={drop} isActive={canDrop && isOver}>
-      <Container style={{ marginTop: '12px' }}>
+      <StyledContainer>
         {decksQueryResult.error !== undefined && (
           <Alert color="danger">デッキ情報の取得中にエラーが発生しました</Alert>
         )}
@@ -76,7 +89,7 @@ export default function DeckArea() {
             </Input>
           </Col>
         </FormGroup>
-        <Row style={{ color: 'white' }}>
+        <StyledRow>
           {deckCardsQueryResult.error !== undefined && (
             <Col lg={12}>
               <Alert color="danger">
@@ -112,9 +125,7 @@ export default function DeckArea() {
           )}
 
           {deckCardsQueryResult.loading && (
-            <Col style={{ marginBottom: '12px' }} lg={12}>
-              デッキのカード情報をロード中です
-            </Col>
+            <StyledCol lg={12}>デッキのカード情報をロード中です</StyledCol>
           )}
 
           {deckCardsQueryResult.data?.deckCards.map((deckCard, index) => {
@@ -130,8 +141,8 @@ export default function DeckArea() {
               </Fragment>
             );
           })}
-        </Row>
-      </Container>
+        </StyledRow>
+      </StyledContainer>
     </Area>
   );
 }

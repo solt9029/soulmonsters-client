@@ -9,6 +9,12 @@ import {
 } from '../graphql/generated/graphql-client';
 import * as AreaTypes from '../constants/area-types';
 import { AppContext } from './App';
+import styled from 'styled-components';
+
+const StyledCol = styled(Col)`
+  margin-bottom: 12px;
+  padding: 0px 6px;
+`;
 
 interface Props {
   id: number;
@@ -75,16 +81,10 @@ export default function Card({ id, picture, isInDeck }: Props) {
   });
 
   return (
-    <Col
-      style={{ marginBottom: '12px', padding: '0px 6px' }}
-      lg={2}
-      md={3}
-      sm={4}
-      xs={6}
-    >
+    <StyledCol lg={2} md={3} sm={4} xs={6}>
       <RCard onClick={handleClick} innerRef={drag[1]}>
         <CardImg src={picture} />
       </RCard>
-    </Col>
+    </StyledCol>
   );
 }

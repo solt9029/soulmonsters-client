@@ -6,6 +6,19 @@ import Area from '../styled/Area';
 import * as AreaTypes from '../constants/area-types';
 import * as ItemTypes from '../constants/item-types';
 import { useDrop } from 'react-dnd';
+import styled from 'styled-components';
+
+const StyledContainer = styled(Container)`
+  margin-top: 12px;
+`;
+
+const StyledRow = styled(Row)`
+  color: white;
+`;
+
+const StyledCol = styled(Col)`
+  margin-bottom: 12px;
+`;
 
 export default function CardArea() {
   const { data, error, loading } = useCardsQuery();
@@ -21,13 +34,9 @@ export default function CardArea() {
 
   return (
     <Area ref={drop} isActive={canDrop && isOver} isRight>
-      <Container style={{ marginTop: '12px' }}>
-        <Row style={{ color: 'white' }}>
-          {loading && (
-            <Col style={{ marginBottom: '12px' }} lg={12}>
-              カード情報をロード中です
-            </Col>
-          )}
+      <StyledContainer>
+        <StyledRow>
+          {loading && <StyledCol lg={12}>カード情報をロード中です</StyledCol>}
           {error !== undefined && (
             <Col lg={12}>
               <Alert color="danger">
@@ -38,8 +47,8 @@ export default function CardArea() {
           {data?.cards.map((card, index) => (
             <Card id={card.id} picture={card.picture}></Card>
           ))}
-        </Row>
-      </Container>
+        </StyledRow>
+      </StyledContainer>
     </Area>
   );
 }
