@@ -68,7 +68,7 @@ export default function DeckModal() {
     <Modal isOpen={deckModal !== null} toggle={closeModal}>
       <ModalHeader toggle={closeModal}>カード詳細情報</ModalHeader>
       <ModalBody>
-        <Img alt="modal" width="100%" src={deckModal?.picture} />
+        <Img alt="modal" src={deckModal?.picture} />
       </ModalBody>
       <ModalFooter>
         {deckModal?.isInDeck ? (
