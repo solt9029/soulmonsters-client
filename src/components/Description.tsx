@@ -29,11 +29,6 @@ export default function Description() {
       <StyledRow top={100}>
         <CardList />
       </StyledRow>
-      <StyledRow>
-        <Col xs={12}>
-          <h2>さあ、始めよう。ソウルモンスターズ。</h2>
-        </Col>
-      </StyledRow>
     </StyledContainer>
   );
 }
