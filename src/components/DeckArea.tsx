@@ -22,6 +22,10 @@ const StyledCol = styled(Col)`
   margin-bottom: 12px;
 `;
 
+const StyledCardCol = styled(StyledCol)`
+  padding: 0px 6px;
+`;
+
 const StyledRow = styled(Row)`
   color: white;
 `;
@@ -132,11 +136,13 @@ export default function DeckArea() {
             return (
               <Fragment>
                 {[...Array(deckCard.count)].map(() => (
-                  <Card
-                    id={deckCard.card.id}
-                    isInDeck
-                    picture={deckCard.card.picture}
-                  ></Card>
+                  <StyledCardCol lg={2} md={3} sm={4} xs={6}>
+                    <Card
+                      id={deckCard.card.id}
+                      isInDeck
+                      picture={deckCard.card.picture}
+                    ></Card>
+                  </StyledCardCol>
                 ))}
               </Fragment>
             );
