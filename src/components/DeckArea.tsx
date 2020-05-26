@@ -1,5 +1,5 @@
 import React, { ChangeEvent, Fragment, useContext } from 'react';
-import { Col, FormGroup, Input, Row, Container, Alert } from 'reactstrap';
+import { FormGroup, Input, Row, Alert } from 'reactstrap';
 import {
   useDecksQuery,
   useDeckCardsLazyQuery,
@@ -13,18 +13,7 @@ import { AppContext } from './App';
 import * as ErrorMessages from '../constants/error-messages';
 import CreateDeckInput from './CreateDeckInput';
 import styled from 'styled-components';
-
-const StyledContainer = styled(Container)`
-  margin-top: 12px;
-`;
-
-const StyledCol = styled(Col)`
-  margin-bottom: 12px;
-`;
-
-const StyledCardCol = styled(StyledCol)`
-  padding: 0px 6px;
-`;
+import { Container, Col } from '../styled/reactstrap';
 
 const StyledRow = styled(Row)`
   color: white;
@@ -69,7 +58,7 @@ export default function DeckArea() {
 
   return (
     <Area ref={drop} isActive={canDrop && isOver}>
-      <StyledContainer>
+      <Container marginTop={12}>
         {decksQueryResult.error !== undefined && (
           <Alert color="danger">デッキ情報の取得中にエラーが発生しました</Alert>
         )}
@@ -129,26 +118,36 @@ export default function DeckArea() {
           )}
 
           {deckCardsQueryResult.loading && (
-            <StyledCol lg={12}>デッキのカード情報をロード中です</StyledCol>
+            <Col marginBottom={12} lg={12}>
+              デッキのカード情報をロード中です
+            </Col>
           )}
 
           {deckCardsQueryResult.data?.deckCards.map((deckCard, index) => {
             return (
               <Fragment>
                 {[...Array(deckCard.count)].map(() => (
-                  <StyledCardCol lg={2} md={3} sm={4} xs={6}>
+                  <Col
+                    marginBottom={12}
+                    paddingLeft={6}
+                    paddingRight={6}
+                    lg={2}
+                    md={3}
+                    sm={4}
+                    xs={6}
+                  >
                     <Card
                       id={deckCard.card.id}
                       isInDeck
                       picture={deckCard.card.picture}
                     ></Card>
-                  </StyledCardCol>
+                  </Col>
                 ))}
               </Fragment>
             );
           })}
         </StyledRow>
-      </StyledContainer>
+      </Container>
     </Area>
   );
 }
