@@ -5,10 +5,10 @@ import Footer from '../components/Footer';
 
 export default function Index() {
   return (
-    <div>
+    <>
       <Jumbotron />
       <Description />
       <Footer />
-    </div>
+    </>
   );
 }
