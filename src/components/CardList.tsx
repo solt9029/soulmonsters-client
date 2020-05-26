@@ -1,10 +1,6 @@
 import React from 'react';
-import { Row, Col, Container, Card, CardImg } from 'reactstrap';
-import styled from 'styled-components';
-
-const StyledCol = styled(Col)`
-  margin-bottom: 30px;
-`;
+import { Row, Container, Card, CardImg } from 'reactstrap';
+import { Col } from '../styled/reactstrap';
 
 const pictures = [
   'https://lh3.googleusercontent.com/k23uZNlje2ER4DxaHKr_HSnd0slrRQHXk8BfhO2umxfzHUm0WiHZdXI71momtKrl9BkSIAjElb0HehDdzv98uCQxAUCJ84iyB5zTpuINGzL7-bpo-jvj1z3iiJ4pP-VQkC8o5PXBQlhFhSaCpMfHxLBzIJyTvBYz76BwsKvtRgFXqkHYMy901rK7E_xkLsF1_fXq0Cy51fVUZvIT9grXLQz3r1y_Ma9CigYPJWlt63gWTfM_yZSlqxXwflSMV9_r98EpZjtqwN-2hnYnWI29sOl62VjQiw__08vWxHz3Cj-5Tr5ioZbRxcyRcPZfRtC_l9OoCBiR2QrzRBJbQy7ieF7hcinSBk53vrXTLfPf-B1fSd7KzKl71O9k-9xcilNhzcc4xniIiHal5M8gl-nqV3EP7ytxfEMsFw03eyjd9O3RSVne0JBeb2oEyONqz0EPmrcau17hxz-piPpFozs8gw2mLOHvaG7CUuC1WWQqnp68vCTi5PRjYQWyIEIwZTuVhuQXMXuzuLpK9L76t-OwA4k5nUyubtrXRzzL1Zg0HVD3Z6fjw4c03DZ5wHlIG0CMN-lhCaJbe_8BB0rm9NQW1WjMpORz_xJfPtB-WPWAYt8uyheJ62ISEoNwUEed85KFys06j5K0lewrLXKyJyriRkSabyMnhRw9BoMScamRNhJVzMVB35NHF5hxsX9HUC1T4rImFTuzfHHM1YuttSe8fW-f5i7hYqcHOHvssBv39c_StQ0I6qJ3EZI=w500-h715-no',
@@ -22,11 +18,11 @@ export default function CardList() {
     <Container>
       <Row>
         {pictures.map((picture) => (
-          <StyledCol lg={3} md={4} sm={6} xs={6}>
+          <Col marginBottom={30} lg={3} md={4} sm={6} xs={6}>
             <Card>
               <CardImg src={picture} />
             </Card>
-          </StyledCol>
+          </Col>
         ))}
       </Row>
     </Container>
