@@ -1,7 +1,8 @@
 import React from 'react';
-import { Container, Row, ListGroup, ListGroupItem, Col } from 'reactstrap';
+import { ListGroup, ListGroupItem, Col } from 'reactstrap';
 import styled from 'styled-components';
 import Footer from '../components/Footer';
+import { Row, Container } from '../styled/reactstrap';
 
 const Title = styled.h3`
   margin-left: 12px;
@@ -15,19 +16,11 @@ const Description = styled.div`
   margin-left: 12px;
 `;
 
-const StyledContainer = styled(Container)`
-  margin-top: 12px;
-`;
-
-const Block = styled(Row)`
-  margin-bottom: 50px;
-`;
-
 export default function Rule() {
   return (
     <>
-      <StyledContainer>
-        <Block>
+      <Container marginTop={12}>
+        <Row marginBottom={50}>
           <Col lg={12}>
             <Title>カードの種類</Title>
           </Col>
@@ -39,9 +32,9 @@ export default function Rule() {
               <ListGroupItem>ブロックカード</ListGroupItem>
             </ListGroup>
           </Col>
-        </Block>
+        </Row>
 
-        <Block>
+        <Row marginBottom={50}>
           <Col lg={12}>
             <Title>ゾーンの種類</Title>
           </Col>
@@ -96,9 +89,9 @@ export default function Rule() {
               </ul>
             </Description>
           </Col>
-        </Block>
+        </Row>
 
-        <Block>
+        <Row marginBottom={50}>
           <Col lg={12}>
             <Title>ターンの流れ</Title>
           </Col>
@@ -191,9 +184,9 @@ export default function Rule() {
               </ul>
             </Description>
           </Col>
-        </Block>
+        </Row>
 
-        <Block>
+        <Row marginBottom={50}>
           <Col lg={12}>
             <Title>ルール</Title>
           </Col>
@@ -216,8 +209,8 @@ export default function Rule() {
               </li>
             </ul>
           </Col>
-        </Block>
-      </StyledContainer>
+        </Row>
+      </Container>
       <Footer />
     </>
   );
