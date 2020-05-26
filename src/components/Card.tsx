@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Col, Card as RCard, CardImg } from 'reactstrap';
+import { Card as RCard, CardImg } from 'reactstrap';
 import { useDrag, DragSourceMonitor } from 'react-dnd';
 import * as ItemTypes from '../constants/item-types';
 import {
@@ -9,12 +9,6 @@ import {
 } from '../graphql/generated/graphql-client';
 import * as AreaTypes from '../constants/area-types';
 import { AppContext } from './App';
-import styled from 'styled-components';
-
-const StyledCol = styled(Col)`
-  margin-bottom: 12px;
-  padding: 0px 6px;
-`;
 
 interface Props {
   id: number;
