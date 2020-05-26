@@ -1,13 +1,13 @@
 import React from 'react';
 import { Row, Alert } from 'reactstrap';
-import Card from '../components/Card';
-import { useCardsQuery } from '../graphql/generated/graphql-client';
-import Area from '../styled/Area';
-import * as AreaTypes from '../constants/area-types';
-import * as ItemTypes from '../constants/item-types';
+import Card from './Card';
+import { useCardsQuery } from '../../graphql/generated/graphql-client';
+import Area from '../../styled/Area';
+import * as AreaTypes from '../../constants/area-types';
+import * as ItemTypes from '../../constants/item-types';
 import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
-import { Container, Col } from '../styled/reactstrap';
+import { Container, Col } from '../../styled/reactstrap';
 
 const StyledRow = styled(Row)`
   color: white;

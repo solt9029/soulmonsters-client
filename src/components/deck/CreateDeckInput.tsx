@@ -3,8 +3,8 @@ import { Col, FormGroup, Input, Button } from 'reactstrap';
 import {
   useCreateDeckMutation,
   DecksDocument,
-} from '../graphql/generated/graphql-client';
-import { AppContext } from './App';
+} from '../../graphql/generated/graphql-client';
+import { AppContext } from '../App';
 import styled from 'styled-components';
 
 const StyledButton = styled(Button)`

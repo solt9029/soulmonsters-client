@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { AppContext } from './App';
+import { AppContext } from '../App';
 import {
   DeckCardsDocument,
   usePlusDeckCardMutation,
   useMinusDeckCardMutation,
-} from '../graphql/generated/graphql-client';
+} from '../../graphql/generated/graphql-client';
 import styled from 'styled-components';
 
 const Img = styled.img`

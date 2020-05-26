@@ -3,17 +3,17 @@ import { FormGroup, Input, Row, Alert } from 'reactstrap';
 import {
   useDecksQuery,
   useDeckCardsLazyQuery,
-} from '../graphql/generated/graphql-client';
+} from '../../graphql/generated/graphql-client';
 import Card from './Card';
-import Area from '../styled/Area';
+import Area from '../../styled/Area';
 import { useDrop } from 'react-dnd';
-import * as ItemTypes from '../constants/item-types';
-import * as AreaTypes from '../constants/area-types';
-import { AppContext } from './App';
-import * as ErrorMessages from '../constants/error-messages';
+import * as ItemTypes from '../../constants/item-types';
+import * as AreaTypes from '../../constants/area-types';
+import { AppContext } from '../App';
+import * as ErrorMessages from '../../constants/error-messages';
 import CreateDeckInput from './CreateDeckInput';
 import styled from 'styled-components';
-import { Container, Col } from '../styled/reactstrap';
+import { Container, Col } from '../../styled/reactstrap';
 
 const StyledRow = styled(Row)`
   color: white;

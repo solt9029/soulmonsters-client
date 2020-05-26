@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Jumbotron as RJumbotron, Container, Button } from 'reactstrap';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { AppContext } from './App';
+import { AppContext } from '../App';
 import { auth } from 'firebase';
 
 const StyledJumbotron = styled(RJumbotron)`

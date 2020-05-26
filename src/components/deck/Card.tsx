@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { Card as RCard, CardImg } from 'reactstrap';
 import { useDrag, DragSourceMonitor } from 'react-dnd';
-import * as ItemTypes from '../constants/item-types';
+import * as ItemTypes from '../../constants/item-types';
 import {
   usePlusDeckCardMutation,
   useMinusDeckCardMutation,
   DeckCardsDocument,
-} from '../graphql/generated/graphql-client';
-import * as AreaTypes from '../constants/area-types';
-import { AppContext } from './App';
+} from '../../graphql/generated/graphql-client';
+import * as AreaTypes from '../../constants/area-types';
+import { AppContext } from '../App';
 
 interface Props {
   id: number;

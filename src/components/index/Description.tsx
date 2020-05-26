@@ -3,7 +3,7 @@ import { Col } from 'reactstrap';
 import { Container } from 'reactstrap';
 import styled from 'styled-components';
 import CardList from './CardList';
-import { Row } from '../styled/reactstrap';
+import { Row } from '../../styled/reactstrap';
 
 const StyledContainer = styled(Container)`
   text-align: center;
