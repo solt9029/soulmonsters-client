@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Jumbotron as RJumbotron, Container, Button } from 'reactstrap';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { AppContext } from './App';
+import { auth } from 'firebase';
 
 const StyledJumbotron = styled(RJumbotron)`
   background: linear-gradient(
@@ -34,15 +36,36 @@ const ButtonText = styled.span`
 `;
 
 export default function Jumbotron() {
+  const { user, setUser } = useContext(AppContext);
+
+  const login = async () => {
+    setUser(user.startLoading());
+    try {
+      const data = await auth().signInWithPopup(new auth.TwitterAuthProvider());
+      if (data.user === null) {
+        throw new Error();
+      }
+      setUser(user.doneLogin(data.user));
+    } catch (error) {
+      setUser(user.failedLogin(error));
+    }
+  };
+
   return (
     <StyledJumbotron>
       <Container>
         <Title>ソウルモンスターズ</Title>
-        <StyledButton color="info" size="lg" tag={Link} to="/scores/new">
-          <ButtonText>Twitterログイン</ButtonText>
-        </StyledButton>
-        <StyledButton color="warning" size="lg" tag={Link} to="/scores">
-          <ButtonText>ルールを確認</ButtonText>
+        {user.data === null ? (
+          <StyledButton color="info" size="lg" onClick={login}>
+            <ButtonText>Twitterログイン</ButtonText>
+          </StyledButton>
+        ) : (
+          <StyledButton color="info" size="lg" tag={Link} to="/deck">
+            <ButtonText>デッキ構築</ButtonText>
+          </StyledButton>
+        )}
+        <StyledButton color="warning" size="lg" tag={Link} to="/rule">
+          <ButtonText>ルール確認</ButtonText>
         </StyledButton>
       </Container>
     </StyledJumbotron>

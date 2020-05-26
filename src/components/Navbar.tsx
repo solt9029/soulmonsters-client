@@ -100,8 +100,8 @@ export default function Navbar() {
   return (
     <RNavbar className="py-0" color="light" light expand="md">
       <Container>
-        <ServiceLogo tag={Link} to={user?.data === null ? '/' : '/deck'} />
-        <NavbarBrand tag={Link} to={user?.data === null ? '/' : '/deck'}>
+        <ServiceLogo tag={Link} to="/" />
+        <NavbarBrand tag={Link} to="/">
           <Brand>ソウルモンスターズ</Brand>
         </NavbarBrand>
         <NavbarToggler onClick={toggleCollapse} className="my-2" />
