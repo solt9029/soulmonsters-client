@@ -12,6 +12,7 @@ import { auth } from 'firebase';
 import { ID_TOKEN } from '../constants/local-storage-keys';
 import Lockr from 'lockr';
 import { ApolloError } from 'apollo-client';
+import Game from '../pages/Game';
 
 export interface DeckModal {
   isInDeck: boolean;
@@ -22,6 +23,9 @@ export interface DeckModal {
 export interface AppContextInterface {
   selectedDeckId: number | null;
   setSelectedDeckId: (value: number | null) => void;
+
+  activeGameId: number | null;
+  setActiveGameId: (value: number | null) => void;
 
   user: User;
   setUser: (value: User) => void;
@@ -43,6 +47,9 @@ export const AppContext = createContext<AppContextInterface>({
   selectedDeckId: null,
   setSelectedDeckId: () => {},
 
+  activeGameId: null,
+  setActiveGameId: () => {},
+
   user: new User(),
   setUser: () => {},
 
@@ -61,6 +68,7 @@ export const AppContext = createContext<AppContextInterface>({
 
 export default function App() {
   const [selectedDeckId, setSelectedDeckId] = useState<number | null>(null);
+  const [activeGameId, setActiveGameId] = useState<number | null>(null);
   const [user, setUser] = useState<User>(new User());
   const [
     plusDeckCardError,
@@ -95,6 +103,8 @@ export default function App() {
         setUser,
         selectedDeckId,
         setSelectedDeckId,
+        activeGameId,
+        setActiveGameId,
         plusDeckCardError,
         setPlusDeckCardError,
         minusDeckCardError,
@@ -109,6 +119,7 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={Index} />
         <PrivateRoute exact path="/deck" component={Deck} />
+        <PrivateRoute exact path="/game" component={Game} />
         <Route exact path="/help" component={Help} />
         <Route exact path="/rule" component={Rule} />
         <Route component={NotFound} />
