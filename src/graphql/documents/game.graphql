@@ -1,3 +1,9 @@
 query activeGameId {
   activeGameId
 }
+
+mutation startGame($deckId: Int!) {
+  startGame(deckId: $deckId) {
+    id
+  }
+}

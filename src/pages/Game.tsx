@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useActiveGameIdQuery } from '../graphql/generated/graphql-client';
 import { AppContext } from '../components/App';
 import { Container } from '../styled/reactstrap';
+import StartGame from '../components/game/StartGame';
 
 export default function Game() {
   const { setActiveGameId } = useContext(AppContext);
@@ -21,9 +22,7 @@ export default function Game() {
         {activeGameIdQueryResult.error !== undefined && (
           <div>ゲーム情報の取得中にエラーが発生しました</div>
         )}
-        {activeGameIdQueryResult.data?.activeGameId === null && (
-          <div>スタートゲーム！</div>
-        )}
+        {activeGameIdQueryResult.data?.activeGameId === null && <StartGame />}
         {activeGameIdQueryResult.data?.activeGameId !== null && (
           <div>ゲームの様子を描画するよ</div>
         )}
