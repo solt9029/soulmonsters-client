@@ -34,34 +34,32 @@ export default function StartGame() {
   const decksQueryResult = useDecksQuery();
 
   return (
-    <>
-      <FormGroup row>
-        <Col sm={12}>
-          <Input
-            type="select"
-            onChange={handleDeckSelectChange}
-            value={selectedDeckId || undefined}
-          >
-            <option value="default">
-              ソウルバトルに使用するデッキを選択してください
+    <FormGroup row>
+      <Col sm={12}>
+        <Input
+          type="select"
+          onChange={handleDeckSelectChange}
+          value={selectedDeckId || undefined}
+        >
+          <option value="default">
+            ソウルバトルに使用するデッキを選択してください
+          </option>
+          {decksQueryResult.data?.decks?.map((deck) => (
+            <option key={deck.id} value={deck.id}>
+              {deck.name}
             </option>
-            {decksQueryResult.data?.decks?.map((deck) => (
-              <option key={deck.id} value={deck.id}>
-                {deck.name}
-              </option>
-            ))}
-          </Input>
-        </Col>
-        <Col sm={12} marginTop={12}>
-          <StyledButton
-            style={{ width: '100%' }}
-            color="success"
-            onClick={handleClick}
-          >
-            ソウルバトル開始
-          </StyledButton>
-        </Col>
-      </FormGroup>
-    </>
+          ))}
+        </Input>
+      </Col>
+      <Col sm={12} marginTop={12}>
+        <StyledButton
+          style={{ width: '100%' }}
+          color="success"
+          onClick={handleClick}
+        >
+          ソウルバトル開始
+        </StyledButton>
+      </Col>
+    </FormGroup>
   );
 }
