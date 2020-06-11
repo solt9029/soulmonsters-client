@@ -57,7 +57,10 @@ const StyledCollapse = styled(Collapse)`
 
 export default function Navbar() {
   const location = useLocation();
-  const { user, setUser } = useContext(AppContext);
+  const {
+    state: { user },
+    dispatch,
+  } = useContext(AppContext);
   const [isCollapseOpen, setIsCollapseOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -75,25 +78,25 @@ export default function Navbar() {
   }, [location.pathname]);
 
   const logout = async () => {
-    setUser(user.startLoading());
+    dispatch({ type: 'SET_USER', payload: user.startLoading() });
     try {
       await auth().signOut();
-      setUser(user.doneLogout());
+      dispatch({ type: 'SET_USER', payload: user.doneLogout() });
     } catch (error) {
-      setUser(user.failedLogout(error));
+      dispatch({ type: 'SET_USER', payload: user.failedLogin(error) });
     }
   };
 
   const login = async () => {
-    setUser(user.startLoading());
+    dispatch({ type: 'SET_USER', payload: user.startLoading() });
     try {
       const data = await auth().signInWithPopup(new auth.TwitterAuthProvider());
       if (data.user === null) {
         throw new Error();
       }
-      setUser(user.doneLogin(data.user));
+      dispatch({ type: 'SET_USER', payload: user.doneLogin(data.user) });
     } catch (error) {
-      setUser(user.failedLogin(error));
+      dispatch({ type: 'SET_USER', payload: user.failedLogin(error) });
     }
   };
 

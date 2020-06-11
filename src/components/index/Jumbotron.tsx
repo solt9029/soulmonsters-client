@@ -36,18 +36,21 @@ const ButtonText = styled.span`
 `;
 
 export default function Jumbotron() {
-  const { user, setUser } = useContext(AppContext);
+  const {
+    state: { user },
+    dispatch,
+  } = useContext(AppContext);
 
   const login = async () => {
-    setUser(user.startLoading());
+    dispatch({ type: 'SET_USER', payload: user.startLoading() });
     try {
       const data = await auth().signInWithPopup(new auth.TwitterAuthProvider());
       if (data.user === null) {
         throw new Error();
       }
-      setUser(user.doneLogin(data.user));
+      dispatch({ type: 'SET_USER', payload: user.doneLogin(data.user) });
     } catch (error) {
-      setUser(user.failedLogin(error));
+      dispatch({ type: 'SET_USER', payload: user.failedLogin(error) });
     }
   };
 

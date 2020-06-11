@@ -14,11 +14,8 @@ const Img = styled.img`
 
 export default function DeckModal() {
   const {
-    deckModal,
-    setDeckModal,
-    selectedDeckId,
-    setPlusDeckCardError,
-    setMinusDeckCardError,
+    state: { deckModal, selectedDeckId },
+    dispatch,
   } = useContext(AppContext);
 
   const refetchDeckCardsQuery = {
@@ -29,33 +26,39 @@ export default function DeckModal() {
   const [plusDeckCard] = usePlusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
     onCompleted: () => {
-      setPlusDeckCardError(null);
+      dispatch({ type: 'RESET_ERROR', payload: 'plusDeckCardError' });
     },
     onError: (error) => {
-      setPlusDeckCardError(error);
+      dispatch({
+        type: 'SET_ERROR',
+        payload: { name: 'plusDeckCardError', error },
+      });
     },
   });
 
   const [minusDeckCard] = useMinusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
     onCompleted: () => {
-      setMinusDeckCardError(null);
+      dispatch({ type: 'RESET_ERROR', payload: 'minusDeckCardError' });
     },
     onError: (error) => {
-      setMinusDeckCardError(error);
+      dispatch({
+        type: 'SET_ERROR',
+        payload: { name: 'minusDeckCardError', error },
+      });
     },
   });
 
   const closeModal = () => {
-    setDeckModal(null);
+    dispatch({ type: 'SET_DECK_MODAL', payload: deckModal.close() });
   };
 
   const handleClick = () => {
-    if (deckModal !== null && selectedDeckId !== null) {
+    if (selectedDeckId !== null) {
       const options = {
-        variables: { deckId: selectedDeckId, cardId: deckModal.cardId },
+        variables: { deckId: selectedDeckId, cardId: deckModal.data.cardId },
       };
-      if (deckModal.isInDeck) {
+      if (deckModal.data.isInDeck) {
         minusDeckCard(options);
       } else {
         plusDeckCard(options);
@@ -65,13 +68,13 @@ export default function DeckModal() {
   };
 
   return (
-    <Modal isOpen={deckModal !== null} toggle={closeModal}>
+    <Modal isOpen={deckModal.isOpen} toggle={closeModal}>
       <ModalHeader toggle={closeModal}>カード詳細情報</ModalHeader>
       <ModalBody>
-        <Img alt="modal" src={deckModal?.picture} />
+        <Img alt="modal" src={deckModal.data.picture} />
       </ModalBody>
       <ModalFooter>
-        {deckModal?.isInDeck ? (
+        {deckModal.data.isInDeck ? (
           <Button onClick={handleClick} color="danger">
             このカードをデッキから抜く
           </Button>

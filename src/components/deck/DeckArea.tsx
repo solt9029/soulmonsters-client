@@ -21,11 +21,13 @@ const StyledRow = styled(Row)`
 
 export default function DeckArea() {
   const {
-    selectedDeckId,
-    setSelectedDeckId,
-    plusDeckCardError,
-    minusDeckCardError,
-    createDeckError,
+    state: {
+      selectedDeckId,
+      plusDeckCardError,
+      minusDeckCardError,
+      createDeckError,
+    },
+    dispatch,
   } = useContext(AppContext);
 
   const [fetchDeckCards, deckCardsQueryResult] = useDeckCardsLazyQuery();
@@ -53,7 +55,7 @@ export default function DeckArea() {
   const handleDeckSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
     const deckId = parseInt(event.target.value);
     fetchDeckCards({ variables: { deckId } });
-    setSelectedDeckId(deckId);
+    dispatch({ type: 'SET_SELECTED_DECK_ID', payload: deckId });
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext } from 'react';
+import React, { useEffect, createContext, useReducer } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Help from '../pages/Help';
@@ -7,87 +7,35 @@ import NotFound from '../pages/NotFound';
 import Index from '../pages/Index';
 import Deck from '../pages/Deck';
 import PrivateRoute from './PrivateRoute';
-import User from '../models/User';
 import { auth } from 'firebase';
 import { ID_TOKEN } from '../constants/local-storage-keys';
 import Lockr from 'lockr';
-import { ApolloError } from 'apollo-client';
 import Game from '../pages/Game';
-
-export interface DeckModal {
-  isInDeck: boolean;
-  picture: string;
-  cardId: number;
-}
+import AppState from '../models/AppState';
+import reducer from '../reducer';
+import Action from '../action';
 
 export interface AppContextInterface {
-  selectedDeckId: number | null;
-  setSelectedDeckId: (value: number | null) => void;
-
-  activeGameId: number | null;
-  setActiveGameId: (value: number | null) => void;
-
-  user: User;
-  setUser: (value: User) => void;
-
-  plusDeckCardError: ApolloError | null;
-  setPlusDeckCardError: (value: ApolloError | null) => void;
-
-  minusDeckCardError: ApolloError | null;
-  setMinusDeckCardError: (value: ApolloError | null) => void;
-
-  createDeckError: ApolloError | null;
-  setCreateDeckError: (value: ApolloError | null) => void;
-
-  deckModal: DeckModal | null;
-  setDeckModal: (value: DeckModal | null) => void;
+  state: AppState;
+  dispatch: React.Dispatch<Action>;
 }
 
 export const AppContext = createContext<AppContextInterface>({
-  selectedDeckId: null,
-  setSelectedDeckId: () => {},
-
-  activeGameId: null,
-  setActiveGameId: () => {},
-
-  user: new User(),
-  setUser: () => {},
-
-  plusDeckCardError: null,
-  setPlusDeckCardError: () => {},
-
-  minusDeckCardError: null,
-  setMinusDeckCardError: () => {},
-
-  createDeckError: null,
-  setCreateDeckError: () => {},
-
-  deckModal: null,
-  setDeckModal: () => {},
+  state: new AppState(),
+  dispatch: () => {},
 });
 
 export default function App() {
-  const [selectedDeckId, setSelectedDeckId] = useState<number | null>(null);
-  const [activeGameId, setActiveGameId] = useState<number | null>(null);
-  const [user, setUser] = useState<User>(new User());
-  const [
-    plusDeckCardError,
-    setPlusDeckCardError,
-  ] = useState<ApolloError | null>(null);
-  const [
-    minusDeckCardError,
-    setMinusDeckCardError,
-  ] = useState<ApolloError | null>(null);
-  const [createDeckError, setCreateDeckError] = useState<ApolloError | null>(
-    null
-  );
-  const [deckModal, setDeckModal] = useState<DeckModal | null>(null);
+  const [state, dispatch] = useReducer(reducer, new AppState());
 
   // componentDidMount
   useEffect(() => {
     auth().onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
-        setUser(user.doneLogin(firebaseUser));
+        dispatch({
+          type: 'SET_USER',
+          payload: state.user.doneLogin(firebaseUser),
+        });
         const idToken = await firebaseUser.getIdToken(true);
         Lockr.set(ID_TOKEN, idToken);
         return;
@@ -97,24 +45,7 @@ export default function App() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <AppContext.Provider
-      value={{
-        user,
-        setUser,
-        selectedDeckId,
-        setSelectedDeckId,
-        activeGameId,
-        setActiveGameId,
-        plusDeckCardError,
-        setPlusDeckCardError,
-        minusDeckCardError,
-        setMinusDeckCardError,
-        createDeckError,
-        setCreateDeckError,
-        deckModal,
-        setDeckModal,
-      }}
-    >
+    <AppContext.Provider value={{ state, dispatch }}>
       <Navbar />
       <Switch>
         <Route exact path="/" component={Index} />

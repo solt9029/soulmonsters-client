@@ -12,15 +12,18 @@ const StyledButton = styled(Button)`
 `;
 
 export default function CreateDeckInput() {
-  const { setCreateDeckError } = useContext(AppContext);
+  const { dispatch } = useContext(AppContext);
 
   const [createDeck] = useCreateDeckMutation({
     refetchQueries: [{ query: DecksDocument }],
     onCompleted: () => {
-      setCreateDeckError(null);
+      dispatch({ type: 'RESET_ERROR', payload: 'createDeckError' });
     },
     onError: (error) => {
-      setCreateDeckError(error);
+      dispatch({
+        type: 'SET_ERROR',
+        payload: { name: 'createDeckError', error },
+      });
     },
   });
 
