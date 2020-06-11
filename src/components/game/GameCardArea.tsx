@@ -10,6 +10,9 @@ import {
 import { AppContext } from '../App';
 
 const StyledCol = styled(Col)`
+  color: white;
+  align-items: center;
+  -webkit-align-items: center;
   display: flex;
   overflow-x: auto;
   ::before,
@@ -21,13 +24,36 @@ const StyledCol = styled(Col)`
 
 const StyledRow = styled(Row)`
   display: flex;
-  height: 110px;
+  height: 100px;
 `;
 
 const StyledCard = styled(Card)`
-  min-width: 70px;
-  width: 70px;
+  min-width: 60px;
+  width: 60px;
   margin: 5px;
+`;
+
+const UserLogo = styled.div<{ picture?: string | null }>`
+  ${(props) => `background: url('${props.picture}') no-repeat left center;`}
+  background-size: contain;
+  border-radius: 50%;
+  border: none;
+  &:focus {
+    box-shadow: none;
+  }
+  &:hover {
+    border-color: #eee;
+  }
+  height: 45px;
+  width: 45px;
+`;
+
+const UserInfo = styled.div`
+  margin-left: 10px;
+`;
+
+const UserName = styled.div`
+  font-weight: bold;
 `;
 
 export default function GameCardArea() {
@@ -43,7 +69,16 @@ export default function GameCardArea() {
 
   return (
     <Container marginTop={20} marginBottom={20}>
-      <StyledRow>
+      <Row>
+        <StyledCol lg={12}>
+          <UserLogo picture={user?.data?.photoURL} />
+          <UserInfo>
+            <UserName>でれ出現</UserName>
+            <div>ライフ：8000</div>
+          </UserInfo>
+        </StyledCol>
+      </Row>
+      <StyledRow marginTop={5}>
         <StyledCol lg={12}>
           {data?.game.gameCards
             .filter(
@@ -145,7 +180,7 @@ export default function GameCardArea() {
           </StyledCard>
         </StyledCol>
       </StyledRow>
-      <StyledRow marginTop={20}>
+      <StyledRow marginTop={5}>
         <StyledCol lg={12}>
           {data?.game.gameCards
             .filter(
@@ -160,6 +195,15 @@ export default function GameCardArea() {
             ))}
         </StyledCol>
       </StyledRow>
+      <Row marginTop={5}>
+        <StyledCol lg={12}>
+          <UserLogo picture={user?.data?.photoURL} />
+          <UserInfo>
+            <UserName>でれ出現</UserName>
+            <div>ライフ：8000</div>
+          </UserInfo>
+        </StyledCol>
+      </Row>
     </Container>
   );
 }
