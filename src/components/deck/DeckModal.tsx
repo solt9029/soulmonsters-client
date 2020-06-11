@@ -14,11 +14,8 @@ const Img = styled.img`
 
 export default function DeckModal() {
   const {
-    deckModal,
-    setDeckModal,
-    selectedDeckId,
-    setPlusDeckCardError,
-    setMinusDeckCardError,
+    state: { deckModal, selectedDeckId },
+    dispatch,
   } = useContext(AppContext);
 
   const refetchDeckCardsQuery = {
@@ -29,25 +26,31 @@ export default function DeckModal() {
   const [plusDeckCard] = usePlusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
     onCompleted: () => {
-      setPlusDeckCardError(null);
+      dispatch({ type: 'RESET_ERROR', payload: 'plusDeckCardError' });
     },
     onError: (error) => {
-      setPlusDeckCardError(error);
+      dispatch({
+        type: 'SET_ERROR',
+        payload: { name: 'plusDeckCardError', error },
+      });
     },
   });
 
   const [minusDeckCard] = useMinusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
     onCompleted: () => {
-      setMinusDeckCardError(null);
+      dispatch({ type: 'RESET_ERROR', payload: 'minusDeckCardError' });
     },
     onError: (error) => {
-      setMinusDeckCardError(error);
+      dispatch({
+        type: 'SET_ERROR',
+        payload: { name: 'minusDeckCardError', error },
+      });
     },
   });
 
   const closeModal = () => {
-    setDeckModal(deckModal.close());
+    dispatch({ type: 'SET_DECK_MODAL', payload: deckModal.close() });
   };
 
   const handleClick = () => {

@@ -18,11 +18,8 @@ interface Props {
 
 export default function Card({ id, picture, isInDeck }: Props) {
   const {
-    selectedDeckId,
-    setPlusDeckCardError,
-    setMinusDeckCardError,
-    deckModal,
-    setDeckModal,
+    state: { selectedDeckId, deckModal },
+    dispatch,
   } = useContext(AppContext);
 
   const refetchDeckCardsQuery = {
@@ -33,27 +30,38 @@ export default function Card({ id, picture, isInDeck }: Props) {
   const [plusDeckCard] = usePlusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
     onCompleted: () => {
-      setPlusDeckCardError(null);
+      dispatch({ type: 'RESET_ERROR', payload: 'plusDeckCardError' });
     },
     onError: (error) => {
-      setPlusDeckCardError(error);
+      dispatch({
+        type: 'SET_ERROR',
+        payload: { name: 'plusDeckCardError', error },
+      });
     },
   });
 
   const [minusDeckCard] = useMinusDeckCardMutation({
     refetchQueries: [refetchDeckCardsQuery],
     onCompleted: () => {
-      setMinusDeckCardError(null);
+      dispatch({ type: 'RESET_ERROR', payload: 'minusDeckCardError' });
     },
     onError: (error) => {
-      setMinusDeckCardError(error);
+      dispatch({
+        type: 'SET_ERROR',
+        payload: { name: 'minusDeckCardError', error },
+      });
     },
   });
 
   const handleClick = () => {
-    setDeckModal(
-      deckModal.open({ isInDeck: isInDeck === true, picture, cardId: id })
-    );
+    dispatch({
+      type: 'SET_DECK_MODAL',
+      payload: deckModal.open({
+        isInDeck: isInDeck === true,
+        picture,
+        cardId: id,
+      }),
+    });
   };
 
   const type = isInDeck ? ItemTypes.DECK_CARD : ItemTypes.CARD;

@@ -14,7 +14,10 @@ const StyledButton = styled(Button)`
 `;
 
 export default function StartGame() {
-  const { selectedDeckId, setSelectedDeckId } = useContext(AppContext);
+  const {
+    state: { selectedDeckId },
+    dispatch,
+  } = useContext(AppContext);
 
   const [startGame] = useStartGameMutation({
     refetchQueries: [{ query: ActiveGameIdDocument }],
@@ -25,7 +28,7 @@ export default function StartGame() {
 
   const handleDeckSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
     const deckId = parseInt(event.target.value);
-    setSelectedDeckId(deckId);
+    dispatch({ type: 'SET_SELECTED_DECK_ID', payload: deckId });
   };
 
   const handleClick = useCallback(() => {

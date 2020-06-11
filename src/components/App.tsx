@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext } from 'react';
+import React, { useEffect, createContext, useReducer } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Help from '../pages/Help';
@@ -11,71 +11,74 @@ import User from '../models/User';
 import { auth } from 'firebase';
 import { ID_TOKEN } from '../constants/local-storage-keys';
 import Lockr from 'lockr';
-import { ApolloError } from 'apollo-client';
 import Game from '../pages/Game';
+import AppState, { ErrorName } from '../models/AppState';
+import { ApolloError } from 'apollo-client';
 import DeckModal from '../models/DeckModal';
 
+type Action =
+  | {
+      type: 'SET_USER';
+      payload: User;
+    }
+  | {
+      type: 'SET_SELECTED_DECK_ID';
+      payload: number | null;
+    }
+  | {
+      type: 'SET_ERROR';
+      payload: {
+        name: ErrorName;
+        error: ApolloError;
+      };
+    }
+  | {
+      type: 'RESET_ERROR';
+      payload: ErrorName;
+    }
+  | {
+      type: 'SET_DECK_MODAL';
+      payload: DeckModal;
+    };
+
 export interface AppContextInterface {
-  selectedDeckId: number | null;
-  setSelectedDeckId: (value: number | null) => void;
-
-  user: User;
-  setUser: (value: User) => void;
-
-  plusDeckCardError: ApolloError | null;
-  setPlusDeckCardError: (value: ApolloError | null) => void;
-
-  minusDeckCardError: ApolloError | null;
-  setMinusDeckCardError: (value: ApolloError | null) => void;
-
-  createDeckError: ApolloError | null;
-  setCreateDeckError: (value: ApolloError | null) => void;
-
-  deckModal: DeckModal;
-  setDeckModal: (value: DeckModal) => void;
+  state: AppState;
+  dispatch: React.Dispatch<Action>;
 }
 
 export const AppContext = createContext<AppContextInterface>({
-  selectedDeckId: null,
-  setSelectedDeckId: () => {},
-
-  user: new User(),
-  setUser: () => {},
-
-  plusDeckCardError: null,
-  setPlusDeckCardError: () => {},
-
-  minusDeckCardError: null,
-  setMinusDeckCardError: () => {},
-
-  createDeckError: null,
-  setCreateDeckError: () => {},
-
-  deckModal: new DeckModal(),
-  setDeckModal: () => {},
+  state: new AppState(),
+  dispatch: () => {},
 });
 
+const reducer = (state: AppState, action: Action): AppState => {
+  switch (action.type) {
+    case 'SET_USER':
+      return state.setUser(action.payload);
+    case 'SET_SELECTED_DECK_ID':
+      return state.setSelectedDeckId(action.payload);
+    case 'SET_ERROR':
+      return state.setError(action.payload);
+    case 'RESET_ERROR':
+      return state.resetError(action.payload);
+    case 'SET_DECK_MODAL':
+      return state.setDeckModal(action.payload);
+    default:
+      return state;
+  }
+};
+
 export default function App() {
-  const [selectedDeckId, setSelectedDeckId] = useState<number | null>(null);
-  const [user, setUser] = useState<User>(new User());
-  const [
-    plusDeckCardError,
-    setPlusDeckCardError,
-  ] = useState<ApolloError | null>(null);
-  const [
-    minusDeckCardError,
-    setMinusDeckCardError,
-  ] = useState<ApolloError | null>(null);
-  const [createDeckError, setCreateDeckError] = useState<ApolloError | null>(
-    null
-  );
-  const [deckModal, setDeckModal] = useState<DeckModal>(new DeckModal());
+  const [state, dispatch] = useReducer(reducer, new AppState());
 
   // componentDidMount
   useEffect(() => {
     auth().onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
-        setUser(user.doneLogin(firebaseUser));
+        dispatch({
+          type: 'SET_USER',
+          payload: state.user.doneLogin(firebaseUser),
+        });
         const idToken = await firebaseUser.getIdToken(true);
         Lockr.set(ID_TOKEN, idToken);
         return;
@@ -85,22 +88,7 @@ export default function App() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <AppContext.Provider
-      value={{
-        user,
-        setUser,
-        selectedDeckId,
-        setSelectedDeckId,
-        plusDeckCardError,
-        setPlusDeckCardError,
-        minusDeckCardError,
-        setMinusDeckCardError,
-        createDeckError,
-        setCreateDeckError,
-        deckModal,
-        setDeckModal,
-      }}
-    >
+    <AppContext.Provider value={{ state, dispatch }}>
       <Navbar />
       <Switch>
         <Route exact path="/" component={Index} />
