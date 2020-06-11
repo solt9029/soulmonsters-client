@@ -82,6 +82,7 @@ export default function Navbar() {
     try {
       await auth().signOut();
       dispatch({ type: 'SET_USER', payload: user.doneLogout() });
+      // TODO: initialize app state and clear graphql cache here.
     } catch (error) {
       dispatch({ type: 'SET_USER', payload: user.failedLogin(error) });
     }
