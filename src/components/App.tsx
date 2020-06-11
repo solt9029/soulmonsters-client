@@ -24,9 +24,6 @@ export interface AppContextInterface {
   selectedDeckId: number | null;
   setSelectedDeckId: (value: number | null) => void;
 
-  activeGameId: number | null;
-  setActiveGameId: (value: number | null) => void;
-
   user: User;
   setUser: (value: User) => void;
 
@@ -47,9 +44,6 @@ export const AppContext = createContext<AppContextInterface>({
   selectedDeckId: null,
   setSelectedDeckId: () => {},
 
-  activeGameId: null,
-  setActiveGameId: () => {},
-
   user: new User(),
   setUser: () => {},
 
@@ -68,7 +62,6 @@ export const AppContext = createContext<AppContextInterface>({
 
 export default function App() {
   const [selectedDeckId, setSelectedDeckId] = useState<number | null>(null);
-  const [activeGameId, setActiveGameId] = useState<number | null>(null);
   const [user, setUser] = useState<User>(new User());
   const [
     plusDeckCardError,
@@ -103,8 +96,6 @@ export default function App() {
         setUser,
         selectedDeckId,
         setSelectedDeckId,
-        activeGameId,
-        setActiveGameId,
         plusDeckCardError,
         setPlusDeckCardError,
         minusDeckCardError,

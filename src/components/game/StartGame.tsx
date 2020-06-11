@@ -18,6 +18,9 @@ export default function StartGame() {
 
   const [startGame] = useStartGameMutation({
     refetchQueries: [{ query: ActiveGameIdDocument }],
+    onError: () => {
+      // TODO: handle error
+    },
   });
 
   const handleDeckSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
