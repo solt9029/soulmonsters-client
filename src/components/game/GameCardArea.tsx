@@ -56,6 +56,9 @@ const UserName = styled.div`
   font-weight: bold;
 `;
 
+const backSidePicture =
+  'https://lh3.googleusercontent.com/pw/ACtC-3dXtsXacJv-FU8R-kX2afNOX4KKPEbb_3Z7YrLFhNm3DDT4l2WPtAacoZas43eol-e5oPHrLGHBV-TZC4LygN6g8kjHDUn_ouFSa0ukSgY4ZU6rVsRBqwgN59C4NmvxOJEFGCSEMPZetZfzJitN4kz1XQ=w1000-h1431-no?authuser=0';
+
 export default function GameCardArea() {
   const {
     state: { user },
@@ -73,7 +76,7 @@ export default function GameCardArea() {
         <StyledCol lg={12}>
           <UserLogo picture={user?.data?.photoURL} />
           <UserInfo>
-            <UserName>でれ出現</UserName>
+            <UserName>ユーザX</UserName>
             <div>ライフ：8000</div>
           </UserInfo>
         </StyledCol>
@@ -88,24 +91,16 @@ export default function GameCardArea() {
             )
             .map(() => (
               <StyledCard>
-                <CardImg src="https://lh3.googleusercontent.com/pw/ACtC-3e_TwurBT8oL0wbI1qD8Vw6fkZrqu1xGbcEFb0kHH_JGXbLyh3oyOhSJb53C_kgtIBwlBWOIB1MANxe3Kv3Nu5d5HXlBfa4dYUF_sTSRVrkg8VQovzxWH65l1GzRx7M3seYi3AnMBb2Blu19e6gkhCEMw=w500-h715-no?authuser=0" />
+                <CardImg src={backSidePicture} />
               </StyledCard>
             ))}
         </StyledCol>
       </StyledRow>
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
-          {data?.game.gameCards
-            .filter(
-              (value) =>
-                value.zone === Zone.Deck &&
-                value.currentUserId !== user.data?.uid
-            )
-            .map(() => (
-              <StyledCard>
-                <CardImg src="https://lh3.googleusercontent.com/pw/ACtC-3e_TwurBT8oL0wbI1qD8Vw6fkZrqu1xGbcEFb0kHH_JGXbLyh3oyOhSJb53C_kgtIBwlBWOIB1MANxe3Kv3Nu5d5HXlBfa4dYUF_sTSRVrkg8VQovzxWH65l1GzRx7M3seYi3AnMBb2Blu19e6gkhCEMw=w500-h715-no?authuser=0" />
-              </StyledCard>
-            ))}
+          <StyledCard>
+            <CardImg src={backSidePicture} />
+          </StyledCard>
         </StyledCol>
         <StyledCol lg={10} xs={10}>
           {data?.game.gameCards
@@ -176,7 +171,7 @@ export default function GameCardArea() {
         </StyledCol>
         <StyledCol lg={2} xs={2}>
           <StyledCard>
-            <CardImg src="https://lh3.googleusercontent.com/pw/ACtC-3e_TwurBT8oL0wbI1qD8Vw6fkZrqu1xGbcEFb0kHH_JGXbLyh3oyOhSJb53C_kgtIBwlBWOIB1MANxe3Kv3Nu5d5HXlBfa4dYUF_sTSRVrkg8VQovzxWH65l1GzRx7M3seYi3AnMBb2Blu19e6gkhCEMw=w500-h715-no?authuser=0" />
+            <CardImg src={backSidePicture} />
           </StyledCard>
         </StyledCol>
       </StyledRow>
@@ -199,7 +194,7 @@ export default function GameCardArea() {
         <StyledCol lg={12}>
           <UserLogo picture={user?.data?.photoURL} />
           <UserInfo>
-            <UserName>でれ出現</UserName>
+            <UserName>ユーザA</UserName>
             <div>ライフ：8000</div>
           </UserInfo>
         </StyledCol>
