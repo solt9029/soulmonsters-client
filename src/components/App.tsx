@@ -13,12 +13,7 @@ import { ID_TOKEN } from '../constants/local-storage-keys';
 import Lockr from 'lockr';
 import { ApolloError } from 'apollo-client';
 import Game from '../pages/Game';
-
-export interface DeckModal {
-  isInDeck: boolean;
-  picture: string;
-  cardId: number;
-}
+import DeckModal from '../models/DeckModal';
 
 export interface AppContextInterface {
   selectedDeckId: number | null;
@@ -36,8 +31,8 @@ export interface AppContextInterface {
   createDeckError: ApolloError | null;
   setCreateDeckError: (value: ApolloError | null) => void;
 
-  deckModal: DeckModal | null;
-  setDeckModal: (value: DeckModal | null) => void;
+  deckModal: DeckModal;
+  setDeckModal: (value: DeckModal) => void;
 }
 
 export const AppContext = createContext<AppContextInterface>({
@@ -56,7 +51,7 @@ export const AppContext = createContext<AppContextInterface>({
   createDeckError: null,
   setCreateDeckError: () => {},
 
-  deckModal: null,
+  deckModal: new DeckModal(),
   setDeckModal: () => {},
 });
 
@@ -74,7 +69,7 @@ export default function App() {
   const [createDeckError, setCreateDeckError] = useState<ApolloError | null>(
     null
   );
-  const [deckModal, setDeckModal] = useState<DeckModal | null>(null);
+  const [deckModal, setDeckModal] = useState<DeckModal>(new DeckModal());
 
   // componentDidMount
   useEffect(() => {

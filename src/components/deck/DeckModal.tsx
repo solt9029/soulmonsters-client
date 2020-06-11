@@ -47,15 +47,15 @@ export default function DeckModal() {
   });
 
   const closeModal = () => {
-    setDeckModal(null);
+    setDeckModal(deckModal.close());
   };
 
   const handleClick = () => {
-    if (deckModal !== null && selectedDeckId !== null) {
+    if (selectedDeckId !== null) {
       const options = {
-        variables: { deckId: selectedDeckId, cardId: deckModal.cardId },
+        variables: { deckId: selectedDeckId, cardId: deckModal.data.cardId },
       };
-      if (deckModal.isInDeck) {
+      if (deckModal.data.isInDeck) {
         minusDeckCard(options);
       } else {
         plusDeckCard(options);
@@ -65,13 +65,13 @@ export default function DeckModal() {
   };
 
   return (
-    <Modal isOpen={deckModal !== null} toggle={closeModal}>
+    <Modal isOpen={deckModal.isOpen} toggle={closeModal}>
       <ModalHeader toggle={closeModal}>カード詳細情報</ModalHeader>
       <ModalBody>
-        <Img alt="modal" src={deckModal?.picture} />
+        <Img alt="modal" src={deckModal.data.picture} />
       </ModalBody>
       <ModalFooter>
-        {deckModal?.isInDeck ? (
+        {deckModal.data.isInDeck ? (
           <Button onClick={handleClick} color="danger">
             このカードをデッキから抜く
           </Button>

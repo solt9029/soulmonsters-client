@@ -21,6 +21,7 @@ export default function Card({ id, picture, isInDeck }: Props) {
     selectedDeckId,
     setPlusDeckCardError,
     setMinusDeckCardError,
+    deckModal,
     setDeckModal,
   } = useContext(AppContext);
 
@@ -50,7 +51,9 @@ export default function Card({ id, picture, isInDeck }: Props) {
   });
 
   const handleClick = () => {
-    setDeckModal({ isInDeck: isInDeck === true, picture, cardId: id });
+    setDeckModal(
+      deckModal.open({ isInDeck: isInDeck === true, picture, cardId: id })
+    );
   };
 
   const type = isInDeck ? ItemTypes.DECK_CARD : ItemTypes.CARD;
