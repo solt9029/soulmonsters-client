@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Container, Row, Col } from '../../styled/reactstrap';
-import { Card, CardImg } from 'reactstrap';
+import { Card, CardImg, Alert } from 'reactstrap';
 import styled from 'styled-components';
 import {
   useGameQuery,
@@ -70,13 +70,56 @@ export default function GameCardArea() {
     variables: { id: activeGameIdQueryResult.data?.activeGameId || 1 },
   });
 
-  const opponentGameUser = data?.game.gameUsers.find(
-    (value) => value.userId !== user.data?.uid
-  );
+  if (!data) {
+    return (
+      <Container marginTop={12}>
+        {error && (
+          <Alert color="danger">ゲーム情報の取得中にエラーが発生しました</Alert>
+        )}
+        {loading && <Col lg={12}>ゲーム情報をロード中です</Col>}
+      </Container>
+    );
+  }
 
-  const yourGameUser = data?.game.gameUsers.find(
-    (value) => value.userId === user.data?.uid
-  );
+  const findGameUser = (options: { isYours: boolean }) => {
+    return data?.game.gameUsers.find(
+      (value) =>
+        (options.isYours && value.userId === user.data?.uid) ||
+        (!options.isYours && value.userId !== user.data?.uid)
+    );
+  };
+  const opponentGameUser = findGameUser({ isYours: false });
+  const yourGameUser = findGameUser({ isYours: true });
+
+  const findGameCards = (options: { zone: Zone; isYours: boolean }) => {
+    if (!data) {
+      return [];
+    }
+    // TODO: sort
+    return data.game.gameCards.filter(
+      (value) =>
+        value.zone === options.zone &&
+        ((options.isYours && value.currentUserId === user.data?.uid) ||
+          (!options.isYours && value.currentUserId !== user.data?.uid))
+    );
+  };
+
+  const findTopGameCard = (options: { zone: Zone; isYours: boolean }) => {
+    return findGameCards(options).reduce<any>(
+      (a, b) => (a.position > b.position ? a : b),
+      null
+    );
+  };
+
+  const yourMorgueTopGameCard = findTopGameCard({
+    zone: Zone.Morgue,
+    isYours: true,
+  });
+
+  const opponentMorgueTopGameCard = findTopGameCard({
+    zone: Zone.Morgue,
+    isYours: false,
+  });
 
   return (
     <Container marginTop={20} marginBottom={20}>
@@ -129,64 +172,75 @@ export default function GameCardArea() {
       </StyledRow>
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
-          {data?.game.gameCards
-            .filter(
-              (value) =>
-                value.zone === Zone.Morgue &&
-                value.currentUserId !== user.data?.uid
-            )
-            .map(() => (
-              <StyledCard>
-                <CardImg src="https://lh3.googleusercontent.com/pw/ACtC-3e_TwurBT8oL0wbI1qD8Vw6fkZrqu1xGbcEFb0kHH_JGXbLyh3oyOhSJb53C_kgtIBwlBWOIB1MANxe3Kv3Nu5d5HXlBfa4dYUF_sTSRVrkg8VQovzxWH65l1GzRx7M3seYi3AnMBb2Blu19e6gkhCEMw=w500-h715-no?authuser=0" />
-              </StyledCard>
-            ))}
+          {opponentMorgueTopGameCard && (
+            <StyledCard>
+              <CardImg src={opponentMorgueTopGameCard.card?.picture} />
+            </StyledCard>
+          )}
         </StyledCol>
+        <StyledCol lg={10} xs={10}>
+          {findGameCards({ zone: Zone.Battle, isYours: false }).map((value) => (
+            <StyledCard>
+              <CardImg src={value.card?.picture} />
+            </StyledCard>
+          ))}
+        </StyledCol>
+      </StyledRow>
+
+      <StyledRow marginTop={50}>
+        {/** your battle zone */}
         <StyledCol lg={10} xs={10}>
           {data?.game.gameCards
             .filter(
               (value) =>
                 value.zone === Zone.Battle &&
-                value.currentUserId !== user.data?.uid
+                value.currentUserId === user.data?.uid
             )
-            .map(() => (
+            .map((value) => (
               <StyledCard>
-                <CardImg src="https://lh3.googleusercontent.com/pw/ACtC-3e_TwurBT8oL0wbI1qD8Vw6fkZrqu1xGbcEFb0kHH_JGXbLyh3oyOhSJb53C_kgtIBwlBWOIB1MANxe3Kv3Nu5d5HXlBfa4dYUF_sTSRVrkg8VQovzxWH65l1GzRx7M3seYi3AnMBb2Blu19e6gkhCEMw=w500-h715-no?authuser=0" />
+                <CardImg src={value.card?.picture} />
               </StyledCard>
             ))}
         </StyledCol>
+
+        {/** your morgue zone */}
+        <StyledCol lg={2} xs={2}>
+          {yourMorgueTopGameCard && (
+            <StyledCard>
+              <CardImg src={yourMorgueTopGameCard.card?.picture} />
+            </StyledCard>
+          )}
+        </StyledCol>
       </StyledRow>
 
-      <StyledRow marginTop={50}>
+      <StyledRow marginTop={5}>
+        {/** your soul zone */}
         <StyledCol lg={10} xs={10}>
-          <StyledCard>
-            <CardImg src="https://lh3.googleusercontent.com/pw/ACtC-3e_TwurBT8oL0wbI1qD8Vw6fkZrqu1xGbcEFb0kHH_JGXbLyh3oyOhSJb53C_kgtIBwlBWOIB1MANxe3Kv3Nu5d5HXlBfa4dYUF_sTSRVrkg8VQovzxWH65l1GzRx7M3seYi3AnMBb2Blu19e6gkhCEMw=w500-h715-no?authuser=0" />
-          </StyledCard>
-          <StyledCard>
-            <CardImg src="https://lh3.googleusercontent.com/pw/ACtC-3e_TwurBT8oL0wbI1qD8Vw6fkZrqu1xGbcEFb0kHH_JGXbLyh3oyOhSJb53C_kgtIBwlBWOIB1MANxe3Kv3Nu5d5HXlBfa4dYUF_sTSRVrkg8VQovzxWH65l1GzRx7M3seYi3AnMBb2Blu19e6gkhCEMw=w500-h715-no?authuser=0" />
-          </StyledCard>
+          {data?.game.gameCards
+            .filter(
+              (value) =>
+                value.zone === Zone.Soul &&
+                value.currentUserId === user.data?.uid
+            )
+            .map((value) => (
+              <StyledCard>
+                <CardImg src={value.card?.picture} />
+              </StyledCard>
+            ))}
         </StyledCol>
+
+        {/** your deck zone */}
         <StyledCol lg={2} xs={2}>
-          <StyledCard>
-            <CardImg src="https://lh3.googleusercontent.com/pw/ACtC-3e_TwurBT8oL0wbI1qD8Vw6fkZrqu1xGbcEFb0kHH_JGXbLyh3oyOhSJb53C_kgtIBwlBWOIB1MANxe3Kv3Nu5d5HXlBfa4dYUF_sTSRVrkg8VQovzxWH65l1GzRx7M3seYi3AnMBb2Blu19e6gkhCEMw=w500-h715-no?authuser=0" />
-          </StyledCard>
+          {findGameCards({ zone: Zone.Deck, isYours: true }).length > 0 && (
+            <StyledCard>
+              <CardImg src={backSidePicture} />
+            </StyledCard>
+          )}
         </StyledCol>
       </StyledRow>
+
       <StyledRow marginTop={5}>
-        <StyledCol lg={10} xs={10}>
-          <StyledCard>
-            <CardImg src="https://lh3.googleusercontent.com/pw/ACtC-3e_TwurBT8oL0wbI1qD8Vw6fkZrqu1xGbcEFb0kHH_JGXbLyh3oyOhSJb53C_kgtIBwlBWOIB1MANxe3Kv3Nu5d5HXlBfa4dYUF_sTSRVrkg8VQovzxWH65l1GzRx7M3seYi3AnMBb2Blu19e6gkhCEMw=w500-h715-no?authuser=0" />
-          </StyledCard>
-          <StyledCard>
-            <CardImg src="https://lh3.googleusercontent.com/pw/ACtC-3e_TwurBT8oL0wbI1qD8Vw6fkZrqu1xGbcEFb0kHH_JGXbLyh3oyOhSJb53C_kgtIBwlBWOIB1MANxe3Kv3Nu5d5HXlBfa4dYUF_sTSRVrkg8VQovzxWH65l1GzRx7M3seYi3AnMBb2Blu19e6gkhCEMw=w500-h715-no?authuser=0" />
-          </StyledCard>
-        </StyledCol>
-        <StyledCol lg={2} xs={2}>
-          <StyledCard>
-            <CardImg src={backSidePicture} />
-          </StyledCard>
-        </StyledCol>
-      </StyledRow>
-      <StyledRow marginTop={5}>
+        {/** your hand zone */}
         <StyledCol lg={12}>
           {data?.game.gameCards
             .filter(
@@ -201,6 +255,7 @@ export default function GameCardArea() {
             ))}
         </StyledCol>
       </StyledRow>
+
       <Row marginTop={5}>
         <StyledCol lg={12}>
           <UserLogo picture={user?.data?.photoURL} />
