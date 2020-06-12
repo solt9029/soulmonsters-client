@@ -95,13 +95,14 @@ export default function GameCardArea() {
     if (!data) {
       return [];
     }
-    // TODO: sort
-    return data.game.gameCards.filter(
-      (value) =>
-        value.zone === options.zone &&
-        ((options.isYours && value.currentUserId === user.data?.uid) ||
-          (!options.isYours && value.currentUserId !== user.data?.uid))
-    );
+    return data.game.gameCards
+      .filter(
+        (value) =>
+          value.zone === options.zone &&
+          ((options.isYours && value.currentUserId === user.data?.uid) ||
+            (!options.isYours && value.currentUserId !== user.data?.uid))
+      )
+      .sort((a, b) => b.position - a.position);
   };
 
   const findTopGameCard = (options: { zone: Zone; isYours: boolean }) => {
