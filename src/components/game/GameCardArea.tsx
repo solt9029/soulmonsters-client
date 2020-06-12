@@ -70,14 +70,25 @@ export default function GameCardArea() {
     variables: { id: activeGameIdQueryResult.data?.activeGameId || 1 },
   });
 
+  const opponentGameUser = data?.game.gameUsers.find(
+    (value) => value.userId !== user.data?.uid
+  );
+
+  const yourGameUser = data?.game.gameUsers.find(
+    (value) => value.userId === user.data?.uid
+  );
+
   return (
     <Container marginTop={20} marginBottom={20}>
       <Row>
         <StyledCol lg={12}>
-          <UserLogo picture={user?.data?.photoURL} />
+          <UserLogo picture={opponentGameUser?.user.photoURL} />
           <UserInfo>
-            <UserName>ユーザX</UserName>
-            <div>ライフ：8000</div>
+            <UserName>{opponentGameUser?.user.displayName}</UserName>
+            <div>
+              ライフ：{opponentGameUser?.lifePoint} / エナジー：
+              {opponentGameUser?.energy}
+            </div>
           </UserInfo>
         </StyledCol>
       </Row>
@@ -185,7 +196,7 @@ export default function GameCardArea() {
             )
             .map((value) => (
               <StyledCard>
-                <CardImg src={value.card.picture} />
+                <CardImg src={value.card?.picture} />
               </StyledCard>
             ))}
         </StyledCol>
@@ -194,8 +205,11 @@ export default function GameCardArea() {
         <StyledCol lg={12}>
           <UserLogo picture={user?.data?.photoURL} />
           <UserInfo>
-            <UserName>ユーザA</UserName>
-            <div>ライフ：8000</div>
+            <UserName>{user?.data?.displayName}</UserName>
+            <div>
+              ライフ：{yourGameUser?.lifePoint} / エナジー：
+              {yourGameUser?.energy}
+            </div>
           </UserInfo>
         </StyledCol>
       </Row>

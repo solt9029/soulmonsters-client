@@ -13,6 +13,10 @@ query game($id: Int!) {
     gameUsers {
       id
       userId
+      user {
+        displayName
+        photoURL
+      }
       energy
       lifePoint
       lastViewedAt
