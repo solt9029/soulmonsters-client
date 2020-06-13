@@ -9,6 +9,10 @@ import {
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
 
+const StyledContainer = styled(Container)`
+  color: white;
+`;
+
 const StyledCol = styled(Col)`
   color: white;
   align-items: center;
@@ -70,14 +74,19 @@ export default function GameCardArea() {
     variables: { id: activeGameIdQueryResult.data?.activeGameId || 1 },
   });
 
-  if (!data) {
+  if (error) {
     return (
-      <Container marginTop={12}>
-        {error && (
-          <Alert color="danger">ゲーム情報の取得中にエラーが発生しました</Alert>
-        )}
-        {loading && <Col lg={12}>ゲーム情報をロード中です</Col>}
-      </Container>
+      <StyledContainer marginTop={12}>
+        <Alert color="danger">ゲーム情報の取得中にエラーが発生しました</Alert>
+      </StyledContainer>
+    );
+  }
+
+  if (loading) {
+    return (
+      <StyledContainer marginTop={12}>
+        <Col lg={12}>ゲーム情報をロード中です</Col>
+      </StyledContainer>
     );
   }
 
