@@ -173,9 +173,9 @@ export default function GameCardArea() {
                 value.zone === Zone.Soul &&
                 value.currentUserId !== user.data?.uid
             )
-            .map(() => (
+            .map((value) => (
               <StyledCard>
-                <CardImg src="https://lh3.googleusercontent.com/pw/ACtC-3e_TwurBT8oL0wbI1qD8Vw6fkZrqu1xGbcEFb0kHH_JGXbLyh3oyOhSJb53C_kgtIBwlBWOIB1MANxe3Kv3Nu5d5HXlBfa4dYUF_sTSRVrkg8VQovzxWH65l1GzRx7M3seYi3AnMBb2Blu19e6gkhCEMw=w500-h715-no?authuser=0" />
+                <CardImg src={value.card?.picture} />
               </StyledCard>
             ))}
         </StyledCol>
