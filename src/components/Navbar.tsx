@@ -18,6 +18,7 @@ import {
 import { Link } from 'react-router-dom';
 import { AppContext } from './App';
 import { auth } from 'firebase';
+import { login } from '../actions/user';
 
 const ServiceLogo = styled(NavbarBrand)`
   background: url('/images/icon.png') no-repeat left center;
@@ -88,17 +89,8 @@ export default function Navbar() {
     }
   };
 
-  const login = async () => {
-    dispatch({ type: 'SET_USER', payload: user.startLoading() });
-    try {
-      const data = await auth().signInWithPopup(new auth.TwitterAuthProvider());
-      if (data.user === null) {
-        throw new Error();
-      }
-      dispatch({ type: 'SET_USER', payload: user.doneLogin(data.user) });
-    } catch (error) {
-      dispatch({ type: 'SET_USER', payload: user.failedLogin(error) });
-    }
+  const handleLoginClick = async () => {
+    await login(dispatch, { user });
   };
 
   return (
@@ -133,7 +125,7 @@ export default function Navbar() {
             {(() => {
               if (user?.data === null) {
                 return (
-                  <Button color="info" onClick={login}>
+                  <Button color="info" onClick={handleLoginClick}>
                     ログイン
                   </Button>
                 );
