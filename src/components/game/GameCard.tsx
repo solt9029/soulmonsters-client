@@ -10,10 +10,14 @@ const StyledCard = styled(Card)`
   margin: 5px;
 `;
 
-export default function GameCard({ picture }: { picture?: string }) {
+export default function GameCard({
+  picture = BACK_SIDE_CARD,
+}: {
+  picture?: string;
+}) {
   return (
     <StyledCard>
-      <CardImg src={picture ? picture : BACK_SIDE_CARD} />
+      <CardImg src={picture} />
     </StyledCard>
   );
 }
