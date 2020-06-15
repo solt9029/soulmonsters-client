@@ -10,7 +10,7 @@ import {
 import { AppContext } from '../App';
 import { findGameCards, findTopGameCard, findGameUser } from '../../utils/game';
 import GameCard from './GameCard';
-import GameActions from '../../constants/game-actions';
+import GameActionNames from '../../constants/game-action-names';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -237,7 +237,9 @@ export default function GameCardArea() {
         <StyledCol>
           {yourGameUser?.actions.map((value) => {
             return (
-              <StyledButton color="primary">{GameActions[value]}</StyledButton>
+              <StyledButton color="primary">
+                {GameActionNames[value]}
+              </StyledButton>
             );
           })}
         </StyledCol>
