@@ -10,6 +10,7 @@ import {
 import { AppContext } from '../App';
 import { findGameCards, findTopGameCard, findGameUser } from '../../utils/game';
 import { BACK_SIDE_CARD } from '../../constants/pictures';
+import GameCard from './GameCard';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -126,9 +127,7 @@ export default function GameCardArea() {
                 value.currentUserId !== user.data?.uid
             )
             .map(() => (
-              <StyledCard>
-                <CardImg src={BACK_SIDE_CARD} />
-              </StyledCard>
+              <GameCard />
             ))}
         </StyledCol>
       </StyledRow>
@@ -146,18 +145,14 @@ export default function GameCardArea() {
                 value.currentUserId !== user.data?.uid
             )
             .map((value) => (
-              <StyledCard>
-                <CardImg src={value.card?.picture} />
-              </StyledCard>
+              <GameCard picture={value.card?.picture} />
             ))}
         </StyledCol>
       </StyledRow>
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
           {opponentMorgueTopGameCard && (
-            <StyledCard>
-              <CardImg src={opponentMorgueTopGameCard.card?.picture} />
-            </StyledCard>
+            <GameCard picture={opponentMorgueTopGameCard.card?.picture} />
           )}
         </StyledCol>
         <StyledCol lg={10} xs={10}>
@@ -165,9 +160,7 @@ export default function GameCardArea() {
             zone: Zone.Battle,
             isYours: false,
           }).map((value) => (
-            <StyledCard>
-              <CardImg src={value.card?.picture} />
-            </StyledCard>
+            <GameCard picture={value.card?.picture} />
           ))}
         </StyledCol>
       </StyledRow>
@@ -182,18 +175,14 @@ export default function GameCardArea() {
                 value.currentUserId === user.data?.uid
             )
             .map((value) => (
-              <StyledCard>
-                <CardImg src={value.card?.picture} />
-              </StyledCard>
+              <GameCard picture={value.card?.picture} />
             ))}
         </StyledCol>
 
         {/** your morgue zone */}
         <StyledCol lg={2} xs={2}>
           {yourMorgueTopGameCard && (
-            <StyledCard>
-              <CardImg src={yourMorgueTopGameCard.card?.picture} />
-            </StyledCard>
+            <GameCard picture={yourMorgueTopGameCard.card?.picture} />
           )}
         </StyledCol>
       </StyledRow>
@@ -208,9 +197,7 @@ export default function GameCardArea() {
                 value.currentUserId === user.data?.uid
             )
             .map((value) => (
-              <StyledCard>
-                <CardImg src={value.card?.picture} />
-              </StyledCard>
+              <GameCard picture={value.card?.picture} />
             ))}
         </StyledCol>
 
@@ -235,9 +222,7 @@ export default function GameCardArea() {
                 value.currentUserId === user.data?.uid
             )
             .map((value) => (
-              <StyledCard>
-                <CardImg src={value.card?.picture} />
-              </StyledCard>
+              <GameCard picture={value.card?.picture} />
             ))}
         </StyledCol>
       </StyledRow>
