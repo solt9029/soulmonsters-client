@@ -1,6 +1,5 @@
-import { AppContext } from './../components/App';
 import { auth } from 'firebase';
-import { Dispatch, useContext } from 'react';
+import { Dispatch } from 'react';
 import Action from '.';
 import AppState from '../models/AppState';
 
