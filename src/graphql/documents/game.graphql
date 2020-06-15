@@ -20,7 +20,7 @@ query game($id: Int!) {
       energy
       lifePoint
       lastViewedAt
-      actions
+      actionTypes
     }
     gameCards {
       id
