@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Container, Row, Col } from '../../styled/reactstrap';
-import { Card, CardImg, Alert } from 'reactstrap';
+import { Alert } from 'reactstrap';
 import styled from 'styled-components';
 import {
   useGameQuery,
@@ -9,7 +9,6 @@ import {
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
 import { findGameCards, findTopGameCard, findGameUser } from '../../utils/game';
-import { BACK_SIDE_CARD } from '../../constants/pictures';
 import GameCard from './GameCard';
 
 const StyledContainer = styled(Container)`
@@ -32,12 +31,6 @@ const StyledCol = styled(Col)`
 const StyledRow = styled(Row)`
   display: flex;
   height: 100px;
-`;
-
-const StyledCard = styled(Card)`
-  min-width: 60px;
-  width: 60px;
-  margin: 5px;
 `;
 
 const UserLogo = styled.div<{ picture?: string | null }>`
@@ -133,9 +126,8 @@ export default function GameCardArea() {
       </StyledRow>
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
-          <StyledCard>
-            <CardImg src={BACK_SIDE_CARD} />
-          </StyledCard>
+          {findGameCards(gameCards, user, { zone: Zone.Deck, isYours: false })
+            .length > 0 && <GameCard />}
         </StyledCol>
         <StyledCol lg={10} xs={10}>
           {data?.game.gameCards
@@ -204,11 +196,7 @@ export default function GameCardArea() {
         {/** your deck zone */}
         <StyledCol lg={2} xs={2}>
           {findGameCards(gameCards, user, { zone: Zone.Deck, isYours: true })
-            .length > 0 && (
-            <StyledCard>
-              <CardImg src={BACK_SIDE_CARD} />
-            </StyledCard>
-          )}
+            .length > 0 && <GameCard />}
         </StyledCol>
       </StyledRow>
 
