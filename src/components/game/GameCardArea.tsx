@@ -8,6 +8,7 @@ import {
   useActiveGameIdQuery,
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
+import { findGameCards, findTopGameCard, findGameUser } from '../../utils/game';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -90,43 +91,16 @@ export default function GameCardArea() {
     );
   }
 
-  const findGameUser = (options: { isYours: boolean }) => {
-    return data?.game.gameUsers.find(
-      (value) =>
-        (options.isYours && value.userId === user.data?.uid) ||
-        (!options.isYours && value.userId !== user.data?.uid)
-    );
-  };
-  const opponentGameUser = findGameUser({ isYours: false });
-  const yourGameUser = findGameUser({ isYours: true });
+  const gameUsers = data?.game.gameUsers;
+  const opponentGameUser = findGameUser(gameUsers, user, { isYours: false });
+  const yourGameUser = findGameUser(gameUsers, user, { isYours: true });
 
-  const findGameCards = (options: { zone: Zone; isYours: boolean }) => {
-    if (!data) {
-      return [];
-    }
-    return data.game.gameCards
-      .filter(
-        (value) =>
-          value.zone === options.zone &&
-          ((options.isYours && value.currentUserId === user.data?.uid) ||
-            (!options.isYours && value.currentUserId !== user.data?.uid))
-      )
-      .sort((a, b) => b.position - a.position);
-  };
-
-  const findTopGameCard = (options: { zone: Zone; isYours: boolean }) => {
-    return findGameCards(options).reduce<any>(
-      (a, b) => (a.position > b.position ? a : b),
-      null
-    );
-  };
-
-  const yourMorgueTopGameCard = findTopGameCard({
+  const gameCards = data?.game.gameCards;
+  const yourMorgueTopGameCard = findTopGameCard(gameCards, user, {
     zone: Zone.Morgue,
     isYours: true,
   });
-
-  const opponentMorgueTopGameCard = findTopGameCard({
+  const opponentMorgueTopGameCard = findTopGameCard(gameCards, user, {
     zone: Zone.Morgue,
     isYours: false,
   });
@@ -189,7 +163,10 @@ export default function GameCardArea() {
           )}
         </StyledCol>
         <StyledCol lg={10} xs={10}>
-          {findGameCards({ zone: Zone.Battle, isYours: false }).map((value) => (
+          {findGameCards(gameCards, user, {
+            zone: Zone.Battle,
+            isYours: false,
+          }).map((value) => (
             <StyledCard>
               <CardImg src={value.card?.picture} />
             </StyledCard>
@@ -241,7 +218,8 @@ export default function GameCardArea() {
 
         {/** your deck zone */}
         <StyledCol lg={2} xs={2}>
-          {findGameCards({ zone: Zone.Deck, isYours: true }).length > 0 && (
+          {findGameCards(gameCards, user, { zone: Zone.Deck, isYours: true })
+            .length > 0 && (
             <StyledCard>
               <CardImg src={backSidePicture} />
             </StyledCard>
