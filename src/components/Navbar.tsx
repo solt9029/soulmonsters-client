@@ -17,8 +17,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { AppContext } from './App';
-import { auth } from 'firebase';
-import { login } from '../actions/user';
+import { login, logout } from '../actions/user';
 
 const ServiceLogo = styled(NavbarBrand)`
   background: url('/images/icon.png') no-repeat left center;
@@ -78,15 +77,8 @@ export default function Navbar() {
     setIsDropdownOpen(false);
   }, [location.pathname]);
 
-  const logout = async () => {
-    dispatch({ type: 'SET_USER', payload: user.startLoading() });
-    try {
-      await auth().signOut();
-      dispatch({ type: 'SET_USER', payload: user.doneLogout() });
-      // TODO: initialize app state and clear graphql cache here.
-    } catch (error) {
-      dispatch({ type: 'SET_USER', payload: user.failedLogin(error) });
-    }
+  const handleLogoutClick = async () => {
+    await logout(dispatch, { user });
   };
 
   const handleLoginClick = async () => {
@@ -134,7 +126,9 @@ export default function Navbar() {
                 <Dropdown isOpen={isDropdownOpen} toggle={toggleDropdown}>
                   <UserLogo picture={user?.data?.photoURL} />
                   <DropdownMenu>
-                    <DropdownItem onClick={logout}>ログアウト</DropdownItem>
+                    <DropdownItem onClick={handleLogoutClick}>
+                      ログアウト
+                    </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               );
