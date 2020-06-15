@@ -13,7 +13,7 @@ import Lockr from 'lockr';
 import Game from '../pages/Game';
 import AppState from '../models/AppState';
 import reducer from '../reducer';
-import Action from '../action';
+import Action from '../actions';
 
 export interface AppContextInterface {
   state: AppState;

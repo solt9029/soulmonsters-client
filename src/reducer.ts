@@ -1,5 +1,5 @@
 import AppState from './models/AppState';
-import Action from './action';
+import Action from './actions';
 
 export default function (state: AppState, action: Action): AppState {
   switch (action.type) {

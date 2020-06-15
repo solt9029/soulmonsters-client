@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-client';
-import { ErrorName } from './models/AppState';
-import DeckModal from './models/DeckModal';
-import User from './models/User';
+import { ErrorName } from '../models/AppState';
+import DeckModal from '../models/DeckModal';
+import User from '../models/User';
 
 type Action =
   | {
