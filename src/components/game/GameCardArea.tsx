@@ -235,7 +235,7 @@ export default function GameCardArea() {
           </UserInfo>
         </StyledCol>
         <StyledCol>
-          {yourGameUser?.actions.map((value) => {
+          {yourGameUser?.actionTypes.map((value) => {
             return (
               <StyledButton color="primary">
                 {GameActionNames[value]}

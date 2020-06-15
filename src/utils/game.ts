@@ -31,7 +31,7 @@ type GameCards = Array<
 type GameUsers = Array<
   { __typename?: 'GameUser' } & Pick<
     GameUser,
-    'id' | 'userId' | 'energy' | 'lifePoint' | 'lastViewedAt' | 'actions'
+    'id' | 'userId' | 'energy' | 'lifePoint' | 'lastViewedAt' | 'actionTypes'
   > & {
       user: { __typename?: 'User' } & Pick<
         GraphQLUser,
