@@ -9,6 +9,7 @@ import {
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
 import { findGameCards, findTopGameCard, findGameUser } from '../../utils/game';
+import { BACK_SIDE_CARD } from '../../constants/pictures';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -60,9 +61,6 @@ const UserInfo = styled.div`
 const UserName = styled.div`
   font-weight: bold;
 `;
-
-const backSidePicture =
-  'https://lh3.googleusercontent.com/pw/ACtC-3dXtsXacJv-FU8R-kX2afNOX4KKPEbb_3Z7YrLFhNm3DDT4l2WPtAacoZas43eol-e5oPHrLGHBV-TZC4LygN6g8kjHDUn_ouFSa0ukSgY4ZU6rVsRBqwgN59C4NmvxOJEFGCSEMPZetZfzJitN4kz1XQ=w1000-h1431-no?authuser=0';
 
 export default function GameCardArea() {
   const {
@@ -129,7 +127,7 @@ export default function GameCardArea() {
             )
             .map(() => (
               <StyledCard>
-                <CardImg src={backSidePicture} />
+                <CardImg src={BACK_SIDE_CARD} />
               </StyledCard>
             ))}
         </StyledCol>
@@ -137,7 +135,7 @@ export default function GameCardArea() {
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
           <StyledCard>
-            <CardImg src={backSidePicture} />
+            <CardImg src={BACK_SIDE_CARD} />
           </StyledCard>
         </StyledCol>
         <StyledCol lg={10} xs={10}>
@@ -221,7 +219,7 @@ export default function GameCardArea() {
           {findGameCards(gameCards, user, { zone: Zone.Deck, isYours: true })
             .length > 0 && (
             <StyledCard>
-              <CardImg src={backSidePicture} />
+              <CardImg src={BACK_SIDE_CARD} />
             </StyledCard>
           )}
         </StyledCol>
