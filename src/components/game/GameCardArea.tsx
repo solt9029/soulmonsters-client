@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Container, Row, Col } from '../../styled/reactstrap';
-import { Alert } from 'reactstrap';
+import { Alert, Button } from 'reactstrap';
 import styled from 'styled-components';
 import {
   useGameQuery,
@@ -10,6 +10,7 @@ import {
 import { AppContext } from '../App';
 import { findGameCards, findTopGameCard, findGameUser } from '../../utils/game';
 import GameCard from './GameCard';
+import GameActions from '../../constants/game-actions';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -56,6 +57,13 @@ const UserName = styled.div`
   font-weight: bold;
 `;
 
+const StyledButton = styled(Button)`
+  width: 100%;
+  & + & {
+    margin-left: 10px;
+  }
+`;
+
 export default function GameCardArea() {
   const {
     state: { user },
@@ -100,7 +108,7 @@ export default function GameCardArea() {
   return (
     <Container marginTop={20} marginBottom={20}>
       <Row>
-        <StyledCol lg={12}>
+        <StyledCol lg={6}>
           <UserLogo picture={opponentGameUser?.user.photoURL} />
           <UserInfo>
             <UserName>{opponentGameUser?.user.displayName}</UserName>
@@ -216,7 +224,7 @@ export default function GameCardArea() {
       </StyledRow>
 
       <Row marginTop={5}>
-        <StyledCol lg={12}>
+        <StyledCol lg={6}>
           <UserLogo picture={user?.data?.photoURL} />
           <UserInfo>
             <UserName>{user?.data?.displayName}</UserName>
@@ -225,6 +233,13 @@ export default function GameCardArea() {
               {yourGameUser?.energy}
             </div>
           </UserInfo>
+        </StyledCol>
+        <StyledCol>
+          {yourGameUser?.actions.map((value) => {
+            return (
+              <StyledButton color="primary">{GameActions[value]}</StyledButton>
+            );
+          })}
         </StyledCol>
       </Row>
     </Container>
