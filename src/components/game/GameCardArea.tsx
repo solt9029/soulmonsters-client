@@ -6,6 +6,8 @@ import {
   useGameQuery,
   Zone,
   useActiveGameIdQuery,
+  useDispatchGameActionMutation,
+  GameDocument,
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
 import { findGameCards, findTopGameCard, findGameUser } from '../../utils/game';
@@ -70,9 +72,16 @@ export default function GameCardArea() {
   } = useContext(AppContext);
 
   const activeGameIdQueryResult = useActiveGameIdQuery();
+  const activeGameId = activeGameIdQueryResult.data?.activeGameId || 1;
+
+  const [dispatchGameAction] = useDispatchGameActionMutation({
+    refetchQueries: [{ query: GameDocument, variables: { id: activeGameId } }],
+    onCompleted: () => {},
+    onError: (error) => {},
+  });
 
   const { data, error, loading } = useGameQuery({
-    variables: { id: activeGameIdQueryResult.data?.activeGameId || 1 },
+    variables: { id: activeGameId },
   });
 
   if (error) {
@@ -237,7 +246,14 @@ export default function GameCardArea() {
         <StyledCol>
           {yourGameUser?.actionTypes.map((value) => {
             return (
-              <StyledButton color="primary">
+              <StyledButton
+                color="primary"
+                onClick={() => {
+                  dispatchGameAction({
+                    variables: { id: activeGameId, data: { type: value } },
+                  });
+                }}
+              >
                 {GameActionNames[value]}
               </StyledButton>
             );
