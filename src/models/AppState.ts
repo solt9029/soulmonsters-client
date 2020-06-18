@@ -1,3 +1,4 @@
+import ActionStatus from './ActionStatus';
 import { ApolloError } from 'apollo-client';
 import User from './User';
 import DeckModal from './DeckModal';
@@ -10,6 +11,7 @@ export interface AppStateInterface {
   minusDeckCardError: ApolloError | null;
   createDeckError: ApolloError | null;
   deckModal: DeckModal;
+  actionStatus: ActionStatus;
 }
 
 export type ErrorName =
@@ -25,6 +27,7 @@ export default class AppState extends Record<AppStateInterface>(
     minusDeckCardError: null,
     createDeckError: null,
     deckModal: new DeckModal(),
+    actionStatus: new ActionStatus(),
   },
   'AppState'
 ) {
@@ -42,5 +45,8 @@ export default class AppState extends Record<AppStateInterface>(
   }
   setDeckModal(data: DeckModal) {
     return this.set('deckModal', data);
+  }
+  setActionStatus(data: ActionStatus) {
+    return this.set('actionStatus', data);
   }
 }
