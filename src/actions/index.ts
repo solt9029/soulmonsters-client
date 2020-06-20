@@ -3,6 +3,7 @@ import { ErrorName } from '../models/AppState';
 import DeckModal from '../models/DeckModal';
 import User from '../models/User';
 import ActionStatus from '../models/ActionStatus';
+import GameModal from '../models/GameModal';
 
 type Action =
   | {
@@ -31,6 +32,10 @@ type Action =
   | {
       type: 'SET_ACTION_STATUS';
       payload: ActionStatus;
+    }
+  | {
+      type: 'SET_GAME_MODAL';
+      payload: GameModal;
     };
 
 export default Action;

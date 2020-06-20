@@ -6,6 +6,7 @@ import GameCardArea from '../components/game/GameCardArea';
 import SplitterLayout from 'react-splitter-layout';
 import 'react-splitter-layout/lib/index.css';
 import './Game.css';
+import GameModal from '../components/game/GameModal';
 
 export default function Game() {
   const activeGameIdQueryResult = useActiveGameIdQuery();
@@ -33,6 +34,7 @@ export default function Game() {
             <div>pane2</div>
           </SplitterLayout>
         )}
+      <GameModal />
     </>
   );
 }
