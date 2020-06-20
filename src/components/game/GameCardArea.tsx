@@ -146,15 +146,12 @@ export default function GameCardArea() {
       </Row>
       <StyledRow marginTop={5}>
         <StyledCol lg={12}>
-          {data?.game.gameCards
-            .filter(
-              (value) =>
-                value.zone === Zone.Hand &&
-                value.currentUserId !== user.data?.uid
-            )
-            .map(() => (
-              <GameCard />
-            ))}
+          {findGameCards(gameCards, user, {
+            zone: Zone.Hand,
+            isYours: false,
+          }).map((value) => (
+            <GameCard picture={value.card?.picture} />
+          ))}
         </StyledCol>
       </StyledRow>
       <StyledRow marginTop={5}>
@@ -163,15 +160,12 @@ export default function GameCardArea() {
             .length > 0 && <GameCard />}
         </StyledCol>
         <StyledCol lg={10} xs={10}>
-          {data?.game.gameCards
-            .filter(
-              (value) =>
-                value.zone === Zone.Soul &&
-                value.currentUserId !== user.data?.uid
-            )
-            .map((value) => (
-              <GameCard picture={value.card?.picture} />
-            ))}
+          {findGameCards(gameCards, user, {
+            zone: Zone.Soul,
+            isYours: false,
+          }).map((value) => (
+            <GameCard picture={value.card?.picture} />
+          ))}
         </StyledCol>
       </StyledRow>
       <StyledRow marginTop={5}>
@@ -193,15 +187,12 @@ export default function GameCardArea() {
       <StyledRow marginTop={50}>
         {/** your battle zone */}
         <StyledCol lg={10} xs={10}>
-          {data?.game.gameCards
-            .filter(
-              (value) =>
-                value.zone === Zone.Battle &&
-                value.currentUserId === user.data?.uid
-            )
-            .map((value) => (
-              <GameCard picture={value.card?.picture} />
-            ))}
+          {findGameCards(gameCards, user, {
+            zone: Zone.Battle,
+            isYours: true,
+          }).map((value) => (
+            <GameCard picture={value.card?.picture} />
+          ))}
         </StyledCol>
 
         {/** your morgue zone */}
@@ -215,15 +206,12 @@ export default function GameCardArea() {
       <StyledRow marginTop={5}>
         {/** your soul zone */}
         <StyledCol lg={10} xs={10}>
-          {data?.game.gameCards
-            .filter(
-              (value) =>
-                value.zone === Zone.Soul &&
-                value.currentUserId === user.data?.uid
-            )
-            .map((value) => (
-              <GameCard picture={value.card?.picture} />
-            ))}
+          {findGameCards(gameCards, user, {
+            zone: Zone.Soul,
+            isYours: true,
+          }).map((value) => (
+            <GameCard picture={value.card?.picture} />
+          ))}
         </StyledCol>
 
         {/** your deck zone */}
@@ -236,15 +224,12 @@ export default function GameCardArea() {
       <StyledRow marginTop={5}>
         {/** your hand zone */}
         <StyledCol lg={12}>
-          {data?.game.gameCards
-            .filter(
-              (value) =>
-                value.zone === Zone.Hand &&
-                value.currentUserId === user.data?.uid
-            )
-            .map((value) => (
-              <GameCard picture={value.card?.picture} />
-            ))}
+          {findGameCards(gameCards, user, {
+            zone: Zone.Hand,
+            isYours: true,
+          }).map((value) => (
+            <GameCard picture={value.card?.picture} />
+          ))}
         </StyledCol>
       </StyledRow>
 
