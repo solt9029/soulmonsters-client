@@ -8,6 +8,7 @@ import {
   useActiveGameIdQuery,
   useDispatchGameActionMutation,
   GameDocument,
+  ActionType,
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
 import { findGameCards, findTopGameCard, findGameUser } from '../../utils/game';
@@ -68,7 +69,8 @@ const StyledButton = styled(Button)`
 
 export default function GameCardArea() {
   const {
-    state: { user },
+    state: { user, actionStatus },
+    dispatch,
   } = useContext(AppContext);
 
   const activeGameIdQueryResult = useActiveGameIdQuery();
@@ -113,6 +115,20 @@ export default function GameCardArea() {
     zone: Zone.Morgue,
     isYours: false,
   });
+
+  const handleActionClick = (value: ActionType) => {
+    const newActionStatus = actionStatus.start({ type: value });
+    if (newActionStatus.isCompleted()) {
+      dispatchGameAction({
+        variables: { id: activeGameId, data: { type: value } },
+      });
+      return;
+    }
+    dispatch({
+      type: 'SET_ACTION_STATUS',
+      payload: newActionStatus,
+    });
+  };
 
   return (
     <Container marginTop={20} marginBottom={20}>
@@ -249,9 +265,7 @@ export default function GameCardArea() {
               <StyledButton
                 color="primary"
                 onClick={() => {
-                  dispatchGameAction({
-                    variables: { id: activeGameId, data: { type: value } },
-                  });
+                  handleActionClick(value);
                 }}
               >
                 {GameActionNames[value]}

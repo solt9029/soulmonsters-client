@@ -2,6 +2,7 @@ import { ApolloError } from 'apollo-client';
 import { ErrorName } from '../models/AppState';
 import DeckModal from '../models/DeckModal';
 import User from '../models/User';
+import ActionStatus from '../models/ActionStatus';
 
 type Action =
   | {
@@ -26,6 +27,10 @@ type Action =
   | {
       type: 'SET_DECK_MODAL';
       payload: DeckModal;
+    }
+  | {
+      type: 'SET_ACTION_STATUS';
+      payload: ActionStatus;
     };
 
 export default Action;

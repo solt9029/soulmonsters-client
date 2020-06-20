@@ -6,6 +6,7 @@ import { Record } from 'immutable';
 
 export interface ActionStatusInterface {
   type: ActionType | null;
+  gameCardId?: number;
   payload: ActionPayload;
   step: number;
 }
@@ -22,7 +23,16 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
   },
   'ActionStatus'
 ) {
-  start(data: ActionType): ActionStatus {
-    return new ActionStatus({ type: data });
+  start(data: { type: ActionType; gameCardId?: number }): ActionStatus {
+    return new ActionStatus(data);
+  }
+  isCompleted() {
+    if (
+      this.type === ActionType.StartDrawTime ||
+      this.type === ActionType.StartEnergyTime
+    ) {
+      return true;
+    }
+    return false;
   }
 }
