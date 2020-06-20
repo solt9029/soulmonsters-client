@@ -28,8 +28,11 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
   }
   isCompleted() {
     if (
-      this.type === ActionType.StartDrawTime ||
-      this.type === ActionType.StartEnergyTime
+      Array<ActionType | null>(
+        ActionType.StartDrawTime,
+        ActionType.StartEnergyTime,
+        ActionType.StartPutTime
+      ).includes(this.type)
     ) {
       return true;
     }
