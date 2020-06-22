@@ -31,7 +31,8 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
       Array<ActionType | null>(
         ActionType.StartDrawTime,
         ActionType.StartEnergyTime,
-        ActionType.StartPutTime
+        ActionType.StartPutTime,
+        ActionType.PutSoul
       ).includes(this.type)
     ) {
       return true;
