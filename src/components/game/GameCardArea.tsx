@@ -14,6 +14,7 @@ import { AppContext } from '../App';
 import { findGameCards, findTopGameCard, findGameUser } from '../../utils/game';
 import GameCard from './GameCard';
 import GameActionNames from '../../constants/game-action-names';
+import SingleGameCard from './SingleGameCard';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -228,7 +229,7 @@ export default function GameCardArea() {
             zone: Zone.Hand,
             isYours: true,
           }).map((value) => (
-            <GameCard picture={value.card?.picture} />
+            <SingleGameCard data={value} />
           ))}
         </StyledCol>
       </StyledRow>

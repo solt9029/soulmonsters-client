@@ -3,7 +3,7 @@ import { ErrorName } from '../models/AppState';
 import DeckModal from '../models/DeckModal';
 import User from '../models/User';
 import ActionStatus from '../models/ActionStatus';
-import GameModal from '../models/GameModal';
+import SingleGameCardModal from '../models/SingleGameCardModal';
 
 type Action =
   | {
@@ -34,8 +34,8 @@ type Action =
       payload: ActionStatus;
     }
   | {
-      type: 'SET_GAME_MODAL';
-      payload: GameModal;
+      type: 'SET_SINGLE_GAME_CARD_MODAL';
+      payload: SingleGameCardModal;
     };
 
 export default Action;

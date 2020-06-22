@@ -23,24 +23,7 @@ query game($id: Int!) {
       actionTypes
     }
     gameCards {
-      id
-      originalUserId
-      currentUserId
-      zone
-      position
-      battlePosition
-      name
-      kind
-      type
-      attribute
-      attack
-      defence
-      cost
-      detail
-      card {
-        id
-        picture
-      }
+      ...GameCard
     }
   }
 }
@@ -54,5 +37,27 @@ mutation startGame($deckId: Int!) {
 mutation dispatchGameAction($id: Int!, $data: DispatchGameActionInput!) {
   dispatchGameAction(id: $id, data: $data) {
     id
+  }
+}
+
+fragment GameCard on GameCard {
+  id
+  originalUserId
+  currentUserId
+  zone
+  position
+  battlePosition
+  name
+  kind
+  type
+  attribute
+  attack
+  defence
+  cost
+  detail
+  actionTypes
+  card {
+    id
+    picture
   }
 }

@@ -25,6 +25,7 @@ type GameCards = Array<
     | 'defence'
     | 'cost'
     | 'detail'
+    | 'actionTypes'
   > & { card?: Maybe<{ __typename?: 'Card' } & Pick<Card, 'id' | 'picture'>> }
 >;
 

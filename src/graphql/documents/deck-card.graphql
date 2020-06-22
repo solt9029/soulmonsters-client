@@ -3,7 +3,7 @@ query deckCards($deckId: Int!) {
     id
     count
     card {
-      ...CardFragment
+      ...Card
     }
   }
 }
