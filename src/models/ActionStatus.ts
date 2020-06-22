@@ -1,12 +1,13 @@
 import {
   ActionType,
   ActionPayload,
+  GameCardFragment,
 } from './../graphql/generated/graphql-client';
 import { Record } from 'immutable';
 
 export interface ActionStatusInterface {
   type: ActionType | null;
-  gameCardId?: number;
+  gameCard?: GameCardFragment;
   payload: ActionPayload;
   step: number;
 }
@@ -14,6 +15,7 @@ export interface ActionStatusInterface {
 export default class ActionStatus extends Record<ActionStatusInterface>(
   {
     type: null,
+    gameCard: undefined,
     payload: {
       targetGameCardIds: [],
       costGameCardIds: [],
@@ -23,7 +25,7 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
   },
   'ActionStatus'
 ) {
-  start(data: { type: ActionType; gameCardId?: number }): ActionStatus {
+  start(data: { type: ActionType; gameCard?: GameCardFragment }): ActionStatus {
     return new ActionStatus(data);
   }
   isCompleted() {

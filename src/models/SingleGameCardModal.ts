@@ -2,7 +2,7 @@ import { GameCardFragment } from './../graphql/generated/graphql-client';
 import { Record } from 'immutable';
 
 export interface SingleGameCardModalInterface {
-  data: GameCardFragment | null;
+  data?: GameCardFragment;
   isOpen: boolean;
 }
 
@@ -10,7 +10,7 @@ export default class SingleGameCardModal extends Record<
   SingleGameCardModalInterface
 >(
   {
-    data: null,
+    data: undefined,
     isOpen: false,
   },
   'SingleGameCardModal'

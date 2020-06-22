@@ -45,7 +45,10 @@ export default function SingleGameCardModal() {
   };
 
   const handleActionClick = (value: ActionType) => {
-    const newActionStatus = actionStatus.start({ type: value });
+    const newActionStatus = actionStatus.start({
+      type: value,
+      gameCard: singleGameCardModal.data,
+    });
     if (newActionStatus.isCompleted()) {
       dispatchGameAction({
         variables: {
