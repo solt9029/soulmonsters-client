@@ -1,20 +1,17 @@
 import React, { useContext } from 'react';
 import { Container, Row, Col } from '../../styled/reactstrap';
-import { Alert, Button } from 'reactstrap';
+import { Alert } from 'reactstrap';
 import styled from 'styled-components';
 import {
   useGameQuery,
   Zone,
   useActiveGameIdQuery,
-  useDispatchGameActionMutation,
-  GameDocument,
-  ActionType,
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
 import { findGameCards, findTopGameCard, findGameUser } from '../../utils/game';
 import GameCard from './GameCard';
-import GameActionNames from '../../constants/game-action-names';
 import SingleGameCard from './SingleGameCard';
+import GameActionButton from './GameActionButton';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -61,27 +58,13 @@ const UserName = styled.div`
   font-weight: bold;
 `;
 
-const StyledButton = styled(Button)`
-  width: 100%;
-  & + & {
-    margin-left: 10px;
-  }
-`;
-
 export default function GameCardArea() {
   const {
-    state: { user, actionStatus },
-    dispatch,
+    state: { user },
   } = useContext(AppContext);
 
   const activeGameIdQueryResult = useActiveGameIdQuery();
   const activeGameId = activeGameIdQueryResult.data?.activeGameId || 1;
-
-  const [dispatchGameAction] = useDispatchGameActionMutation({
-    refetchQueries: [{ query: GameDocument, variables: { id: activeGameId } }],
-    onCompleted: () => {},
-    onError: (error) => {},
-  });
 
   const { data, error, loading } = useGameQuery({
     variables: { id: activeGameId },
@@ -116,20 +99,6 @@ export default function GameCardArea() {
     zone: Zone.Morgue,
     isYours: false,
   });
-
-  const handleActionClick = (value: ActionType) => {
-    const newActionStatus = actionStatus.start({ type: value });
-    if (newActionStatus.isCompleted()) {
-      dispatchGameAction({
-        variables: { id: activeGameId, data: { type: value } },
-      });
-      return;
-    }
-    dispatch({
-      type: 'SET_ACTION_STATUS',
-      payload: newActionStatus,
-    });
-  };
 
   return (
     <Container marginTop={20} marginBottom={20}>
@@ -211,7 +180,7 @@ export default function GameCardArea() {
             zone: Zone.Soul,
             isYours: true,
           }).map((value) => (
-            <GameCard picture={value.card?.picture} />
+            <SingleGameCard data={value} />
           ))}
         </StyledCol>
 
@@ -246,18 +215,9 @@ export default function GameCardArea() {
           </UserInfo>
         </StyledCol>
         <StyledCol>
-          {yourGameUser?.actionTypes.map((value) => {
-            return (
-              <StyledButton
-                color="primary"
-                onClick={() => {
-                  handleActionClick(value);
-                }}
-              >
-                {GameActionNames[value]}
-              </StyledButton>
-            );
-          })}
+          {yourGameUser?.actionTypes.map((value) => (
+            <GameActionButton type={value} />
+          ))}
         </StyledCol>
       </Row>
     </Container>
