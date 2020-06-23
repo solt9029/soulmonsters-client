@@ -7,16 +7,13 @@ import {
   ModalFooter,
   ListGroup,
   ListGroupItem,
+  Card,
+  CardImg,
 } from 'reactstrap';
 import { AppContext } from '../App';
-import styled from 'styled-components';
 import { Row, Col } from '../../styled/reactstrap';
 import GameActionButton from './GameActionButton';
 import { BACK_SIDE_CARD } from '../../constants/pictures';
-
-const Img = styled.img`
-  width: 100%;
-`;
 
 export default function MorgueGameCardListModal() {
   const {
@@ -42,7 +39,9 @@ export default function MorgueGameCardListModal() {
             <ListGroupItem>
               <Row>
                 <Col lg={3} xs={3}>
-                  <Img src={gameCard.card?.picture || BACK_SIDE_CARD} />
+                  <Card>
+                    <CardImg src={gameCard.card?.picture || BACK_SIDE_CARD} />
+                  </Card>
                 </Col>
                 <Col lg={9} xs={9}>
                   <h5>{gameCard.name}</h5>

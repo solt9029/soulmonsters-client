@@ -1,13 +1,16 @@
 import React, { useContext } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Card,
+  CardImg,
+} from 'reactstrap';
 import { AppContext } from '../App';
-import styled from 'styled-components';
 import { Row, Col } from '../../styled/reactstrap';
 import GameActionButton from './GameActionButton';
-
-const Img = styled.img`
-  width: 100%;
-`;
 
 export default function SingleGameCardModal() {
   const {
@@ -28,7 +31,9 @@ export default function SingleGameCardModal() {
       <ModalBody>
         <Row>
           <Col lg={6} xs={6}>
-            <Img alt="modal" src={singleGameCardModal.data?.card?.picture} />
+            <Card>
+              <CardImg src={singleGameCardModal.data?.card?.picture} />
+            </Card>
           </Col>
           <Col lg={6} xs={6}>
             {singleGameCardModal.data?.actionTypes.map((value) => (
