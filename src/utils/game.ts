@@ -1,33 +1,10 @@
 import {
   Zone,
-  Maybe,
-  Card,
-  GameCard,
   GameUser,
   User as GraphQLUser,
+  GameCardFragment,
 } from './../graphql/generated/graphql-client';
 import UserModel from '../models/User';
-
-type GameCards = Array<
-  { __typename?: 'GameCard' } & Pick<
-    GameCard,
-    | 'id'
-    | 'originalUserId'
-    | 'currentUserId'
-    | 'zone'
-    | 'position'
-    | 'battlePosition'
-    | 'name'
-    | 'kind'
-    | 'type'
-    | 'attribute'
-    | 'attack'
-    | 'defence'
-    | 'cost'
-    | 'detail'
-    | 'actionTypes'
-  > & { card?: Maybe<{ __typename?: 'Card' } & Pick<Card, 'id' | 'picture'>> }
->;
 
 type GameUsers = Array<
   { __typename?: 'GameUser' } & Pick<
@@ -54,7 +31,7 @@ export const findGameUser = (
 };
 
 export const findGameCards = (
-  gameCards: GameCards | undefined | null,
+  gameCards: GameCardFragment[] | undefined | null,
   user: UserModel,
   options: { zone: Zone; isYours: boolean }
 ) => {
@@ -71,13 +48,9 @@ export const findGameCards = (
     .sort((a, b) => b.position - a.position);
 };
 
-export const findTopGameCard = (
-  gameCards: GameCards | undefined | null,
-  user: UserModel,
-  options: { zone: Zone; isYours: boolean }
-) => {
-  return findGameCards(gameCards, user, options).reduce<any>(
-    (a, b) => (a.position > b.position ? a : b),
+export const findTopGameCard = (gameCards: GameCardFragment[]) => {
+  return gameCards?.reduce<any>(
+    (a, b) => (a?.position > b?.position ? a : b),
     null
   );
 };

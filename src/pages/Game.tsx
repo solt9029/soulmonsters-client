@@ -7,6 +7,7 @@ import SplitterLayout from 'react-splitter-layout';
 import 'react-splitter-layout/lib/index.css';
 import './Game.css';
 import SingleGameCardModal from '../components/game/SingleGameCardModal';
+import MorgueGameCardListModal from '../components/game/MorgueGameCardListModal';
 
 export default function Game() {
   const activeGameIdQueryResult = useActiveGameIdQuery();
@@ -35,6 +36,7 @@ export default function Game() {
           </SplitterLayout>
         )}
       <SingleGameCardModal />
+      <MorgueGameCardListModal />
     </>
   );
 }

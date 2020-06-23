@@ -15,6 +15,8 @@ export default function (state: AppState, action: Action): AppState {
       return state.setDeckModal(action.payload);
     case 'SET_SINGLE_GAME_CARD_MODAL':
       return state.setSingleGameCardModal(action.payload);
+    case 'SET_MORGUE_GAME_CARD_LIST_MODAL':
+      return state.setMorgueGameCardListModal(action.payload);
     default:
       return state;
   }

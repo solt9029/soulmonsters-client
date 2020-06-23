@@ -8,10 +8,11 @@ import {
   useActiveGameIdQuery,
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
-import { findGameCards, findTopGameCard, findGameUser } from '../../utils/game';
+import { findGameCards, findGameUser } from '../../utils/game';
 import GameCard from './GameCard';
 import SingleGameCard from './SingleGameCard';
 import GameActionButton from './GameActionButton';
+import MorgueGameCardList from './MorgueGameCardList';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -89,13 +90,12 @@ export default function GameCardArea() {
   const gameUsers = data?.game.gameUsers;
   const opponentGameUser = findGameUser(gameUsers, user, { isYours: false });
   const yourGameUser = findGameUser(gameUsers, user, { isYours: true });
-
   const gameCards = data?.game.gameCards;
-  const yourMorgueTopGameCard = findTopGameCard(gameCards, user, {
+  const yourMorgueGameCards = findGameCards(gameCards, user, {
     zone: Zone.Morgue,
     isYours: true,
   });
-  const opponentMorgueTopGameCard = findTopGameCard(gameCards, user, {
+  const opponentMorgueGameCards = findGameCards(gameCards, user, {
     zone: Zone.Morgue,
     isYours: false,
   });
@@ -140,8 +140,8 @@ export default function GameCardArea() {
       </StyledRow>
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
-          {opponentMorgueTopGameCard && (
-            <GameCard picture={opponentMorgueTopGameCard.card?.picture} />
+          {opponentMorgueGameCards.length > 0 && (
+            <MorgueGameCardList data={opponentMorgueGameCards} />
           )}
         </StyledCol>
         <StyledCol lg={10} xs={10}>
@@ -167,8 +167,8 @@ export default function GameCardArea() {
 
         {/** your morgue zone */}
         <StyledCol lg={2} xs={2}>
-          {yourMorgueTopGameCard && (
-            <GameCard picture={yourMorgueTopGameCard.card?.picture} />
+          {yourMorgueGameCards.length > 0 && (
+            <MorgueGameCardList data={yourMorgueGameCards} />
           )}
         </StyledCol>
       </StyledRow>
