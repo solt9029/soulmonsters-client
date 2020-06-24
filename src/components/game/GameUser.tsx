@@ -1,10 +1,7 @@
 import React, { useContext } from 'react';
 import { Col } from '../../styled/reactstrap';
 import styled from 'styled-components';
-import {
-  useGameQuery,
-  useActiveGameIdQuery,
-} from '../../graphql/generated/graphql-client';
+import { GameUserFragment } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
 import { findGameUser } from '../../utils/game';
 import GameActionButton from './GameActionButton';
@@ -46,25 +43,15 @@ const UserName = styled.div`
 `;
 
 export type GameUserProps = {
+  gameUsers: GameUserFragment[] | undefined;
   isYours: boolean;
 };
 
-export default function GameUser({ isYours }: GameUserProps) {
+export default function GameUser({ gameUsers, isYours }: GameUserProps) {
   const {
     state: { user },
   } = useContext(AppContext);
 
-  const activeGameIdQueryResult = useActiveGameIdQuery();
-  const activeGameId = activeGameIdQueryResult.data?.activeGameId || 1;
-  const gameQueryResult = useGameQuery({
-    variables: { id: activeGameId },
-  });
-
-  if (!activeGameIdQueryResult.data || !gameQueryResult.data || !user.data) {
-    return <></>;
-  }
-
-  const gameUsers = gameQueryResult.data?.game.gameUsers;
   const gameUser = findGameUser(gameUsers, user, { isYours });
 
   return (

@@ -64,11 +64,12 @@ export default function GameCardArea() {
   }
 
   const gameCards = data?.game.gameCards;
+  const gameUsers = data?.game.gameUsers;
 
   return (
     <Container marginTop={20} marginBottom={20}>
       <Row>
-        <GameUser isYours={false} />
+        <GameUser gameUsers={gameUsers} isYours={false} />
       </Row>
       <StyledRow marginTop={5}>
         <StyledCol lg={12}>
@@ -170,7 +171,7 @@ export default function GameCardArea() {
       </StyledRow>
 
       <Row marginTop={5}>
-        <GameUser isYours={true} />
+        <GameUser gameUsers={gameUsers} isYours={true} />
       </Row>
     </Container>
   );
