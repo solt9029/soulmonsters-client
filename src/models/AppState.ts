@@ -58,6 +58,12 @@ export default class AppState extends Record<AppStateInterface>(
   setGameCardListModal(data: GameCardListModal) {
     return this.set('gameCardListModal', data);
   }
+  closeGameModal() {
+    return this.set('gameCardModal', this.gameCardModal.close()).set(
+      'gameCardListModal',
+      this.gameCardListModal.close()
+    );
+  }
   setActionStatus(data: ActionStatus) {
     return this.set('actionStatus', data);
   }

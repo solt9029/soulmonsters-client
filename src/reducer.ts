@@ -17,6 +17,8 @@ export default function (state: AppState, action: Action): AppState {
       return state.setGameCardModal(action.payload);
     case 'SET_GAME_CARD_LIST_MODAL':
       return state.setGameCardListModal(action.payload);
+    case 'CLOSE_GAME_MODAL':
+      return state.closeGameModal();
     default:
       return state;
   }

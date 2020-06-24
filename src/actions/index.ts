@@ -41,6 +41,7 @@ type Action =
   | {
       type: 'SET_GAME_CARD_LIST_MODAL';
       payload: GameCardListModal;
-    };
+    }
+  | { type: 'CLOSE_GAME_MODAL' };
 
 export default Action;
