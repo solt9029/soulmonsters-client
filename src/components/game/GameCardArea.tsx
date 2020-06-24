@@ -8,9 +8,8 @@ import {
   useActiveGameIdQuery,
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
-import { findGameCards, findGameUser } from '../../utils/game';
+import { findGameCards } from '../../utils/game';
 import SingleGameCard from './SingleGameCard';
-import GameActionButton from './GameActionButton';
 import GameCardStack from './GameCardStack';
 import GameUser from './GameUser';
 
@@ -34,29 +33,6 @@ const StyledCol = styled(Col)`
 const StyledRow = styled(Row)`
   display: flex;
   height: 100px;
-`;
-
-const UserLogo = styled.div<{ picture?: string | null }>`
-  ${(props) => `background: url('${props.picture}') no-repeat left center;`}
-  background-size: contain;
-  border-radius: 50%;
-  border: none;
-  &:focus {
-    box-shadow: none;
-  }
-  &:hover {
-    border-color: #eee;
-  }
-  height: 45px;
-  width: 45px;
-`;
-
-const UserInfo = styled.div`
-  margin-left: 10px;
-`;
-
-const UserName = styled.div`
-  font-weight: bold;
 `;
 
 export default function GameCardArea() {
@@ -87,9 +63,6 @@ export default function GameCardArea() {
     );
   }
 
-  const gameUsers = data?.game.gameUsers;
-  const opponentGameUser = findGameUser(gameUsers, user, { isYours: false });
-  const yourGameUser = findGameUser(gameUsers, user, { isYours: true });
   const gameCards = data?.game.gameCards;
   const yourMorgueGameCards = findGameCards(gameCards, user, {
     zone: Zone.Morgue,
