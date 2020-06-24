@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Container, Row, Col } from '../../styled/reactstrap';
 import { Alert } from 'reactstrap';
 import styled from 'styled-components';
@@ -7,11 +7,9 @@ import {
   Zone,
   useActiveGameIdQuery,
 } from '../../graphql/generated/graphql-client';
-import { AppContext } from '../App';
-import { findGameCards } from '../../utils/game';
-import SingleGameCard from './GameCard';
 import GameCardStack from './GameCardStack';
 import GameUser from './GameUser';
+import GameCardList from './GameCardList';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -36,10 +34,6 @@ const StyledRow = styled(Row)`
 `;
 
 export default function GameCardArea() {
-  const {
-    state: { user },
-  } = useContext(AppContext);
-
   const activeGameIdQueryResult = useActiveGameIdQuery();
   const activeGameId = activeGameIdQueryResult.data?.activeGameId || 1;
 
@@ -73,12 +67,11 @@ export default function GameCardArea() {
       </Row>
       <StyledRow marginTop={5}>
         <StyledCol lg={12}>
-          {findGameCards(gameCards, user, {
-            zone: Zone.Hand,
-            isYours: false,
-          }).map((value) => (
-            <SingleGameCard data={value} />
-          ))}
+          <GameCardList
+            gameCards={gameCards}
+            isYours={false}
+            zone={Zone.Hand}
+          />
         </StyledCol>
       </StyledRow>
       <StyledRow marginTop={5}>
@@ -90,12 +83,11 @@ export default function GameCardArea() {
           />
         </StyledCol>
         <StyledCol lg={10} xs={10}>
-          {findGameCards(gameCards, user, {
-            zone: Zone.Soul,
-            isYours: false,
-          }).map((value) => (
-            <SingleGameCard data={value} />
-          ))}
+          <GameCardList
+            gameCards={gameCards}
+            isYours={false}
+            zone={Zone.Soul}
+          />
         </StyledCol>
       </StyledRow>
       <StyledRow marginTop={5}>
@@ -107,24 +99,22 @@ export default function GameCardArea() {
           />
         </StyledCol>
         <StyledCol lg={10} xs={10}>
-          {findGameCards(gameCards, user, {
-            zone: Zone.Battle,
-            isYours: false,
-          }).map((value) => (
-            <SingleGameCard data={value} />
-          ))}
+          <GameCardList
+            gameCards={gameCards}
+            isYours={false}
+            zone={Zone.Battle}
+          />
         </StyledCol>
       </StyledRow>
 
       <StyledRow marginTop={50}>
         {/** your battle zone */}
         <StyledCol lg={10} xs={10}>
-          {findGameCards(gameCards, user, {
-            zone: Zone.Battle,
-            isYours: true,
-          }).map((value) => (
-            <SingleGameCard data={value} />
-          ))}
+          <GameCardList
+            gameCards={gameCards}
+            isYours={true}
+            zone={Zone.Battle}
+          />
         </StyledCol>
 
         {/** your morgue zone */}
@@ -140,12 +130,7 @@ export default function GameCardArea() {
       <StyledRow marginTop={5}>
         {/** your soul zone */}
         <StyledCol lg={10} xs={10}>
-          {findGameCards(gameCards, user, {
-            zone: Zone.Soul,
-            isYours: true,
-          }).map((value) => (
-            <SingleGameCard data={value} />
-          ))}
+          <GameCardList gameCards={gameCards} isYours={true} zone={Zone.Soul} />
         </StyledCol>
 
         {/** your deck zone */}
@@ -161,12 +146,7 @@ export default function GameCardArea() {
       <StyledRow marginTop={5}>
         {/** your hand zone */}
         <StyledCol lg={12}>
-          {findGameCards(gameCards, user, {
-            zone: Zone.Hand,
-            isYours: true,
-          }).map((value) => (
-            <SingleGameCard data={value} />
-          ))}
+          <GameCardList gameCards={gameCards} isYours={true} zone={Zone.Hand} />
         </StyledCol>
       </StyledRow>
 
