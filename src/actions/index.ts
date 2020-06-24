@@ -1,4 +1,4 @@
-import MorgueGameCardListModal from '../models/MorgueGameCardListModal';
+import GameCardListModal from '../models/GameCardListModal';
 import { ApolloError } from 'apollo-client';
 import { ErrorName } from '../models/AppState';
 import DeckModal from '../models/DeckModal';
@@ -39,8 +39,8 @@ type Action =
       payload: SingleGameCardModal;
     }
   | {
-      type: 'SET_MORGUE_GAME_CARD_LIST_MODAL';
-      payload: MorgueGameCardListModal;
+      type: 'SET_GAME_CARD_LIST_MODAL';
+      payload: GameCardListModal;
     };
 
 export default Action;

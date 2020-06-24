@@ -15,27 +15,27 @@ import { Row, Col } from '../../styled/reactstrap';
 import GameActionButton from './GameActionButton';
 import { BACK_SIDE_CARD } from '../../constants/pictures';
 
-export default function MorgueGameCardListModal() {
+export default function GameCardListModal() {
   const {
-    state: { morgueGameCardListModal },
+    state: { gameCardListModal },
     dispatch,
   } = useContext(AppContext);
 
   const closeModal = () => {
     dispatch({
-      type: 'SET_MORGUE_GAME_CARD_LIST_MODAL',
-      payload: morgueGameCardListModal.close(),
+      type: 'SET_GAME_CARD_LIST_MODAL',
+      payload: gameCardListModal.close(),
     });
   };
 
   return (
-    <Modal isOpen={morgueGameCardListModal.isOpen} toggle={closeModal}>
+    <Modal isOpen={gameCardListModal.isOpen} toggle={closeModal}>
       <ModalHeader toggle={closeModal}>
-        モルグゾーン情報（{morgueGameCardListModal.data.length}枚）
+        モルグゾーン情報（{gameCardListModal.data.length}枚）
       </ModalHeader>
       <ModalBody>
         <ListGroup>
-          {morgueGameCardListModal.data.map((gameCard) => (
+          {gameCardListModal.data.map((gameCard) => (
             <ListGroupItem>
               <Row>
                 <Col lg={3} xs={3}>

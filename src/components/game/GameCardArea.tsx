@@ -12,7 +12,7 @@ import { findGameCards, findGameUser } from '../../utils/game';
 import GameCard from './GameCard';
 import SingleGameCard from './SingleGameCard';
 import GameActionButton from './GameActionButton';
-import MorgueGameCardList from './MorgueGameCardList';
+import GameCardList from './GameCardList';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -141,7 +141,7 @@ export default function GameCardArea() {
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
           {opponentMorgueGameCards.length > 0 && (
-            <MorgueGameCardList data={opponentMorgueGameCards} />
+            <GameCardList data={opponentMorgueGameCards} />
           )}
         </StyledCol>
         <StyledCol lg={10} xs={10}>
@@ -168,7 +168,7 @@ export default function GameCardArea() {
         {/** your morgue zone */}
         <StyledCol lg={2} xs={2}>
           {yourMorgueGameCards.length > 0 && (
-            <MorgueGameCardList data={yourMorgueGameCards} />
+            <GameCardList data={yourMorgueGameCards} />
           )}
         </StyledCol>
       </StyledRow>

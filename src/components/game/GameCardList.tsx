@@ -12,13 +12,13 @@ const StyledCard = styled(Card)`
   margin: 5px;
 `;
 
-export type MorgueGameCardListProps = {
+export type GameCardListProps = {
   data: GameCardFragment[];
 };
 
-export default function MorgueGameCardList({ data }: MorgueGameCardListProps) {
+export default function GameCardList({ data }: GameCardListProps) {
   const {
-    state: { morgueGameCardListModal },
+    state: { gameCardListModal },
     dispatch,
   } = useContext(AppContext);
 
@@ -26,8 +26,8 @@ export default function MorgueGameCardList({ data }: MorgueGameCardListProps) {
 
   const handleClick = () => {
     dispatch({
-      type: 'SET_MORGUE_GAME_CARD_LIST_MODAL',
-      payload: morgueGameCardListModal.open(data),
+      type: 'SET_GAME_CARD_LIST_MODAL',
+      payload: gameCardListModal.open(data),
     });
   };
 
