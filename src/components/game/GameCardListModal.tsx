@@ -14,6 +14,7 @@ import { AppContext } from '../App';
 import { Row, Col } from '../../styled/reactstrap';
 import GameActionButton from './GameActionButton';
 import { BACK_SIDE_CARD } from '../../constants/pictures';
+import ZoneNames from '../../constants/zone-names';
 
 export default function GameCardListModal() {
   const {
@@ -31,7 +32,8 @@ export default function GameCardListModal() {
   return (
     <Modal isOpen={gameCardListModal.isOpen} toggle={closeModal}>
       <ModalHeader toggle={closeModal}>
-        モルグゾーン情報（{gameCardListModal.data.length}枚）
+        {gameCardListModal.data[0] && ZoneNames[gameCardListModal.data[0].zone]}
+        詳細情報（{gameCardListModal.data.length}枚）
       </ModalHeader>
       <ModalBody>
         <ListGroup>
