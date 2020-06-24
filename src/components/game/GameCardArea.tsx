@@ -12,6 +12,7 @@ import { findGameCards, findGameUser } from '../../utils/game';
 import SingleGameCard from './SingleGameCard';
 import GameActionButton from './GameActionButton';
 import GameCardStack from './GameCardStack';
+import GameUser from './GameUser';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -110,16 +111,7 @@ export default function GameCardArea() {
   return (
     <Container marginTop={20} marginBottom={20}>
       <Row>
-        <StyledCol lg={6}>
-          <UserLogo picture={opponentGameUser?.user.photoURL} />
-          <UserInfo>
-            <UserName>{opponentGameUser?.user.displayName}</UserName>
-            <div>
-              ライフ：{opponentGameUser?.lifePoint} / エナジー：
-              {opponentGameUser?.energy}
-            </div>
-          </UserInfo>
-        </StyledCol>
+        <GameUser />
       </Row>
       <StyledRow marginTop={5}>
         <StyledCol lg={12}>
@@ -213,21 +205,7 @@ export default function GameCardArea() {
       </StyledRow>
 
       <Row marginTop={5}>
-        <StyledCol lg={6}>
-          <UserLogo picture={user?.data?.photoURL} />
-          <UserInfo>
-            <UserName>{user?.data?.displayName}</UserName>
-            <div>
-              ライフ：{yourGameUser?.lifePoint} / エナジー：
-              {yourGameUser?.energy}
-            </div>
-          </UserInfo>
-        </StyledCol>
-        <StyledCol>
-          {yourGameUser?.actionTypes.map((value) => (
-            <GameActionButton type={value} />
-          ))}
-        </StyledCol>
+        <GameUser isYours={true} />
       </Row>
     </Container>
   );
