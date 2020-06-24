@@ -11,7 +11,7 @@ import { AppContext } from '../App';
 import { findGameCards, findGameUser } from '../../utils/game';
 import SingleGameCard from './SingleGameCard';
 import GameActionButton from './GameActionButton';
-import GameCardList from './GameCardList';
+import GameCardStack from './GameCardStack';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -134,7 +134,7 @@ export default function GameCardArea() {
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
           {opponentDeckGameCards.length > 0 && (
-            <GameCardList data={opponentDeckGameCards} />
+            <GameCardStack data={opponentDeckGameCards} />
           )}
         </StyledCol>
         <StyledCol lg={10} xs={10}>
@@ -149,7 +149,7 @@ export default function GameCardArea() {
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
           {opponentMorgueGameCards.length > 0 && (
-            <GameCardList data={opponentMorgueGameCards} />
+            <GameCardStack data={opponentMorgueGameCards} />
           )}
         </StyledCol>
         <StyledCol lg={10} xs={10}>
@@ -176,7 +176,7 @@ export default function GameCardArea() {
         {/** your morgue zone */}
         <StyledCol lg={2} xs={2}>
           {yourMorgueGameCards.length > 0 && (
-            <GameCardList data={yourMorgueGameCards} />
+            <GameCardStack data={yourMorgueGameCards} />
           )}
         </StyledCol>
       </StyledRow>
@@ -195,7 +195,7 @@ export default function GameCardArea() {
         {/** your deck zone */}
         <StyledCol lg={2} xs={2}>
           {yourDeckGameCards.length > 0 && (
-            <GameCardList data={yourDeckGameCards} />
+            <GameCardStack data={yourDeckGameCards} />
           )}
         </StyledCol>
       </StyledRow>

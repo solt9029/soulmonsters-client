@@ -12,11 +12,11 @@ const StyledCard = styled(Card)`
   margin: 5px;
 `;
 
-export type GameCardListProps = {
+export type GameCardStackProps = {
   data: GameCardFragment[];
 };
 
-export default function GameCardList({ data }: GameCardListProps) {
+export default function GameCardStack({ data }: GameCardStackProps) {
   const {
     state: { gameCardListModal },
     dispatch,
