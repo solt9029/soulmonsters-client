@@ -9,7 +9,6 @@ import {
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
 import { findGameCards, findGameUser } from '../../utils/game';
-import GameCard from './GameCard';
 import SingleGameCard from './SingleGameCard';
 import GameActionButton from './GameActionButton';
 import GameCardList from './GameCardList';
@@ -99,6 +98,14 @@ export default function GameCardArea() {
     zone: Zone.Morgue,
     isYours: false,
   });
+  const yourDeckGameCards = findGameCards(gameCards, user, {
+    zone: Zone.Deck,
+    isYours: true,
+  });
+  const opponentDeckGameCards = findGameCards(gameCards, user, {
+    zone: Zone.Deck,
+    isYours: false,
+  });
 
   return (
     <Container marginTop={20} marginBottom={20}>
@@ -120,21 +127,22 @@ export default function GameCardArea() {
             zone: Zone.Hand,
             isYours: false,
           }).map((value) => (
-            <GameCard picture={value.card?.picture} />
+            <SingleGameCard data={value} />
           ))}
         </StyledCol>
       </StyledRow>
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
-          {findGameCards(gameCards, user, { zone: Zone.Deck, isYours: false })
-            .length > 0 && <GameCard />}
+          {opponentDeckGameCards.length > 0 && (
+            <GameCardList data={opponentDeckGameCards} />
+          )}
         </StyledCol>
         <StyledCol lg={10} xs={10}>
           {findGameCards(gameCards, user, {
             zone: Zone.Soul,
             isYours: false,
           }).map((value) => (
-            <GameCard picture={value.card?.picture} />
+            <SingleGameCard data={value} />
           ))}
         </StyledCol>
       </StyledRow>
@@ -149,7 +157,7 @@ export default function GameCardArea() {
             zone: Zone.Battle,
             isYours: false,
           }).map((value) => (
-            <GameCard picture={value.card?.picture} />
+            <SingleGameCard data={value} />
           ))}
         </StyledCol>
       </StyledRow>
@@ -161,7 +169,7 @@ export default function GameCardArea() {
             zone: Zone.Battle,
             isYours: true,
           }).map((value) => (
-            <GameCard picture={value.card?.picture} />
+            <SingleGameCard data={value} />
           ))}
         </StyledCol>
 
@@ -186,8 +194,9 @@ export default function GameCardArea() {
 
         {/** your deck zone */}
         <StyledCol lg={2} xs={2}>
-          {findGameCards(gameCards, user, { zone: Zone.Deck, isYours: true })
-            .length > 0 && <GameCard />}
+          {yourDeckGameCards.length > 0 && (
+            <GameCardList data={yourDeckGameCards} />
+          )}
         </StyledCol>
       </StyledRow>
 
