@@ -13,8 +13,8 @@ export default function (state: AppState, action: Action): AppState {
       return state.resetError(action.payload);
     case 'SET_DECK_MODAL':
       return state.setDeckModal(action.payload);
-    case 'SET_SINGLE_GAME_CARD_MODAL':
-      return state.setSingleGameCardModal(action.payload);
+    case 'SET_GAME_CARD_MODAL':
+      return state.setGameCardModal(action.payload);
     case 'SET_GAME_CARD_LIST_MODAL':
       return state.setGameCardListModal(action.payload);
     default:

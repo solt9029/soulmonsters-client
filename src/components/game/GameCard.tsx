@@ -11,21 +11,21 @@ const StyledCard = styled(Card)`
   margin: 5px;
 `;
 
-export type SingleGameCardProps = {
+export type GameCardProps = {
   data: GameCardFragment;
 };
 
-export default function SingleGameCard({ data }: SingleGameCardProps) {
+export default function GameCard({ data }: GameCardProps) {
   const {
-    state: { singleGameCardModal },
+    state: { gameCardModal },
     dispatch,
   } = useContext(AppContext);
 
   const handleClick = () => {
     if (data.card) {
       dispatch({
-        type: 'SET_SINGLE_GAME_CARD_MODAL',
-        payload: singleGameCardModal.open(data),
+        type: 'SET_GAME_CARD_MODAL',
+        payload: gameCardModal.open(data),
       });
     }
   };

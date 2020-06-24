@@ -28,7 +28,7 @@ export default function GameActionButton({
   gameCard,
 }: GameActionButtonProps) {
   const {
-    state: { actionStatus, singleGameCardModal },
+    state: { actionStatus, gameCardModal },
     dispatch,
   } = useContext(AppContext);
 
@@ -51,8 +51,8 @@ export default function GameActionButton({
         },
       });
       await dispatch({
-        type: 'SET_SINGLE_GAME_CARD_MODAL',
-        payload: singleGameCardModal.close(),
+        type: 'SET_GAME_CARD_MODAL',
+        payload: gameCardModal.close(),
       });
       return;
     }

@@ -12,35 +12,32 @@ import { AppContext } from '../App';
 import { Row, Col } from '../../styled/reactstrap';
 import GameActionButton from './GameActionButton';
 
-export default function SingleGameCardModal() {
+export default function GameCardModal() {
   const {
-    state: { singleGameCardModal },
+    state: { gameCardModal },
     dispatch,
   } = useContext(AppContext);
 
   const closeModal = () => {
     dispatch({
-      type: 'SET_SINGLE_GAME_CARD_MODAL',
-      payload: singleGameCardModal.close(),
+      type: 'SET_GAME_CARD_MODAL',
+      payload: gameCardModal.close(),
     });
   };
 
   return (
-    <Modal isOpen={singleGameCardModal.isOpen} toggle={closeModal}>
+    <Modal isOpen={gameCardModal.isOpen} toggle={closeModal}>
       <ModalHeader toggle={closeModal}>カード詳細情報</ModalHeader>
       <ModalBody>
         <Row>
           <Col lg={6} xs={6}>
             <Card>
-              <CardImg src={singleGameCardModal.data?.card?.picture} />
+              <CardImg src={gameCardModal.data?.card?.picture} />
             </Card>
           </Col>
           <Col lg={6} xs={6}>
-            {singleGameCardModal.data?.actionTypes.map((value) => (
-              <GameActionButton
-                type={value}
-                gameCard={singleGameCardModal?.data}
-              />
+            {gameCardModal.data?.actionTypes.map((value) => (
+              <GameActionButton type={value} gameCard={gameCardModal?.data} />
             ))}
           </Col>
         </Row>

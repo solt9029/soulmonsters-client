@@ -9,7 +9,7 @@ import {
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
 import { findGameCards } from '../../utils/game';
-import SingleGameCard from './SingleGameCard';
+import SingleGameCard from './GameCard';
 import GameCardStack from './GameCardStack';
 import GameUser from './GameUser';
 
