@@ -64,27 +64,11 @@ export default function GameCardArea() {
   }
 
   const gameCards = data?.game.gameCards;
-  const yourMorgueGameCards = findGameCards(gameCards, user, {
-    zone: Zone.Morgue,
-    isYours: true,
-  });
-  const opponentMorgueGameCards = findGameCards(gameCards, user, {
-    zone: Zone.Morgue,
-    isYours: false,
-  });
-  const yourDeckGameCards = findGameCards(gameCards, user, {
-    zone: Zone.Deck,
-    isYours: true,
-  });
-  const opponentDeckGameCards = findGameCards(gameCards, user, {
-    zone: Zone.Deck,
-    isYours: false,
-  });
 
   return (
     <Container marginTop={20} marginBottom={20}>
       <Row>
-        <GameUser />
+        <GameUser isYours={false} />
       </Row>
       <StyledRow marginTop={5}>
         <StyledCol lg={12}>
@@ -98,9 +82,11 @@ export default function GameCardArea() {
       </StyledRow>
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
-          {opponentDeckGameCards.length > 0 && (
-            <GameCardStack data={opponentDeckGameCards} />
-          )}
+          <GameCardStack
+            gameCards={gameCards}
+            isYours={false}
+            zone={Zone.Deck}
+          />
         </StyledCol>
         <StyledCol lg={10} xs={10}>
           {findGameCards(gameCards, user, {
@@ -113,9 +99,11 @@ export default function GameCardArea() {
       </StyledRow>
       <StyledRow marginTop={5}>
         <StyledCol lg={2} xs={2}>
-          {opponentMorgueGameCards.length > 0 && (
-            <GameCardStack data={opponentMorgueGameCards} />
-          )}
+          <GameCardStack
+            gameCards={gameCards}
+            isYours={false}
+            zone={Zone.Morgue}
+          />
         </StyledCol>
         <StyledCol lg={10} xs={10}>
           {findGameCards(gameCards, user, {
@@ -140,9 +128,11 @@ export default function GameCardArea() {
 
         {/** your morgue zone */}
         <StyledCol lg={2} xs={2}>
-          {yourMorgueGameCards.length > 0 && (
-            <GameCardStack data={yourMorgueGameCards} />
-          )}
+          <GameCardStack
+            gameCards={gameCards}
+            isYours={true}
+            zone={Zone.Morgue}
+          />
         </StyledCol>
       </StyledRow>
 
@@ -159,9 +149,11 @@ export default function GameCardArea() {
 
         {/** your deck zone */}
         <StyledCol lg={2} xs={2}>
-          {yourDeckGameCards.length > 0 && (
-            <GameCardStack data={yourDeckGameCards} />
-          )}
+          <GameCardStack
+            gameCards={gameCards}
+            isYours={true}
+            zone={Zone.Deck}
+          />
         </StyledCol>
       </StyledRow>
 

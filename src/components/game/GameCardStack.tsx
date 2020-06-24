@@ -3,8 +3,8 @@ import { Card, CardImg } from 'reactstrap';
 import styled from 'styled-components';
 import { BACK_SIDE_CARD } from '../../constants/pictures';
 import { AppContext } from '../App';
-import { GameCardFragment } from '../../graphql/generated/graphql-client';
-import { findTopGameCard } from '../../utils/game';
+import { Zone, GameCardFragment } from '../../graphql/generated/graphql-client';
+import { findTopGameCard, findGameCards } from '../../utils/game';
 
 const StyledCard = styled(Card)`
   min-width: 60px;
@@ -13,21 +13,33 @@ const StyledCard = styled(Card)`
 `;
 
 export type GameCardStackProps = {
-  data: GameCardFragment[];
+  gameCards: GameCardFragment[] | undefined;
+  zone: Zone;
+  isYours: boolean;
 };
 
-export default function GameCardStack({ data }: GameCardStackProps) {
+export default function GameCardStack({
+  gameCards,
+  zone,
+  isYours,
+}: GameCardStackProps) {
   const {
-    state: { gameCardListModal },
+    state: { gameCardListModal, user },
     dispatch,
   } = useContext(AppContext);
 
-  const topGameCard = findTopGameCard(data);
+  const targetGameCards = findGameCards(gameCards, user, { isYours, zone });
+
+  if (targetGameCards.length <= 0) {
+    return <></>;
+  }
+
+  const topGameCard = findTopGameCard(targetGameCards);
 
   const handleClick = () => {
     dispatch({
       type: 'SET_GAME_CARD_LIST_MODAL',
-      payload: gameCardListModal.open(data),
+      payload: gameCardListModal.open(targetGameCards),
     });
   };
 

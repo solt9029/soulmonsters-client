@@ -46,7 +46,7 @@ const UserName = styled.div`
 `;
 
 export type GameUserProps = {
-  isYours?: boolean;
+  isYours: boolean;
 };
 
 export default function GameUser({ isYours }: GameUserProps) {
@@ -60,19 +60,12 @@ export default function GameUser({ isYours }: GameUserProps) {
     variables: { id: activeGameId },
   });
 
-  if (
-    activeGameIdQueryResult.loading ||
-    activeGameIdQueryResult.error ||
-    gameQueryResult.loading ||
-    gameQueryResult.error ||
-    user.isLoading ||
-    user.error
-  ) {
+  if (!activeGameIdQueryResult.data || !gameQueryResult.data || !user.data) {
     return <></>;
   }
 
   const gameUsers = gameQueryResult.data?.game.gameUsers;
-  const gameUser = findGameUser(gameUsers, user, { isYours: isYours || false });
+  const gameUser = findGameUser(gameUsers, user, { isYours });
 
   return (
     <>
