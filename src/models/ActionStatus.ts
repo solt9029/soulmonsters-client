@@ -35,7 +35,9 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
         ActionType.StartEnergyTime,
         ActionType.StartPutTime,
         ActionType.PutSoul,
-        ActionType.StartSomethingTime
+        ActionType.StartSomethingTime,
+        ActionType.SummonMonster,
+        ActionType.StartBattleTime
       ).includes(this.type)
     ) {
       return true;
