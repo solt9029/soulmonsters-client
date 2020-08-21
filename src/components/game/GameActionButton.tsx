@@ -50,13 +50,13 @@ export default function GameActionButton({
           data: { type, gameCardId: gameCard?.id },
         },
       });
-      await dispatch({ type: 'CLOSE_GAME_MODAL' });
-      return;
+    } else {
+      await dispatch({
+        type: 'SET_ACTION_STATUS',
+        payload: newActionStatus,
+      });
     }
-    await dispatch({
-      type: 'SET_ACTION_STATUS',
-      payload: newActionStatus,
-    });
+    await dispatch({ type: 'CLOSE_GAME_MODAL' });
   };
 
   return (

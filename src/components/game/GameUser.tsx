@@ -1,10 +1,16 @@
 import React, { useContext } from 'react';
 import { Col } from '../../styled/reactstrap';
 import styled from 'styled-components';
-import { GameUserFragment } from '../../graphql/generated/graphql-client';
+import {
+  GameUserFragment,
+  useActiveGameIdQuery,
+  useDispatchGameActionMutation,
+  GameDocument,
+} from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
 import { findGameUser } from '../../utils/game';
 import GameActionButton from './GameActionButton';
+import ActionStatus from '../../models/ActionStatus';
 
 const StyledCol = styled(Col)`
   color: white;
@@ -49,15 +55,57 @@ export type GameUserProps = {
 
 export default function GameUser({ gameUsers, isYours }: GameUserProps) {
   const {
-    state: { user },
+    state: { user, actionStatus },
+    dispatch,
   } = useContext(AppContext);
 
+  const activeGameIdQueryResult = useActiveGameIdQuery();
+  const activeGameId = activeGameIdQueryResult.data?.activeGameId || 1;
+
+  const [dispatchGameAction] = useDispatchGameActionMutation({
+    refetchQueries: [{ query: GameDocument, variables: { id: activeGameId } }],
+    onCompleted: () => {},
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   const gameUser = findGameUser(gameUsers, user, { isYours });
+
+  const handleClick = async () => {
+    if (!actionStatus.isStarted()) {
+      return;
+    }
+
+    // handle action operation
+    let newActionStatus = new ActionStatus();
+
+    newActionStatus = actionStatus.addPayload({
+      key: 'targetGameUserIds',
+      id: gameUser!.id,
+    });
+
+    if (newActionStatus.isCompleted()) {
+      const { type, payload, gameCard } = newActionStatus;
+      await dispatchGameAction({
+        variables: {
+          id: activeGameId,
+          data: { type: type!, payload, gameCardId: gameCard?.id },
+        },
+      });
+      newActionStatus = new ActionStatus();
+    }
+
+    await dispatch({
+      type: 'SET_ACTION_STATUS',
+      payload: newActionStatus,
+    });
+  };
 
   return (
     <>
       <StyledCol lg={6} xs={6}>
-        <UserLogo picture={gameUser?.user.photoURL} />
+        <UserLogo picture={gameUser?.user.photoURL} onClick={handleClick} />
         <UserInfo>
           <UserName>{gameUser?.user.displayName}</UserName>
           <div>
