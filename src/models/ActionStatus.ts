@@ -9,11 +9,12 @@ export interface ActionStatusInterface {
   type: ActionType | null;
   gameCard?: GameCardFragment;
   payload: ActionPayload;
-  step: number;
+  step: ActionStep | null;
 }
 
-export enum ActionStatusType {
+export enum ActionStep {
   SELECT_ATTACK_TARGET,
+  COMPLETED,
 }
 
 export default class ActionStatus extends Record<ActionStatusInterface>(
@@ -25,12 +26,17 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
       costGameCardIds: [],
       targetGameUserIds: [],
     },
-    step: 0, // combination of step and type is important
+    step: null,
   },
   'ActionStatus'
 ) {
   start(data: { type: ActionType; gameCard?: GameCardFragment }): ActionStatus {
-    return new ActionStatus(data);
+    let step: ActionStep | null = null;
+    if (data.type === ActionType.Attack) {
+      step = ActionStep.SELECT_ATTACK_TARGET;
+    }
+
+    return new ActionStatus({ ...data, step });
   }
 
   addPayload(data: { key: keyof ActionPayload; id: number }) {
@@ -44,27 +50,18 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
     const { type, payload, step } = this;
 
     if (type === ActionType.Attack) {
-      if (step === 0) {
+      if (step === ActionStep.SELECT_ATTACK_TARGET) {
         const { targetGameCardIds, targetGameUserIds } = payload;
         if (
           targetGameCardIds?.length === 1 ||
           targetGameUserIds?.length === 1
         ) {
-          return this.set('step', step + 1);
+          return this.set('step', ActionStep.COMPLETED);
         }
       }
     }
 
     return this;
-  }
-
-  // TODO: put this directly to step
-  // this returns what your user has to do now
-  getType() {
-    if (this.type === ActionType.Attack && this.step === 0) {
-      return ActionStatusType.SELECT_ATTACK_TARGET;
-    }
-    return null;
   }
 
   isStarted() {
@@ -86,7 +83,7 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
       return true;
     }
 
-    if (ActionType.Attack === this.type && this.step === 1) {
+    if (this.step === ActionStep.COMPLETED) {
       return true;
     }
 

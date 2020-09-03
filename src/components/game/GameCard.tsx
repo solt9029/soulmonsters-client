@@ -10,7 +10,7 @@ import {
   GameDocument,
   useActiveGameIdQuery,
 } from '../../graphql/generated/graphql-client';
-import ActionStatus, { ActionStatusType } from '../../models/ActionStatus';
+import ActionStatus, { ActionStep } from '../../models/ActionStatus';
 
 const StyledCard = styled(Card)`
   min-width: 60px;
@@ -51,7 +51,7 @@ export default function GameCard({ data }: GameCardProps) {
     let newActionStatus = new ActionStatus();
 
     if (
-      actionStatus.getType() === ActionStatusType.SELECT_ATTACK_TARGET &&
+      actionStatus.step === ActionStep.SELECT_ATTACK_TARGET &&
       data.zone === Zone.Battle &&
       data.currentUserId !== user.data?.uid
     ) {

@@ -68,7 +68,7 @@ export default function GameCardArea() {
   return (
     <Container marginTop={20} marginBottom={20}>
       {actionStatus.isStarted() && !actionStatus.isCompleted() && (
-        <Alert color="primary">{actionStatus.getType()}</Alert>
+        <Alert color="primary">{actionStatus.step}</Alert>
       )}
       <Row>
         <GameUser gameUsers={gameUsers} isYours={false} />
