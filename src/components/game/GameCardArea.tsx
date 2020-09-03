@@ -11,6 +11,7 @@ import GameCardStack from './GameCardStack';
 import GameUser from './GameUser';
 import GameCardList from './GameCardList';
 import { AppContext } from '../App';
+import { ActionStepAlertMessages } from '../../constants/action-step-alert-messages';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -67,8 +68,10 @@ export default function GameCardArea() {
 
   return (
     <Container marginTop={20} marginBottom={20}>
-      {actionStatus.isStarted() && !actionStatus.isCompleted() && (
-        <Alert color="primary">{actionStatus.step}</Alert>
+      {actionStatus.step !== null && !actionStatus.isCompleted() && (
+        <Alert color="primary">
+          {ActionStepAlertMessages[actionStatus.step]}
+        </Alert>
       )}
       <Row>
         <GameUser gameUsers={gameUsers} isYours={false} />

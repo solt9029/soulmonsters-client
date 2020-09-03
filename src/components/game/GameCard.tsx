@@ -10,7 +10,8 @@ import {
   GameDocument,
   useActiveGameIdQuery,
 } from '../../graphql/generated/graphql-client';
-import ActionStatus, { ActionStep } from '../../models/ActionStatus';
+import ActionStatus from '../../models/ActionStatus';
+import { ActionStep } from '../../constants/action-steps';
 
 const StyledCard = styled(Card)`
   min-width: 60px;

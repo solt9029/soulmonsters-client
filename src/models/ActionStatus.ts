@@ -1,20 +1,17 @@
+import { InitialActionStep } from './../constants/initial-action-steps';
 import {
   ActionType,
   ActionPayload,
   GameCardFragment,
 } from './../graphql/generated/graphql-client';
 import { Record } from 'immutable';
+import { ActionStep } from '../constants/action-steps';
 
 export interface ActionStatusInterface {
   type: ActionType | null;
   gameCard?: GameCardFragment;
   payload: ActionPayload;
   step: ActionStep | null;
-}
-
-export enum ActionStep {
-  SELECT_ATTACK_TARGET,
-  COMPLETED,
 }
 
 export default class ActionStatus extends Record<ActionStatusInterface>(
@@ -31,12 +28,7 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
   'ActionStatus'
 ) {
   start(data: { type: ActionType; gameCard?: GameCardFragment }): ActionStatus {
-    let step: ActionStep | null = null;
-    if (data.type === ActionType.Attack) {
-      step = ActionStep.SELECT_ATTACK_TARGET;
-    }
-
-    return new ActionStatus({ ...data, step });
+    return new ActionStatus({ ...data, step: InitialActionStep[data.type] });
   }
 
   addPayload(data: { key: keyof ActionPayload; id: number }) {
@@ -69,24 +61,6 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
   }
 
   isCompleted() {
-    if (
-      Array<ActionType | null>(
-        ActionType.StartDrawTime,
-        ActionType.StartEnergyTime,
-        ActionType.StartPutTime,
-        ActionType.PutSoul,
-        ActionType.StartSomethingTime,
-        ActionType.SummonMonster,
-        ActionType.StartBattleTime
-      ).includes(this.type)
-    ) {
-      return true;
-    }
-
-    if (this.step === ActionStep.COMPLETED) {
-      return true;
-    }
-
-    return false;
+    return this.step === ActionStep.COMPLETED;
   }
 }
