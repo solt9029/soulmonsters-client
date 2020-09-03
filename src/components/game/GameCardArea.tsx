@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Container, Row, Col } from '../../styled/reactstrap';
 import { Alert } from 'reactstrap';
 import styled from 'styled-components';
@@ -10,6 +10,7 @@ import {
 import GameCardStack from './GameCardStack';
 import GameUser from './GameUser';
 import GameCardList from './GameCardList';
+import { AppContext } from '../App';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -34,6 +35,10 @@ const StyledRow = styled(Row)`
 `;
 
 export default function GameCardArea() {
+  const {
+    state: { actionStatus },
+  } = useContext(AppContext);
+
   const activeGameIdQueryResult = useActiveGameIdQuery();
   const activeGameId = activeGameIdQueryResult.data?.activeGameId || 1;
 
@@ -62,6 +67,9 @@ export default function GameCardArea() {
 
   return (
     <Container marginTop={20} marginBottom={20}>
+      {actionStatus.isStarted() && !actionStatus.isCompleted() && (
+        <Alert color="primary">{actionStatus.getType()}</Alert>
+      )}
       <Row>
         <GameUser gameUsers={gameUsers} isYours={false} />
       </Row>

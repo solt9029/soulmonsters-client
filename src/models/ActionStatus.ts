@@ -58,6 +58,7 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
     return this;
   }
 
+  // TODO: put this directly to step
   // this returns what your user has to do now
   getType() {
     if (this.type === ActionType.Attack && this.step === 0) {
