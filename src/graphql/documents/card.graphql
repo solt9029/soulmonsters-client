@@ -1,10 +1,10 @@
 query cards {
   cards {
-    ...CardFragment
+    ...Card
   }
 }
 
-fragment CardFragment on Card {
+fragment Card on Card {
   id
   name 
   kind 

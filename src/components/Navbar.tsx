@@ -17,7 +17,7 @@ import {
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { AppContext } from './App';
-import { auth } from 'firebase';
+import { login, logout } from '../actions/user';
 
 const ServiceLogo = styled(NavbarBrand)`
   background: url('/images/icon.png') no-repeat left center;
@@ -77,27 +77,12 @@ export default function Navbar() {
     setIsDropdownOpen(false);
   }, [location.pathname]);
 
-  const logout = async () => {
-    dispatch({ type: 'SET_USER', payload: user.startLoading() });
-    try {
-      await auth().signOut();
-      dispatch({ type: 'SET_USER', payload: user.doneLogout() });
-    } catch (error) {
-      dispatch({ type: 'SET_USER', payload: user.failedLogin(error) });
-    }
+  const handleLogoutClick = async () => {
+    await logout(dispatch, { user });
   };
 
-  const login = async () => {
-    dispatch({ type: 'SET_USER', payload: user.startLoading() });
-    try {
-      const data = await auth().signInWithPopup(new auth.TwitterAuthProvider());
-      if (data.user === null) {
-        throw new Error();
-      }
-      dispatch({ type: 'SET_USER', payload: user.doneLogin(data.user) });
-    } catch (error) {
-      dispatch({ type: 'SET_USER', payload: user.failedLogin(error) });
-    }
+  const handleLoginClick = async () => {
+    await login(dispatch, { user });
   };
 
   return (
@@ -132,7 +117,7 @@ export default function Navbar() {
             {(() => {
               if (user?.data === null) {
                 return (
-                  <Button color="info" onClick={login}>
+                  <Button color="info" onClick={handleLoginClick}>
                     ログイン
                   </Button>
                 );
@@ -141,7 +126,9 @@ export default function Navbar() {
                 <Dropdown isOpen={isDropdownOpen} toggle={toggleDropdown}>
                   <UserLogo picture={user?.data?.photoURL} />
                   <DropdownMenu>
-                    <DropdownItem onClick={logout}>ログアウト</DropdownItem>
+                    <DropdownItem onClick={handleLogoutClick}>
+                      ログアウト
+                    </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               );

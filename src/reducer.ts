@@ -1,5 +1,5 @@
 import AppState from './models/AppState';
-import Action from './action';
+import Action from './actions';
 
 export default function (state: AppState, action: Action): AppState {
   switch (action.type) {
@@ -13,6 +13,14 @@ export default function (state: AppState, action: Action): AppState {
       return state.resetError(action.payload);
     case 'SET_DECK_MODAL':
       return state.setDeckModal(action.payload);
+    case 'SET_GAME_CARD_MODAL':
+      return state.setGameCardModal(action.payload);
+    case 'SET_GAME_CARD_LIST_MODAL':
+      return state.setGameCardListModal(action.payload);
+    case 'CLOSE_GAME_MODAL':
+      return state.closeGameModal();
+    case 'SET_ACTION_STATUS':
+      return state.setActionStatus(action.payload);
     default:
       return state;
   }

@@ -1,6 +1,9 @@
+import ActionStatus from './ActionStatus';
 import { ApolloError } from 'apollo-client';
 import User from './User';
 import DeckModal from './DeckModal';
+import GameCardModal from './GameCardModal';
+import GameCardListModal from './GameCardListModal';
 import { Record } from 'immutable';
 
 export interface AppStateInterface {
@@ -10,6 +13,9 @@ export interface AppStateInterface {
   minusDeckCardError: ApolloError | null;
   createDeckError: ApolloError | null;
   deckModal: DeckModal;
+  gameCardModal: GameCardModal;
+  gameCardListModal: GameCardListModal;
+  actionStatus: ActionStatus;
 }
 
 export type ErrorName =
@@ -25,6 +31,9 @@ export default class AppState extends Record<AppStateInterface>(
     minusDeckCardError: null,
     createDeckError: null,
     deckModal: new DeckModal(),
+    gameCardModal: new GameCardModal(),
+    gameCardListModal: new GameCardListModal(),
+    actionStatus: new ActionStatus(),
   },
   'AppState'
 ) {
@@ -42,5 +51,20 @@ export default class AppState extends Record<AppStateInterface>(
   }
   setDeckModal(data: DeckModal) {
     return this.set('deckModal', data);
+  }
+  setGameCardModal(data: GameCardModal) {
+    return this.set('gameCardModal', data);
+  }
+  setGameCardListModal(data: GameCardListModal) {
+    return this.set('gameCardListModal', data);
+  }
+  closeGameModal() {
+    return this.set('gameCardModal', this.gameCardModal.close()).set(
+      'gameCardListModal',
+      this.gameCardListModal.close()
+    );
+  }
+  setActionStatus(data: ActionStatus) {
+    return this.set('actionStatus', data);
   }
 }
