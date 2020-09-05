@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Container, Row, Col } from '../../styled/reactstrap';
-import { Alert } from 'reactstrap';
+import { Alert, Button } from 'reactstrap';
 import styled from 'styled-components';
 import {
   useGameQuery,
@@ -33,6 +33,17 @@ const StyledCol = styled(Col)`
 const StyledRow = styled(Row)`
   display: flex;
   height: 100px;
+`;
+
+const StyledButton = styled(Button)`
+  width: 100%;
+  & + & {
+    margin-left: 10px;
+  }
+`;
+
+const StyledAlert = styled(Alert)`
+  padding: 6px 12px;
 `;
 
 export default function GameCardArea() {
@@ -68,11 +79,20 @@ export default function GameCardArea() {
 
   return (
     <Container marginTop={20} marginBottom={20}>
-      {actionStatus.step !== null && !actionStatus.isCompleted() && (
-        <Alert color="primary">
-          {ActionStepAlertMessages[actionStatus.step]}
-        </Alert>
-      )}
+      <Row>
+        {actionStatus.step !== null && !actionStatus.isCompleted() && (
+          <>
+            <Col md={10}>
+              <StyledAlert color="primary">
+                {ActionStepAlertMessages[actionStatus.step]}
+              </StyledAlert>
+            </Col>
+            <Col md={2}>
+              <StyledButton color="light">キャンセル</StyledButton>
+            </Col>
+          </>
+        )}
+      </Row>
       <Row>
         <GameUser gameUsers={gameUsers} isYours={false} />
       </Row>

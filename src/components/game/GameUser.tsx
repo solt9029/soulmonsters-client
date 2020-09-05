@@ -104,7 +104,7 @@ export default function GameUser({ gameUsers, isYours }: GameUserProps) {
 
   return (
     <>
-      <StyledCol lg={6} xs={6}>
+      <StyledCol md={6}>
         <UserLogo picture={gameUser?.user.photoURL} onClick={handleClick} />
         <UserInfo>
           <UserName>{gameUser?.user.displayName}</UserName>
@@ -114,7 +114,7 @@ export default function GameUser({ gameUsers, isYours }: GameUserProps) {
           </div>
         </UserInfo>
       </StyledCol>
-      <StyledCol lg={6} xs={6}>
+      <StyledCol md={6}>
         {gameUser?.actionTypes.map((value) => (
           <GameActionButton type={value} />
         ))}
