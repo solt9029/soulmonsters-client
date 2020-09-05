@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Container, Row, Col } from '../../styled/reactstrap';
-import { Alert, Button } from 'reactstrap';
+import { Alert } from 'reactstrap';
 import styled from 'styled-components';
 import {
   useGameQuery,
@@ -11,8 +11,7 @@ import GameCardStack from './GameCardStack';
 import GameUser from './GameUser';
 import GameCardList from './GameCardList';
 import { AppContext } from '../App';
-import { ActionStepAlertMessages } from '../../constants/action-step-alert-messages';
-import ActionStatus from '../../models/ActionStatus';
+import { GameActionAlert } from './GameActionAlert';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -36,21 +35,9 @@ const StyledRow = styled(Row)`
   height: 100px;
 `;
 
-const StyledButton = styled(Button)`
-  width: 100%;
-  & + & {
-    margin-left: 10px;
-  }
-`;
-
-const StyledAlert = styled(Alert)`
-  padding: 6px 12px;
-`;
-
 export default function GameCardArea() {
   const {
     state: { actionStatus },
-    dispatch,
   } = useContext(AppContext);
 
   const activeGameIdQueryResult = useActiveGameIdQuery();
@@ -81,30 +68,12 @@ export default function GameCardArea() {
 
   return (
     <Container marginTop={20} marginBottom={20}>
-      <Row>
-        {actionStatus.step !== null && !actionStatus.isCompleted() && (
-          <>
-            <Col md={10}>
-              <StyledAlert color="primary">
-                {ActionStepAlertMessages[actionStatus.step]}
-              </StyledAlert>
-            </Col>
-            <Col md={2}>
-              <StyledButton
-                onClick={() => {
-                  dispatch({
-                    type: 'SET_ACTION_STATUS',
-                    payload: new ActionStatus(),
-                  });
-                }}
-                color="light"
-              >
-                キャンセル
-              </StyledButton>
-            </Col>
-          </>
-        )}
-      </Row>
+      {actionStatus.isStarted() && !actionStatus.isCompleted() && (
+        <Row>
+          <GameActionAlert />
+        </Row>
+      )}
+
       <Row>
         <GameUser gameUsers={gameUsers} isYours={false} />
       </Row>
