@@ -12,6 +12,7 @@ import GameUser from './GameUser';
 import GameCardList from './GameCardList';
 import { AppContext } from '../App';
 import { ActionStepAlertMessages } from '../../constants/action-step-alert-messages';
+import ActionStatus from '../../models/ActionStatus';
 
 const StyledContainer = styled(Container)`
   color: white;
@@ -49,6 +50,7 @@ const StyledAlert = styled(Alert)`
 export default function GameCardArea() {
   const {
     state: { actionStatus },
+    dispatch,
   } = useContext(AppContext);
 
   const activeGameIdQueryResult = useActiveGameIdQuery();
@@ -88,7 +90,17 @@ export default function GameCardArea() {
               </StyledAlert>
             </Col>
             <Col md={2}>
-              <StyledButton color="light">キャンセル</StyledButton>
+              <StyledButton
+                onClick={() => {
+                  dispatch({
+                    type: 'SET_ACTION_STATUS',
+                    payload: new ActionStatus(),
+                  });
+                }}
+                color="light"
+              >
+                キャンセル
+              </StyledButton>
             </Col>
           </>
         )}
