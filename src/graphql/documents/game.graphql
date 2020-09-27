@@ -25,7 +25,7 @@ mutation startGame($deckId: Int!) {
   }
 }
 
-mutation dispatchGameAction($id: Int!, $data: DispatchGameActionInput!) {
+mutation dispatchGameAction($id: Int!, $data: GameActionDispatchInput!) {
   dispatchGameAction(id: $id, data: $data) {
     id
   }
