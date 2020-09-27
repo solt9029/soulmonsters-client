@@ -2,14 +2,12 @@ import { InitialActionStep } from './../constants/initial-action-steps';
 import {
   ActionType,
   ActionPayload,
-  GameCardFragment,
 } from './../graphql/generated/graphql-client';
 import { Record } from 'immutable';
 import { ActionStep } from '../constants/action-steps';
 
 export interface ActionStatusInterface {
   type: ActionType | null;
-  gameCard?: GameCardFragment;
   payload: ActionPayload;
   step: ActionStep | null;
 }
@@ -17,8 +15,8 @@ export interface ActionStatusInterface {
 export default class ActionStatus extends Record<ActionStatusInterface>(
   {
     type: null,
-    gameCard: undefined,
     payload: {
+      gameCardId: undefined,
       targetGameCardIds: [],
       costGameCardIds: [],
       targetGameUserIds: [],
@@ -27,18 +25,37 @@ export default class ActionStatus extends Record<ActionStatusInterface>(
   },
   'ActionStatus'
 ) {
-  start(data: { type: ActionType; gameCard?: GameCardFragment }): ActionStatus {
-    return new ActionStatus({ ...data, step: InitialActionStep[data.type] });
+  start(data: { type: ActionType; gameCardId?: number }): ActionStatus {
+    const { type, gameCardId } = data;
+    return new ActionStatus({
+      type: type,
+      step: InitialActionStep[type],
+      payload: { gameCardId },
+    });
   }
 
-  addPayload(data: { key: keyof ActionPayload; id: number }) {
+  addPayloadTargetGameCardId(id: number) {
     return this.set('payload', {
       ...this.payload,
-      [data.key]: [...(this.payload[data.key] || []), data.id],
+      targetGameCardIds: [...(this.payload.targetGameCardIds || []), id],
     }).updateStep();
   }
 
-  private updateStep(): ActionStatus {
+  addPayloadTargetGameUserId(id: number) {
+    return this.set('payload', {
+      ...this.payload,
+      targetGameUserIds: [...(this.payload.targetGameUserIds || []), id],
+    }).updateStep();
+  }
+
+  addPayloadCostGameCardId(id: number) {
+    return this.set('payload', {
+      ...this.payload,
+      costGameCardIds: [...(this.payload.costGameCardIds || []), id],
+    }).updateStep();
+  }
+
+  updateStep(): ActionStatus {
     const { type, payload, step } = this;
 
     if (type === ActionType.Attack) {

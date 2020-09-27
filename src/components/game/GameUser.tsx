@@ -80,17 +80,14 @@ export default function GameUser({ gameUsers, isYours }: GameUserProps) {
     // handle action operation
     let newActionStatus = new ActionStatus();
 
-    newActionStatus = actionStatus.addPayload({
-      key: 'targetGameUserIds',
-      id: gameUser!.id,
-    });
+    newActionStatus = actionStatus.addPayloadTargetGameUserId(gameUser!.id);
 
     if (newActionStatus.isCompleted()) {
-      const { type, payload, gameCard } = newActionStatus;
+      const { type, payload } = newActionStatus;
       await dispatchGameAction({
         variables: {
           id: activeGameId,
-          data: { type: type!, payload, gameCardId: gameCard?.id },
+          data: { type: type!, payload },
         },
       });
       newActionStatus = new ActionStatus();

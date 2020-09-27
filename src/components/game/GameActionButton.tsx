@@ -42,12 +42,13 @@ export default function GameActionButton({
   });
 
   const handleClick = async () => {
-    const newActionStatus = actionStatus.start({ type, gameCard });
+    const gameCardId = gameCard?.id;
+    const newActionStatus = actionStatus.start({ type, gameCardId });
     if (newActionStatus.isCompleted()) {
       await dispatchGameAction({
         variables: {
           id: activeGameId,
-          data: { type, gameCardId: gameCard?.id },
+          data: { type, payload: { gameCardId } },
         },
       });
     } else {

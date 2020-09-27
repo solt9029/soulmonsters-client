@@ -56,18 +56,15 @@ export default function GameCard({ data }: GameCardProps) {
       data.zone === Zone.Battle &&
       data.currentUserId !== user.data?.uid
     ) {
-      newActionStatus = actionStatus.addPayload({
-        key: 'targetGameCardIds',
-        id: data.id,
-      });
+      newActionStatus = actionStatus.addPayloadTargetGameCardId(data.id);
     }
 
-    if (newActionStatus.isCompleted()) {
-      const { type, payload, gameCard } = newActionStatus;
+    if (newActionStatus.isCompleted() && newActionStatus.type) {
+      const { type, payload } = newActionStatus;
       await dispatchGameAction({
         variables: {
           id: activeGameId,
-          data: { type: type!, payload, gameCardId: gameCard?.id },
+          data: { type, payload },
         },
       });
       newActionStatus = new ActionStatus();
