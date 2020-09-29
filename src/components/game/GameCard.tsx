@@ -6,12 +6,11 @@ import { AppContext } from '../App';
 import {
   GameCardFragment,
   Zone,
-  useDispatchGameActionMutation,
-  GameDocument,
   useActiveGameIdQuery,
 } from '../../graphql/generated/graphql-client';
 import ActionStatus from '../../models/ActionStatus';
 import { ActionStep } from '../../constants/action-steps';
+import { useDispatchGameActionMutation } from '../../hooks/useDispatchGameActionMutation';
 
 const StyledCard = styled(Card)`
   min-width: 60px;
@@ -32,16 +31,7 @@ export default function GameCard({ data }: GameCardProps) {
   const activeGameIdQueryResult = useActiveGameIdQuery();
   const activeGameId = activeGameIdQueryResult.data?.activeGameId || 1;
 
-  const [dispatchGameAction] = useDispatchGameActionMutation({
-    refetchQueries: [{ query: GameDocument, variables: { id: activeGameId } }],
-    onCompleted: () => {},
-    onError: (error) => {
-      dispatch({
-        type: 'SET_ERROR',
-        payload: { name: 'dispatchGameActionError', error },
-      });
-    },
-  });
+  const [dispatchGameAction] = useDispatchGameActionMutation(activeGameId);
 
   const handleClick = async () => {
     // open modal

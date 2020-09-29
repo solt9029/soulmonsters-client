@@ -4,13 +4,12 @@ import styled from 'styled-components';
 import {
   GameUserFragment,
   useActiveGameIdQuery,
-  useDispatchGameActionMutation,
-  GameDocument,
 } from '../../graphql/generated/graphql-client';
 import { AppContext } from '../App';
 import { findGameUser } from '../../utils/game';
 import GameActionButton from './GameActionButton';
 import ActionStatus from '../../models/ActionStatus';
+import { useDispatchGameActionMutation } from '../../hooks/useDispatchGameActionMutation';
 
 const StyledCol = styled(Col)`
   color: white;
@@ -62,16 +61,7 @@ export default function GameUser({ gameUsers, isYours }: GameUserProps) {
   const activeGameIdQueryResult = useActiveGameIdQuery();
   const activeGameId = activeGameIdQueryResult.data?.activeGameId || 1;
 
-  const [dispatchGameAction] = useDispatchGameActionMutation({
-    refetchQueries: [{ query: GameDocument, variables: { id: activeGameId } }],
-    onCompleted: () => {},
-    onError: (error) => {
-      dispatch({
-        type: 'SET_ERROR',
-        payload: { name: 'dispatchGameActionError', error },
-      });
-    },
-  });
+  const [dispatchGameAction] = useDispatchGameActionMutation(activeGameId);
 
   const gameUser = findGameUser(gameUsers, user, { isYours });
 

@@ -5,11 +5,10 @@ import styled from 'styled-components';
 import gameActionNames from '../../constants/game-action-names';
 import {
   useActiveGameIdQuery,
-  useDispatchGameActionMutation,
-  GameDocument,
   ActionType,
   GameCardFragment,
 } from '../../graphql/generated/graphql-client';
+import { useDispatchGameActionMutation } from '../../hooks/useDispatchGameActionMutation';
 
 const StyledButton = styled(Button)`
   width: 100%;
@@ -35,16 +34,7 @@ export default function GameActionButton({
   const activeGameIdQueryResult = useActiveGameIdQuery();
   const activeGameId = activeGameIdQueryResult.data?.activeGameId || 1;
 
-  const [dispatchGameAction] = useDispatchGameActionMutation({
-    refetchQueries: [{ query: GameDocument, variables: { id: activeGameId } }],
-    onCompleted: () => {},
-    onError: (error) => {
-      dispatch({
-        type: 'SET_ERROR',
-        payload: { name: 'dispatchGameActionError', error },
-      });
-    },
-  });
+  const [dispatchGameAction] = useDispatchGameActionMutation(activeGameId);
 
   const handleClick = async () => {
     const gameCardId = gameCard?.id;
