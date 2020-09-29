@@ -12,6 +12,7 @@ export interface AppStateInterface {
   plusDeckCardError: ApolloError | null;
   minusDeckCardError: ApolloError | null;
   createDeckError: ApolloError | null;
+  dispatchGameActionError: ApolloError | null;
   deckModal: DeckModal;
   gameCardModal: GameCardModal;
   gameCardListModal: GameCardListModal;
@@ -21,7 +22,8 @@ export interface AppStateInterface {
 export type ErrorName =
   | 'plusDeckCardError'
   | 'minusDeckCardError'
-  | 'createDeckError';
+  | 'createDeckError'
+  | 'dispatchGameActionError';
 
 export default class AppState extends Record<AppStateInterface>(
   {
@@ -30,6 +32,7 @@ export default class AppState extends Record<AppStateInterface>(
     plusDeckCardError: null,
     minusDeckCardError: null,
     createDeckError: null,
+    dispatchGameActionError: null,
     deckModal: new DeckModal(),
     gameCardModal: new GameCardModal(),
     gameCardListModal: new GameCardListModal(),
@@ -44,6 +47,7 @@ export default class AppState extends Record<AppStateInterface>(
     return this.set('user', data);
   }
   setError(data: { name: ErrorName; error: ApolloError }) {
+    data.error.message = data.error.message.replace('GraphQL error: ', '');
     return this.set(data.name, data.error);
   }
   resetError(data: ErrorName) {

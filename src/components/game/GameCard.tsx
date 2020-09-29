@@ -35,7 +35,12 @@ export default function GameCard({ data }: GameCardProps) {
   const [dispatchGameAction] = useDispatchGameActionMutation({
     refetchQueries: [{ query: GameDocument, variables: { id: activeGameId } }],
     onCompleted: () => {},
-    onError: (error) => {},
+    onError: (error) => {
+      dispatch({
+        type: 'SET_ERROR',
+        payload: { name: 'dispatchGameActionError', error },
+      });
+    },
   });
 
   const handleClick = async () => {

@@ -35,9 +35,13 @@ const StyledRow = styled(Row)`
   height: 100px;
 `;
 
+const StyledAlert = styled(Alert)`
+  padding: 6px 12px;
+`;
+
 export default function GameCardArea() {
   const {
-    state: { actionStatus },
+    state: { actionStatus, dispatchGameActionError },
   } = useContext(AppContext);
 
   const activeGameIdQueryResult = useActiveGameIdQuery();
@@ -71,6 +75,15 @@ export default function GameCardArea() {
       {actionStatus.isStarted() && !actionStatus.isCompleted() && (
         <Row>
           <GameActionAlert />
+        </Row>
+      )}
+      {dispatchGameActionError !== null && (
+        <Row>
+          <Col xs={12}>
+            <StyledAlert color="danger">
+              {dispatchGameActionError.message}
+            </StyledAlert>
+          </Col>
         </Row>
       )}
 

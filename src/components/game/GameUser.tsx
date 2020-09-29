@@ -66,7 +66,10 @@ export default function GameUser({ gameUsers, isYours }: GameUserProps) {
     refetchQueries: [{ query: GameDocument, variables: { id: activeGameId } }],
     onCompleted: () => {},
     onError: (error) => {
-      console.log(error);
+      dispatch({
+        type: 'SET_ERROR',
+        payload: { name: 'dispatchGameActionError', error },
+      });
     },
   });
 
