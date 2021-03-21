@@ -85,7 +85,7 @@
     "react": "^16.13.1",
     "react-apollo": "^3.1.5",
     "react-app-polyfill": "^1.0.6",
-    "react-dev-utils": "^10.2.1",
+    "react-dev-utils": "^11.0.4",
     "react-dnd": "^10.0.2",
     "react-dnd-html5-backend": "^10.0.2",
     "react-dnd-touch-backend": "^10.0.2",
